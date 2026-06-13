@@ -1,0 +1,180 @@
+<div class="login-pg act">
+
+  <div class="login-left">
+    <div class="ll-logo">
+      <img class="logo-login" src="LOGO_LIME.png" alt="reloop" />
+    </div>
+
+    <div class="tab-row">
+      <button class="tab-btn" [class.act]="tabAttiva === 'accedi'" (click)="switchTab('accedi')">Accedi</button>
+      <button class="tab-btn" [class.act]="tabAttiva === 'reg'"    (click)="switchTab('reg')">Registrati</button>
+    </div>
+
+    @if (tabAttiva === 'accedi') {
+      <form class="lform" [formGroup]="formLogin" (ngSubmit)="doLogin()">
+        <div class="fg">
+          <label class="fl">Email</label>
+          <input class="fi" [class.err]="invalid(formLogin, 'email')"
+                 type="email" formControlName="email"
+                 placeholder="esempio@dominio.com" />
+          @if (invalid(formLogin, 'email')) {
+            <span class="ferr show">Email non valida</span>
+          }
+        </div>
+        <div class="fg">
+          <label class="fl">Password</label>
+          <input class="fi" [class.err]="invalid(formLogin, 'password')"
+                 type="password" formControlName="password"
+                 placeholder="••••••••" />
+          @if (invalid(formLogin, 'password')) {
+            <span class="ferr show">Password obbligatoria</span>
+          }
+        </div>
+        <button class="btn-login" type="submit" [disabled]="loading">
+          {{ loading ? 'Accesso in corso...' : 'Entra in reloop →' }}
+        </button>
+        <p class="admin-login-note u-text-center">
+          💡 Accedendo con un dominio <strong>&#64;reloop.it</strong>
+          si entrerà nella Dashboard Amministratore.
+        </p>
+      </form>
+    }
+
+    @if (tabAttiva === 'reg') {
+      <form class="lform" [formGroup]="formReg" (ngSubmit)="doRegister()">
+        <div class="fg">
+          <label class="fl">Nome completo</label>
+          <input class="fi" [class.err]="invalid(formReg, 'nome_completo')"
+                 type="text" formControlName="nome_completo"
+                 placeholder="Mario Rossi" />
+          @if (invalid(formReg, 'nome_completo')) {
+            <span class="ferr show">Nome obbligatorio</span>
+          }
+        </div>
+        <div class="fg">
+          <label class="fl">Città</label>
+          <select class="fi" [class.err]="invalid(formReg, 'citta')"
+                  formControlName="citta"
+                  (change)="onCittaChange($event)">
+            <option value="">Seleziona città...</option>
+            @for (c of citta; track c) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+          @if (invalid(formReg, 'citta')) {
+            <span class="ferr show">Seleziona una città</span>
+          }
+        </div>
+        <div class="fg">
+          <label class="fl">Quartiere</label>
+          <select class="fi" [class.err]="invalid(formReg, 'id_quartiere')"
+                  formControlName="id_quartiere">
+            <option value="">
+              {{ quartieriFiltrarti.length === 0 ? 'Scegli prima una città...' : 'Seleziona quartiere...' }}
+            </option>
+            @for (q of quartieriFiltrarti; track q.id_quartiere) {
+              <option [value]="q.id_quartiere">{{ q.nome_quartiere }}</option>
+            }
+          </select>
+          @if (invalid(formReg, 'id_quartiere')) {
+            <span class="ferr show">Seleziona un quartiere</span>
+          }
+        </div>
+        <div class="fg">
+          <label class="fl">Indirizzo</label>
+          <input class="fi" [class.err]="invalid(formReg, 'indirizzo')"
+                 type="text" formControlName="indirizzo"
+                 placeholder="Via Roma 12" />
+          @if (invalid(formReg, 'indirizzo')) {
+            <span class="ferr show">Indirizzo obbligatorio</span>
+          }
+        </div>
+        <div class="fg">
+          <label class="fl">Email</label>
+          <input class="fi" [class.err]="invalid(formReg, 'email')"
+                 type="email" formControlName="email"
+                 placeholder="esempio@dominio.com" />
+          @if (invalid(formReg, 'email')) {
+            <span class="ferr show">Email non valida</span>
+          }
+        </div>
+        <div class="fg">
+          <label class="fl">Password</label>
+          <input class="fi" [class.err]="invalid(formReg, 'password')"
+                 type="password" formControlName="password"
+                 placeholder="min. 8 caratteri" />
+          @if (invalid(formReg, 'password')) {
+            <span class="ferr show">Minimo 8 caratteri</span>
+          }
+        </div>
+        <div class="fg">
+          <label class="fl">Conferma password</label>
+          <input class="fi" [class.err]="invalid(formReg, 'password2')"
+                 type="password" formControlName="password2"
+                 placeholder="ripeti password" />
+          @if (invalid(formReg, 'password2')) {
+            <span class="ferr show">Conferma la password</span>
+          }
+        </div>
+        <button class="btn-login" type="submit" [disabled]="loading">
+          {{ loading ? 'Creazione account...' : 'Crea il tuo account →' }}
+        </button>
+      </form>
+    }
+  </div>
+
+  <div class="login-right">
+    <div class="lr-tag"><span class="lr-tag-dot"></span>Come funziona reloop</div>
+    <h1 class="lr-h">Dai nuova vita<br />agli oggetti del<br /><em>tuo quartiere.</em></h1>
+    <p class="lr-sub">Nessun denaro. Solo fiducia reciproca tra vicini. Ogni scambio riduce il tuo impatto ambientale.</p>
+
+    <div class="stats-strip u-mb28">
+      <div class="ss-item">
+        <span class="ss-n">{{ stats() ? formatNum(stats()!.scambi_completati) : '—' }}</span>
+        <div class="ss-l">scambi completati</div>
+      </div>
+      <div class="ss-item">
+        <span class="ss-n">{{ stats() ? formatCo2(stats()!.co2_totale_kg) : '—' }}</span>
+        <div class="ss-l">CO₂ calcolata</div>
+      </div>
+      <div class="ss-item">
+        <span class="ss-n">{{ stats() ? formatNum(stats()!.utenti_attivi) : '—' }}</span>
+        <div class="ss-l">utenti attivi</div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step flow-lime">
+        <div class="fs-n">01 · Pubblica</div>
+        <div class="fs-ico">📋</div>
+        <div class="fs-t">Annuncio attivo</div>
+        <div class="fs-d">Inserisci l'oggetto con foto, categoria e valore stimato.</div>
+      </div>
+      <div class="flow-step flow-sage">
+        <div class="fs-n">02 · Proposta</div>
+        <div class="fs-ico">🤝</div>
+        <div class="fs-t">Offri i tuoi annunci</div>
+        <div class="fs-d">Seleziona tra i tuoi annunci attivi quelli da proporre.</div>
+      </div>
+      <div class="flow-step flow-amber">
+        <div class="fs-n">03 · Chat</div>
+        <div class="fs-ico">💬</div>
+        <div class="fs-t">Accordatevi</div>
+        <div class="fs-d">Proposta accettata → chat aperta.</div>
+      </div>
+      <div class="flow-step flow-terra">
+        <div class="fs-n">04 · CO₂ calcolata</div>
+        <div class="fs-ico">🌱</div>
+        <div class="fs-t">Scambio completato</div>
+        <div class="fs-d">Recensisci il tuo vicino e sblocca badge!</div>
+      </div>
+    </div>
+
+    <div class="lr-chips">
+      <div class="lr-chip">🏘️ Iperlocale · per quartiere</div>
+      <div class="lr-chip">♻️ Zero denaro</div>
+      <div class="lr-chip">🌍 CO₂ tracciata</div>
+    </div>
+  </div>
+
+</div>

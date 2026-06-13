@@ -1,0 +1,12 @@
+<div id="toast-wrap">
+  @for (t of toastService.toasts(); track t.id) {
+    <div class="toast t-{{ t.type }}">
+      <div class="toast-ico">{{ t.icon }}</div>
+      <div class="toast-body">
+        <div class="toast-title">{{ t.title }}</div>
+        <div class="toast-msg">{{ t.msg }}</div>
+      </div>
+      <div class="toast-bar"></div>
+    </div>
+  }
+</div>

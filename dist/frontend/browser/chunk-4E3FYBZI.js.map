@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/core/services/quartiere.service.ts"],
+  "sourcesContent": ["import { Injectable, inject } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\nimport { Observable } from 'rxjs';\n\n@Injectable({ providedIn: 'root' })\nexport class QuartiereService {\n  private http = inject(HttpClient);\n  private readonly API = 'http://localhost:8080/api';\n\n  getAll(): Observable<any[]> {\n    return this.http.get<any[]>(`${this.API}/quartieri`);\n  }\n}"],
+  "mappings": ";;;;;;;AAKM,IAAO,mBAAP,MAAO,kBAAgB;EACnB,OAAO,OAAO,UAAU;EACf,MAAM;EAEvB,SAAM;AACJ,WAAO,KAAK,KAAK,IAAW,GAAG,KAAK,GAAG,YAAY;EACrD;;qCANW,mBAAgB;EAAA;4EAAhB,mBAAgB,SAAhB,kBAAgB,WAAA,YADH,OAAM,CAAA;;",
+  "names": []
+}

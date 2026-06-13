@@ -1,0 +1,40 @@
+@if (aperto) {
+  <div class="user-overlay-bg open" (click)="onBgClick($event)">
+    <div class="user-overlay-box">
+
+      @if (loading()) {
+        <div style="padding:40px;text-align:center">
+          <p class="u-text-muted-sm">Caricamento profilo...</p>
+        </div>
+      } @else if (utente()) {
+        <div class="uov-header">
+          <div class="uov-av av-lime">{{ iniziali }}</div>
+          <div>
+            <div class="uov-name">{{ utente()!.nome_completo }}</div>
+            <div class="uov-loc">📍 {{ utente()!.indirizzo }}</div>
+          </div>
+        </div>
+
+        <div class="uov-body">
+          <div class="uov-stats">
+            <div class="uov-stat">
+              <div class="uov-stat-n">{{ utente()!.punteggio }}</div>
+              <div class="uov-stat-l">punti</div>
+            </div>
+            <div class="uov-stat">
+              <div class="uov-stat-n">{{ utente()!.co2_totale }}</div>
+              <div class="uov-stat-l">kg CO₂</div>
+            </div>
+            <div class="uov-stat">
+              <div class="uov-stat-n">—</div>
+              <div class="uov-stat-l">scambi</div>
+            </div>
+          </div>
+
+          <button class="btn-uov-close" (click)="chiudi()">✕ Chiudi</button>
+        </div>
+      }
+
+    </div>
+  </div>
+}

@@ -1,0 +1,51 @@
+@if (auth.isLoggedIn() && !auth.isAdmin()) {
+  <nav id="mainNav">
+    <a class="nav-logo" routerLink="/home">
+      <img class="logo-nav" src="LOGO.png" alt="reloop" />
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" routerLink="/home"     routerLinkActive="act">Home</a>
+      <a class="nav-link" routerLink="/annunci"  routerLinkActive="act">Annunci</a>
+      <a class="nav-link" routerLink="/proposte" routerLinkActive="act">
+        Proposte
+        @if (notif.proposteBadge()) {
+          <span class="nav-badge">!</span>
+        }
+      </a>
+      <a class="nav-link" routerLink="/chat" routerLinkActive="act">
+        Chat
+        @if (notif.chatBadge()) {
+          <span class="nav-badge">!</span>
+        }
+      </a>
+      <a class="nav-link" routerLink="/pubblica" routerLinkActive="act">Pubblica</a>
+      <a class="nav-link" routerLink="/profilo"  routerLinkActive="act">Profilo</a>
+    </div>
+
+    <div class="nav-right">
+      @if (auth.utenteCorrente()) {
+        <div class="nav-pill"
+             style="display:flex;align-items:center;gap:8px;
+                    padding:3px 10px 3px 3px;cursor:pointer"
+             (click)="vaiAlProfilo()">
+          <div style="width:28px;height:28px;border-radius:50%;overflow:hidden;
+                      background:rgba(184,224,0,.15);display:flex;align-items:center;
+                      justify-content:center;font-size:.65rem;font-weight:700;
+                      color:var(--lime);flex-shrink:0">
+            @if (fotoProfilo) {
+              <img [src]="fotoProfilo"
+                   style="width:100%;height:100%;object-fit:cover" />
+            } @else {
+              {{ iniziali }}
+            }
+          </div>
+          <span style="font-size:.72rem;color:var(--lime);font-weight:600">
+            {{ auth.utenteCorrente()?.nome_completo?.split(' ')[0] }}
+          </span>
+        </div>
+      }
+      <button class="btn-nav" (click)="logout()">Esci</button>
+    </div>
+  </nav>
+}

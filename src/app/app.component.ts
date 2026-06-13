@@ -1,13 +1,23 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
-import {SampleEntitiesComponent} from './component/sample-entities/sample-entities.component';
+import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { ToastComponent } from './shared/toast/toast.component';
+import { AnnOverlayComponent } from './shared/ann-overlay/ann-overlay.component';
+import { UserOverlayComponent } from './shared/user-overlay/user-overlay.component';
+import { RecensioneModalComponent } from './shared/recensione-modal/recensione-modal.component';
+import { PropostaModalComponent } from './shared/proposta-modal/proposta-modal.component';
+import { ModificaProfiloComponent } from './shared/modifica-profilo/modifica-profilo.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
+  standalone: true,
+  imports: [
+    RouterOutlet, NavbarComponent, ToastComponent,
+    AnnOverlayComponent, UserOverlayComponent,
+    RecensioneModalComponent, PropostaModalComponent,
+    ModificaProfiloComponent
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'frontend';
-}
+export class AppComponent {}

@@ -1,0 +1,94 @@
+@if (aperto) {
+  <div class="ann-overlay-bg open" (click)="onBgClick($event)">
+    <div class="ann-overlay-box">
+
+      <!-- FOTO con navigazione -->
+      <div class="ann-ov-img" [class.ann-bg-bici]="!fotoCorrente">
+        @if (fotoCorrente) {
+          <img [src]="fotoCorrente"
+               style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0" />
+          @if (foto().length > 1) {
+            <button class="foto-nav foto-nav-prev" (click)="fotoPrecedente()">‹</button>
+            <button class="foto-nav foto-nav-next" (click)="fotoSuccessiva()">›</button>
+            <div class="foto-dots">
+              @for (f of foto(); track $index) {
+                <span class="foto-dot" [class.active]="fotoIndice() === $index"></span>
+              }
+            </div>
+          }
+        } @else {
+          📦
+        }
+      </div>
+
+      <div class="ann-ov-body">
+
+        <div class="ann-ov-title">{{ annuncio!.titolo }}</div>
+
+        <div class="ann-ov-chips">
+          <span class="ann-ov-chip">📂 {{ annuncio!.categoria }}</span>
+          <span class="ann-ov-chip">💰 €{{ annuncio!.prezzo_stimato }}</span>
+          <span class="ann-ov-chip">⭐ {{ annuncio!.condizioni }}</span>
+          <span class="ann-ov-chip">🟢 {{ annuncio!.stato_annuncio }}</span>
+        </div>
+
+        <div class="ann-ov-desc">{{ annuncio!.descrizione_annuncio }}</div>
+
+        <div class="ann-ov-user">
+          <div class="ann-ov-av av-lime">
+            {{ annuncio!.pubblicante?.nome_completo?.substring(0,2)?.toUpperCase() }}
+          </div>
+          <div>
+            <button class="ann-ov-uname-btn" (click)="apriProfiloUtente()">
+              {{ annuncio!.pubblicante?.nome_completo }}
+            </button>
+            <div class="ann-ov-uloc">
+              📍 {{ annuncio!.pubblicante?.quartiere?.nome_quartiere }},
+              {{ annuncio!.pubblicante?.quartiere?.citta }}
+            </div>
+          </div>
+        </div>
+
+        <div class="ann-ov-acts">
+          <button class="btn-ov-close" (click)="chiudi()">✕ Chiudi</button>
+          @if (!isMio()) {
+            <button class="btn-ov-prop" (click)="apriModalProposta()">
+              🤝 Proponi scambio
+            </button>
+          }
+        </div>
+
+        <div class="ann-ov-segnala-wrapper">
+          @if (giaSegnalato()) {
+            <button class="btn-ov-segnala-mini" disabled>
+              ✓ Annuncio già segnalato
+            </button>
+          } @else if (mostraSegnalaForm()) {
+            <div style="width:100%;margin-top:10px">
+              <textarea class="fi" rows="3"
+                        placeholder="Descrivi il motivo della segnalazione..."
+                        [value]="motivazione()"
+                        (input)="motivazione.set($any($event.target).value)"
+                        style="width:100%;margin-bottom:8px">
+              </textarea>
+              <div style="display:flex;gap:8px">
+                <button class="btn-segnala-invia" (click)="inviaSegnalazione()">
+                  🚩 Invia segnalazione
+                </button>
+                <button class="btn-cancel2" style="flex:1"
+                        (click)="mostraSegnalaForm.set(false)">
+                  Annulla
+                </button>
+              </div>
+            </div>
+          } @else {
+            <button class="btn-ov-segnala-mini" (click)="apriSegnalaForm()">
+              🚩 Segnala annuncio
+            </button>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

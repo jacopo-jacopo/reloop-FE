@@ -1,0 +1,72 @@
+<div class="ann-page-hdr">
+  <div class="ann-page-t">Annunci nel tuo quartiere</div>
+  <div class="filter-row">
+    @for (cat of categorie; track cat.value) {
+      <button class="fchip"
+              [class.act]="categoriaAttiva() === cat.value"
+              (click)="filtra(cat.value)">
+        {{ cat.label }}
+      </button>
+    }
+    <input class="search-i"
+           placeholder="🔍 Cerca..."
+           (input)="cerca($any($event.target).value)" />
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="u-text-center" style="padding:60px">
+    <p class="u-text-muted-sm">Caricamento annunci...</p>
+  </div>
+} @else {
+  <div class="ann-grid-full">
+    @for (ann of annunciFiltrati(); track ann.id_annuncio) {
+      <div class="ann-card ann-card-clickable" (click)="apriDettaglio(ann)">
+
+        <!-- Immagine: prima foto base64 se disponibile, altrimenti placeholder -->
+        <div class="ann-img" [class.ann-bg-bici]="!ann.foto_preview">
+          @if (ann.foto_preview) {
+            <img [src]="ann.foto_preview"
+                 style="width:100%;height:100%;object-fit:cover" />
+          } @else {
+            <div class="ann-cat-chip">{{ ann.categoria }}</div>
+            📦
+          }
+        </div>
+
+        <div class="ann-body">
+          <div class="ann-title">{{ ann.titolo }}</div>
+          <div class="ann-loc">
+            📍 {{ ann.pubblicante?.quartiere?.nome_quartiere }} · ~€{{ ann.prezzo_stimato }}
+          </div>
+          <div class="ann-footer">
+            <div class="ann-user">
+              <div class="av av-lime">
+                @if (ann.pubblicante?.foto_profilo) {
+                  <img [src]="ann.pubblicante.foto_profilo" class="av-img" />
+                } @else {
+                  {{ ann.pubblicante?.nome_completo?.substring(0,2)?.toUpperCase() }}
+                }
+              </div>
+              <span>{{ ann.pubblicante?.nome_completo }}</span>
+            </div>
+            <div class="status-pill"
+                 [class.sp-active]="ann.stato_annuncio === 'attivo'"
+                 [class.sp-busy]="ann.stato_annuncio === 'sospeso'">
+              {{ ann.stato_annuncio }}
+            </div>
+          </div>
+          <button class="ann-card-prop"
+                  (click)="$event.stopPropagation(); apriDettaglio(ann)">
+            🤝 Proponi scambio
+          </button>
+        </div>
+
+      </div>
+    } @empty {
+      <div class="u-text-center" style="grid-column:1/-1;padding:60px">
+        <p class="u-text-muted-sm">Nessun annuncio trovato.</p>
+      </div>
+    }
+  </div>
+}

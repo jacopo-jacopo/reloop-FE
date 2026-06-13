@@ -1,0 +1,41 @@
+@if (aperto) {
+  <div class="modal-bg open" (click)="onBgClick($event)">
+    <div class="modal u-mw520">
+
+      <div class="modal-h">⭐ Lascia una recensione</div>
+      <p class="u-text-muted-mb6">Il tuo scambio è completato! Condividi la tua esperienza.</p>
+      <p class="u-text-note-mb16">Seleziona il voto in stelle e inserisci un breve commento.</p>
+
+      <!-- STELLE -->
+      <div class="rating-stars-container">
+        <div class="rating-stars">
+          @for (s of stelle; track s) {
+            <span class="star-btn"
+                  [class.active]="s <= voto()"
+                  (click)="impostaVoto(s)">★</span>
+          }
+        </div>
+      </div>
+
+      <!-- TESTO -->
+      <div class="fg u-mb16-w100" style="margin-top: 16px">
+        <textarea class="fi" rows="3"
+                  placeholder="Come è andato lo scambio con il tuo vicino?"
+                  [value]="testo()"
+                  (input)="testo.set($any($event.target).value)">
+        </textarea>
+      </div>
+
+      <!-- AZIONI -->
+      <div class="modal-acts">
+        <button class="btn-confirm"
+                (click)="invia()"
+                [disabled]="loading()">
+          {{ loading() ? 'Invio in corso...' : 'Invia recensione' }}
+        </button>
+        <button class="btn-cancel2" (click)="chiudi()">Annulla</button>
+      </div>
+
+    </div>
+  </div>
+}

@@ -1,0 +1,201 @@
+<div class="prop-wrap">
+  <div class="prop-hdr">
+    <div class="prop-t">Proposte di scambio</div>
+    <div class="prop-sub">
+      Gestisci le proposte ricevute sui tuoi annunci e quelle che hai inviato.
+    </div>
+  </div>
+
+  <div class="prop-tabs">
+    <button class="prop-tab" [class.act]="tabAttiva() === 'ric'" (click)="switchTab('ric')">
+      Ricevute ({{ ricevute().length }})
+    </button>
+    <button class="prop-tab" [class.act]="tabAttiva() === 'inv'" (click)="switchTab('inv')">
+      Inviate ({{ inviate().length }})
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="u-text-center" style="padding:60px">
+      <p class="u-text-muted-sm">Caricamento proposte...</p>
+    </div>
+  }
+
+  <!-- ── RICEVUTE ── -->
+  @if (!loading() && tabAttiva() === 'ric') {
+    @for (p of ricevute(); track p.id_proposta) {
+      <div class="prop-card">
+
+        <div class="prop-card-hdr">
+          <div class="prop-av av-sage">
+            @if (p.proponente?.foto_profilo) {
+              <img [src]="p.proponente.foto_profilo" class="av-img" />
+            } @else {
+              {{ initials(p.proponente?.nome_completo) }}
+            }
+          </div>
+          <div class="prop-info">
+            <h4>{{ p.proponente?.nome_completo }}</h4>
+            <p>ricevuta il {{ p.timestamp_proposta | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div [class]="badgeClass(p.stato_proposta)">{{ labelStato(p.stato_proposta) }}</div>
+        </div>
+
+        <div class="swap-disp">
+          <!-- Il tuo annuncio -->
+          <div class="swap-side">
+            <div class="swap-side-lbl">Il tuo annuncio</div>
+            <div class="swap-item">
+              <div class="swap-item-ico">📦</div>
+              <div class="swap-item-txt">
+                <div class="swap-item-n">{{ p.annuncio_interesse?.titolo }}</div>
+                <div class="swap-item-u">richiesto</div>
+              </div>
+              @if (p.annuncio_interesse?.prezzo_stimato) {
+                <div class="swap-item-price">~€{{ p.annuncio_interesse.prezzo_stimato }}</div>
+              }
+            </div>
+          </div>
+
+          <div class="swap-arrow">⇄</div>
+
+          <!-- Oggetti offerti: selezionabili se >1 -->
+          <div class="swap-side">
+            @if ((p.annunci_offerti?.length ?? 0) > 1) {
+              <div class="swap-side-lbl">
+                Scegli uno
+                <span class="swap-side-count">{{ p.annunci_offerti?.length }} opzioni</span>
+              </div>
+            } @else {
+              <div class="swap-side-lbl">Offre in cambio</div>
+            }
+
+            @for (ao of p.annunci_offerti; track ao.annuncio_offerto?.id_annuncio) {
+              <div class="swap-item"
+                   [class.swap-item-pick]="(p.annunci_offerti?.length ?? 0) > 1 && p.stato_proposta === 'in_attesa'"
+                   [class.swap-item-sel]="isSelezionato(p.id_proposta, ao.annuncio_offerto?.id_annuncio)"
+                   (click)="(p.annunci_offerti?.length ?? 0) > 1 && p.stato_proposta === 'in_attesa' && seleziona(p.id_proposta, ao.annuncio_offerto?.id_annuncio)">
+                <div class="swap-item-ico">🎁</div>
+                <div class="swap-item-txt">
+                  <div class="swap-item-n">{{ ao.annuncio_offerto?.titolo }}</div>
+                  <div class="swap-item-u">annuncio offerto</div>
+                </div>
+                @if (ao.annuncio_offerto?.prezzo_stimato) {
+                  <div class="swap-item-price">~€{{ ao.annuncio_offerto.prezzo_stimato }}</div>
+                }
+                @if ((p.annunci_offerti?.length ?? 0) > 1 && p.stato_proposta === 'in_attesa') {
+                  <div class="swap-item-radio"
+                       [class.swap-item-radio-sel]="isSelezionato(p.id_proposta, ao.annuncio_offerto?.id_annuncio)">
+                    @if (isSelezionato(p.id_proposta, ao.annuncio_offerto?.id_annuncio)) { ✓ }
+                  </div>
+                }
+              </div>
+            }
+
+            @if ((p.annunci_offerti?.length ?? 0) > 1 && p.stato_proposta === 'in_attesa' && !canAccetta(p)) {
+              <div class="swap-pick-hint">Seleziona l'oggetto che vuoi ricevere</div>
+            }
+          </div>
+        </div>
+
+        @if (p.stato_proposta === 'in_attesa') {
+          <div class="prop-acts">
+            <button class="btn-acc"
+                    [disabled]="!canAccetta(p)"
+                    (click)="accetta(p)">
+              {{ accettando() === p.id_proposta ? 'Accettazione in corso...' : '✓ Accetta proposta' }}
+            </button>
+            <button class="btn-ref"
+                    [disabled]="accettando() !== null"
+                    (click)="rifiuta(p)">✗ Rifiuta</button>
+          </div>
+        }
+
+      </div>
+    } @empty {
+      <p class="u-text-muted-sm u-text-center" style="padding:40px 0">
+        Nessuna proposta ricevuta.
+      </p>
+    }
+  }
+
+  <!-- ── INVIATE ── -->
+  @if (!loading() && tabAttiva() === 'inv') {
+    @for (p of inviate(); track p.id_proposta) {
+      <div class="prop-card">
+
+        <div class="prop-card-hdr">
+          <div class="prop-av av-amber">
+            @if (p.annuncio_interesse?.pubblicante?.foto_profilo) {
+              <img [src]="p.annuncio_interesse.pubblicante.foto_profilo" class="av-img" />
+            } @else {
+              {{ initials(p.annuncio_interesse?.pubblicante?.nome_completo) }}
+            }
+          </div>
+          <div class="prop-info">
+            <h4>A {{ p.annuncio_interesse?.pubblicante?.nome_completo }}</h4>
+            <p>inviata il {{ p.timestamp_proposta | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div [class]="badgeClass(p.stato_proposta)">{{ labelStato(p.stato_proposta) }}</div>
+        </div>
+
+        <div class="swap-disp">
+          <div class="swap-side">
+            <div class="swap-side-lbl">Annuncio richiesto</div>
+            <div class="swap-item">
+              <div class="swap-item-ico">🎯</div>
+              <div class="swap-item-txt">
+                <div class="swap-item-n">{{ p.annuncio_interesse?.titolo }}</div>
+                <div class="swap-item-u">di {{ p.annuncio_interesse?.pubblicante?.nome_completo }}</div>
+              </div>
+              @if (p.annuncio_interesse?.prezzo_stimato) {
+                <div class="swap-item-price">~€{{ p.annuncio_interesse.prezzo_stimato }}</div>
+              }
+            </div>
+          </div>
+
+          <div class="swap-arrow">⇄</div>
+
+          <div class="swap-side">
+            @if ((p.annunci_offerti?.length ?? 0) > 1) {
+              <div class="swap-side-lbl">
+                Offri a scelta
+                <span class="swap-side-count">{{ p.annunci_offerti?.length }} opzioni</span>
+              </div>
+            } @else {
+              <div class="swap-side-lbl">Offri in cambio</div>
+            }
+
+            @for (ao of p.annunci_offerti; track ao.annuncio_offerto?.id_annuncio) {
+              <div class="swap-item">
+                <div class="swap-item-ico">📦</div>
+                <div class="swap-item-txt">
+                  <div class="swap-item-n">{{ ao.annuncio_offerto?.titolo }}</div>
+                  <div class="swap-item-u">tuo annuncio</div>
+                </div>
+                @if (ao.annuncio_offerto?.prezzo_stimato) {
+                  <div class="swap-item-price">~€{{ ao.annuncio_offerto.prezzo_stimato }}</div>
+                }
+              </div>
+            }
+
+            @if ((p.annunci_offerti?.length ?? 0) > 1) {
+              <div class="swap-pick-hint swap-pick-hint-muted">
+                Il destinatario sceglierà uno dei tuoi oggetti
+              </div>
+            }
+          </div>
+        </div>
+
+        @if (p.stato_proposta === 'in_attesa') {
+          <p class="u-text-note-mt6">In attesa di risposta.</p>
+        }
+
+      </div>
+    } @empty {
+      <p class="u-text-muted-sm u-text-center" style="padding:40px 0">
+        Nessuna proposta inviata.
+      </p>
+    }
+  }
+</div>

@@ -1,0 +1,58 @@
+// Pulsante invia segnalazione — rosso/terra con hover scurito
+// Non usa btn-confirm per evitare il verde al hover
+.btn-segnala-invia {
+  flex: 1;
+  background: var(--terra);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: .85rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity .2s;
+
+  &:hover  { opacity: 0.82; }
+  &:active { opacity: 0.65; }
+}
+// Navigazione foto nell'overlay
+.foto-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,.45);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+
+  &:hover { background: rgba(0,0,0,.7); }
+
+  &.foto-nav-prev { left: 8px; }
+  &.foto-nav-next { right: 8px; }
+}
+
+.foto-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+}
+
+.foto-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.5);
+
+  &.active { background: #fff; }
+}

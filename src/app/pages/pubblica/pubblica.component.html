@@ -1,0 +1,99 @@
+<div class="pub-wrap">
+  <div class="pub-t">Pubblica un annuncio</div>
+  <div class="pub-sub">
+    Il tuo annuncio sarà visibile solo agli utenti del tuo quartiere.
+    Stato iniziale: <strong class="u-clr-lime">attivo</strong>.
+  </div>
+
+  <form class="pub-form" [formGroup]="form" (ngSubmit)="pubblica()">
+
+    <!-- FOTO -->
+    <div class="upload-zone" [class.has-photos]="fotoPreview.length > 0">
+      @if (fotoPreview.length === 0) {
+        <div class="upload-placeholder-inner">
+          <div class="u-text-2xl">📸</div>
+          <div class="u-text-muted-sm">Aggiungi almeno una foto</div>
+        </div>
+      }
+      <input type="file" accept="image/*" multiple
+             style="position:absolute;inset:0;opacity:0;cursor:pointer"
+             (change)="onFotoChange($event)" />
+
+      @if (fotoPreview.length > 0) {
+        <div class="photo-grid">
+          @for (prev of fotoPreview; track $index) {
+            <div class="photo-cell">
+              <img [src]="prev" alt="foto" />
+              <div class="photo-cell-remove">
+                <button type="button" class="photo-cell-remove-btn"
+                        (click)="rimuoviFoto($index)">✕</button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- TITOLO -->
+    <div class="fg">
+      <label class="fl">Titolo</label>
+      <input class="fi" [class.err]="invalid('titolo')"
+             formControlName="titolo" placeholder="es. Bicicletta mountain bike" />
+      @if (invalid('titolo')) {
+        <span class="ferr show">Titolo obbligatorio</span>
+      }
+    </div>
+
+    <!-- CATEGORIA -->
+    <div class="fg">
+      <label class="fl">Categoria</label>
+      <select class="fi" [class.err]="invalid('categoria')" formControlName="categoria">
+        <option value="">Seleziona categoria...</option>
+        @for (cat of categorie; track cat) {
+          <option [value]="cat">{{ cat }}</option>
+        }
+      </select>
+      @if (invalid('categoria')) {
+        <span class="ferr show">Categoria obbligatoria</span>
+      }
+    </div>
+
+    <!-- DESCRIZIONE -->
+    <div class="fg">
+      <label class="fl">Descrizione</label>
+      <textarea class="fi" rows="3" formControlName="descrizione"
+                placeholder="Descrivi l'oggetto, condizioni, cosa vorresti in cambio..."></textarea>
+    </div>
+
+    <!-- CONDIZIONI -->
+    <div class="fg">
+      <label class="fl">Condizioni</label>
+      <div class="cond-grid">
+        @for (c of condizioni; track c.value) {
+          <div class="cond-item"
+               [class.sel]="condSelezionata() === c.value"
+               (click)="selCond(c.value)">
+            <span class="ci-e">{{ c.emoji }}</span>
+            <span class="ci-l">{{ c.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- PREZZO -->
+    <div class="fg">
+      <label class="fl">Prezzo stimato (€)</label>
+      <input class="fi" [class.err]="invalid('prezzo_stimato')"
+             type="number" min="0" formControlName="prezzo_stimato"
+             placeholder="es. 80" />
+      @if (invalid('prezzo_stimato')) {
+        <span class="ferr show">Inserisci un valore positivo</span>
+      }
+    </div>
+
+    <button class="btn-pub" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Pubblicazione in corso...' : '🌿 Pubblica annuncio' }}
+    </button>
+
+  </form>
+</div>

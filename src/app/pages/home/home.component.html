@@ -1,0 +1,113 @@
+<div class="home-hero">
+  <div>
+    <h1 class="hero-h">Scambia con i tuoi<br /><em>vicini.</em> Senza soldi.</h1>
+    <p class="hero-sub">
+      Ogni oggetto inutilizzato è un'opportunità per qualcuno vicino a te.
+      Proponi scambi, accordati in chat, misura il tuo impatto reale.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" (click)="vai('/annunci')">Esplora annunci</button>
+      <button class="btn-outline" (click)="vai('/pubblica')">Pubblica oggetto</button>
+    </div>
+  </div>
+
+  <div class="map-box">
+    <div class="map-grid-bg"></div>
+    <div class="map-road map-road-h1"></div>
+    <div class="map-road map-road-v1"></div>
+    <div class="map-road map-road-h2"></div>
+    <div class="map-pin pin-l map-pin-bici"     (click)="vai('/annunci')">🚲</div>
+    <div class="map-pin pin-s map-pin-manga"    (click)="vai('/annunci')">📚</div>
+    <div class="map-pin pin-m map-pin-chitarra" (click)="vai('/annunci')">🎸</div>
+    <div class="map-pin pin-t map-pin-poltrona" (click)="vai('/annunci')">🛋️</div>
+    <div class="map-pin pin-l map-pin-pentole"  (click)="vai('/annunci')">🍳</div>
+    <div class="map-chip map-chip-sanfermo">Centro Storico</div>
+    <div class="map-chip map-chip-garibaldi">Giardino</div>
+    <div class="map-lbl">📍 Ferrara</div>
+  </div>
+</div>
+
+<!-- ANNUNCI RECENTI -->
+<div class="sec">
+  <div class="sec-hdr">
+    <div class="sec-t">Annunci recenti vicino a te</div>
+    <button class="sec-link" (click)="vai('/annunci')">Vedi tutti →</button>
+  </div>
+
+  @if (loading()) {
+    <p class="u-text-muted-sm">Caricamento...</p>
+  } @else {
+    <div class="ann-grid">
+      @for (ann of annunciRecenti(); track ann.id_annuncio) {
+        <div class="ann-card ann-card-clickable" (click)="apriDettaglio(ann)">
+
+          <!-- Foto: base64 se disponibile, altrimenti placeholder con emoji -->
+          <div class="ann-img" [class.ann-bg-bici]="!ann.foto_preview">
+            @if (ann.foto_preview) {
+              <img [src]="ann.foto_preview"
+                   style="width:100%;height:100%;object-fit:cover" />
+            } @else {
+              <div class="ann-cat-chip">{{ ann.categoria }}</div>
+              📦
+            }
+          </div>
+
+          <div class="ann-body">
+            <div class="ann-title">{{ ann.titolo }}</div>
+            <div class="ann-loc">
+              📍 {{ ann.pubblicante?.quartiere?.nome_quartiere }} · ~€{{ ann.prezzo_stimato }}
+            </div>
+            <div class="ann-footer">
+              <div class="ann-user">
+                <div class="av av-lime">
+                  @if (ann.pubblicante?.foto_profilo) {
+                    <img [src]="ann.pubblicante.foto_profilo" class="av-img" />
+                  } @else {
+                    {{ ann.pubblicante?.nome_completo?.substring(0,2)?.toUpperCase() }}
+                  }
+                </div>
+                <span>{{ ann.pubblicante?.nome_completo }}</span>
+              </div>
+              <div class="status-pill sp-active">{{ ann.stato_annuncio }}</div>
+            </div>
+          </div>
+
+        </div>
+      } @empty {
+        <p class="u-text-muted-sm">Nessun annuncio disponibile nel tuo quartiere.</p>
+      }
+    </div>
+  }
+</div>
+
+<!-- CO2 BOX -->
+<div class="sec u-pt0">
+  <div class="co2-box" (click)="vai('/profilo')">
+    <div>
+      <div class="co2-label">CO₂ risparmiata dal quartiere</div>
+      <div>
+        <span class="co2-val">{{ co2Quartiere() | number:'1.1-1' }}</span>
+        <span class="co2-unit">kg</span>
+      </div>
+      <div class="co2-note">
+        calcolata su tutti gli scambi completati nel tuo quartiere
+      </div>
+    </div>
+    <div class="co2-equiv">
+      <div class="co2-eq-item">
+        <div class="co2-eq-icon">🌳</div>
+        <div>
+          <div class="co2-eq-n">~{{ alberiEquivalenti }} alberi</div>
+          <div class="co2-eq-l">stima EPA: 21 kg CO₂/albero/anno</div>
+        </div>
+      </div>
+      <div class="co2-eq-item">
+        <div class="co2-eq-icon">🚗</div>
+        <div>
+          <div class="co2-eq-n">~{{ kmAuto | number }} km</div>
+          <div class="co2-eq-l">auto non percorsi (0.242 kg CO₂/km)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

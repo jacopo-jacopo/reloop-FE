@@ -1,0 +1,132 @@
+<div class="chat-layout">
+
+  <!-- SIDEBAR CONVERSAZIONI -->
+  <div class="chat-sb">
+    <div class="chat-sb-hdr">
+      <div class="chat-sb-t">💬 Chat attive</div>
+    </div>
+    <div class="conv-list">
+      @if (loading()) {
+        <p class="u-text-muted-sm" style="padding:16px">Caricamento...</p>
+      }
+      @for (c of chat(); track c.id_chat) {
+        <div class="conv"
+             [class.act]="chatAttiva()?.id_chat === c.id_chat"
+             (click)="selezionaChat(c)">
+          <div class="conv-av av-sage">
+            @if (altroUtente(c)?.foto_profilo) {
+              <img [src]="altroUtente(c).foto_profilo" class="av-img" />
+            } @else {
+              {{ initials(altroUtente(c)?.nome_completo) }}
+            }
+          </div>
+          <div class="u-flex1-mw0">
+            <div class="conv-name">{{ altroUtente(c)?.nome_completo ?? 'Chat #' + c.id_chat }}</div>
+            <div class="conv-prev">{{ c.proposta_generante?.annuncio_interesse?.titolo }}</div>
+          </div>
+          <div class="conv-time">{{ c.timestamp_chat | date:'dd/MM' }}</div>
+          @if (notif.hasChatNonLetta(c.id_chat)) {
+            <div class="conv-badge">!</div>
+          }
+        </div>
+      } @empty {
+        @if (!loading()) {
+          <p class="u-text-muted-sm" style="padding:16px">Nessuna chat attiva.</p>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- AREA MESSAGGI -->
+  <div class="chat-main">
+    @if (chatAttiva()) {
+
+      <!-- HEADER -->
+      <div class="chat-top">
+        <div class="chat-top-av av-sage">
+          @if (altroUtente(chatAttiva())?.foto_profilo) {
+            <img [src]="altroUtente(chatAttiva()).foto_profilo" class="av-img" />
+          } @else {
+            {{ initials(altroUtente(chatAttiva())?.nome_completo) }}
+          }
+        </div>
+        <div class="chat-top-info">
+          <div class="chat-top-n">
+            {{ altroUtente(chatAttiva())?.nome_completo ?? 'Chat #' + chatAttiva()!.id_chat }}
+          </div>
+          <div class="chat-top-swap">
+            <span class="chat-top-swap-item">
+              📦 {{ chatAttiva()!.proposta_generante?.annuncio_interesse?.titolo }}
+            </span>
+            <span class="chat-top-arrow">⇄</span>
+            <span class="chat-top-swap-item">
+              🎁 {{ annuncioScelto(chatAttiva())?.titolo }}
+            </span>
+          </div>
+        </div>
+        @if (chatAttiva()!.stato_chat === 'aperta') {
+          <div class="chat-top-acts">
+            <button class="btn-ghost" (click)="annullaScambio()">Annulla scambio</button>
+            <button class="btn-complete" (click)="completaScambio()">✓ Scambio completato</button>
+          </div>
+        } @else {
+          <span class="chat-conclusa-badge">✓ Scambio {{ chatAttiva()!.stato_chat }}</span>
+        }
+      </div>
+
+      <!-- MESSAGGI -->
+      <div class="msgs-area" #msgsArea>
+        <div class="sys-msg">
+          💬 Chat aperta il {{ chatAttiva()!.timestamp_chat | date:'dd/MM/yyyy' }}
+        </div>
+        @for (msg of messaggi(); track msg.id.id_messaggio; let i = $index) {
+          @if (dataLabel(i)) {
+            <div class="sys-msg">{{ dataLabel(i) }}</div>
+          }
+          <div class="msg" [class.me]="isMio(msg)">
+            @if (!isMio(msg)) {
+              <div class="conv-av conv-av-sm av-sage">
+                @if (altroUtente(chatAttiva())?.foto_profilo) {
+                  <img [src]="altroUtente(chatAttiva()).foto_profilo" class="av-img" />
+                } @else {
+                  {{ initials(altroUtente(chatAttiva())?.nome_completo) }}
+                }
+              </div>
+            }
+            <div class="msg-body">
+              <div class="msg-t" [class.u-text-right]="isMio(msg)">
+                {{ formattaOra(msg.data_invio) }}
+              </div>
+              <div class="bubble">{{ msg.contenuto }}</div>
+              @if (isMio(msg)) {
+                <div class="msg-tick" [class.msg-tick-read]="msg.flag_lettura" [class.msg-tick-neutral]="!msg.flag_lettura">
+                  {{ msg.flag_lettura ? '✓✓ letto' : '✓ inviato' }}
+                </div>
+              }
+            </div>
+          </div>
+        } @empty {
+          <div class="sys-msg">Nessun messaggio ancora. Inizia la conversazione!</div>
+        }
+      </div>
+
+      <!-- INPUT -->
+      @if (chatAttiva()!.stato_chat === 'aperta') {
+        <div class="chat-input-bar">
+          <input class="chat-inp"
+                 placeholder="Scrivi un messaggio..."
+                 [value]="testoMsg()"
+                 (input)="testoMsg.set($any($event.target).value)"
+                 (keydown)="onEnter($event)" />
+          <button class="btn-send" (click)="inviaMessaggio()">➤</button>
+        </div>
+      }
+
+    } @else {
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+        <p class="u-text-muted-sm">Seleziona una chat dalla lista.</p>
+      </div>
+    }
+  </div>
+
+</div>

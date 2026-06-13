@@ -1,0 +1,109 @@
+<div class="admin-page-container" style="display:block">
+
+  <div class="admin-header">
+    <h1 class="admin-title">🛡️ Centro Moderazione Reloop</h1>
+    <button class="btn-admin-logout" (click)="logout()">Logout 🚪</button>
+  </div>
+
+  <div class="admin-main-layout">
+
+    <!-- LISTA SEGNALAZIONI -->
+    <div class="prof-ann-card admin-column-card">
+      <div class="prof-ann-t admin-list-title">📋 Segnalazioni Globali</div>
+
+      @if (loading()) {
+        <p class="admin-login-note">Caricamento...</p>
+      }
+
+      @for (s of segnalazioni(); track s.id_segnalazione) {
+        <div class="admin-item-card"
+             [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
+             (click)="ispeziona(s)">
+          <div class="admin-card-header">
+            <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
+            <span [class]="badgeClass(s.stato_segnalazione)">{{ s.stato_segnalazione }}</span>
+          </div>
+          <div class="admin-card-title">
+              Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
+          </div>
+        </div>
+      } @empty {
+        @if (!loading()) {
+          <p class="admin-login-note">Nessuna segnalazione presente.</p>
+        }
+      }
+    </div>
+
+    <!-- PANNELLO ISPEZIONE -->
+    <div class="prof-ann-card admin-column-card"
+         [class.admin-inspection-panel]="!segnalazioneAttiva()"
+         id="adminPannelloIspezione">
+
+      @if (!segnalazioneAttiva()) {
+        <div class="admin-empty-state">
+          <span class="admin-empty-icon">🔍</span>
+          <p class="admin-empty-text">
+            Seleziona una segnalazione per iniziare l'ispezione.
+          </p>
+        </div>
+      } @else {
+        <div class="admin-inspection-content" style="display:block">
+
+          <div class="inspection-detail-header">
+            <h3 class="inspection-detail-title">
+              Ispezione #{{ segnalazioneAttiva()!.id_segnalazione }}
+            </h3>
+            <span [class]="badgeClass(segnalazioneAttiva()!.stato_segnalazione)">
+              {{ segnalazioneAttiva()!.stato_segnalazione }}
+            </span>
+          </div>
+
+          <p class="inspection-detail-row">
+            <strong>Motivazione:</strong> "{{ segnalazioneAttiva()!.motivazione }}"
+          </p>
+
+          <!-- ANTEPRIMA ANNUNCIO -->
+          @if (annuncioAttivo()) {
+            <div class="preview-annuncio-box">
+              <div class="preview-box-label">Contesto Annuncio</div>
+              <div class="preview-box-title">{{ annuncioAttivo()!.titolo }}</div>
+              <div class="u-text-xs-muted admin-preview-row">
+                <strong>Categoria:</strong> {{ annuncioAttivo()!.categoria }}
+              </div>
+              <div class="u-text-xs-muted admin-preview-row">
+                <strong>Condizioni:</strong> {{ annuncioAttivo()!.condizioni }}
+              </div>
+              <div class="u-text-xs-muted admin-preview-row-last">
+                <strong>Valore stimato:</strong> €{{ annuncioAttivo()!.prezzo_stimato }}
+              </div>
+              <div class="u-text-xs-muted admin-preview-desc">
+                <strong>Descrizione:</strong> "{{ annuncioAttivo()!.descrizione_annuncio }}"
+              </div>
+            </div>
+          }
+
+          <!-- AZIONI -->
+          @if (segnalazioneAttiva()!.stato_segnalazione !== 'chiusa') {
+            <div class="admin-actions-section">
+              <div class="admin-actions-label">Risoluzione del ticket:</div>
+              <div class="admin-actions-buttons">
+                <button class="btn-confirm btn-admin-danger" (click)="risolvi(true)">
+                  ❌ Chiudi e Oscura Annuncio
+                </button>
+                <button class="btn-cancel2 btn-admin-flex" (click)="risolvi(false)">
+                  🟢 Lascia Annuncio Attivo
+                </button>
+              </div>
+            </div>
+          } @else {
+            <div class="admin-archived-notice">
+              ✓ Questa segnalazione è stata archiviata e chiusa correttamente.
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

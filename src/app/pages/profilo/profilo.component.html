@@ -1,0 +1,291 @@
+<div class="prof-layout">
+
+  <!-- SIDEBAR -->
+  <div class="prof-sidebar">
+
+    <!-- CARD PROFILO -->
+    <div class="prof-card u-text-center">
+      @if (loading()) {
+        <p class="u-text-muted-sm">Caricamento...</p>
+      } @else if (profilo()) {
+
+        <!-- AVATAR con foto profilo -->
+        <div class="prof-av">
+          @if (fotoProfilo()) {
+            <img [src]="fotoProfilo()!"
+                 style="width:100%;height:100%;object-fit:cover;border-radius:50%" />
+          } @else {
+            {{ iniziali }}
+          }
+        </div>
+
+        <div class="prof-name">{{ profilo().nome_completo }}</div>
+        <div class="prof-loc">
+          📍 {{ profilo().quartiere?.nome_quartiere }}, {{ profilo().quartiere?.citta }}
+        </div>
+
+        <div class="prof-score-box">
+          <div class="prof-score-n">{{ profilo().punteggio }}</div>
+          <div class="prof-score-l">punti eco-reputazione</div>
+        </div>
+
+        <div class="prof-stats">
+          <div class="pstat">
+            <div class="pstat-n">{{ annunciChiusi.length }}</div>
+            <div class="pstat-l">scambi</div>
+          </div>
+          <div class="pstat">
+            <div class="pstat-n">{{ badge().length }}</div>
+            <div class="pstat-l">badge</div>
+          </div>
+          <div class="pstat">
+            <div class="pstat-n">{{ profilo().co2_totale }} kg</div>
+            <div class="pstat-l">CO₂ totale</div>
+          </div>
+          <div class="pstat">
+            <div class="pstat-n">{{ posizione(profilo()) }}°</div>
+            <div class="pstat-l">classifica</div>
+          </div>
+        </div>
+
+        <!-- PULSANTE MODIFICA PROFILO -->
+        <button class="btn-outline"
+                style="width:100%;margin-top:14px;font-size:.82rem"
+                (click)="apriModificaProfilo()">
+          ✏️ Modifica profilo
+        </button>
+
+      }
+    </div>
+
+    <!-- I TUOI ANNUNCI -->
+    <div class="prof-ann-card">
+      <div class="prof-ann-t">I tuoi annunci</div>
+
+      <!-- ATTIVI — cliccabili per gestirli -->
+      @if (annunciAttivi.length > 0) {
+        <div class="u-section-label">● Attivi</div>
+        @for (ann of annunciAttivi; track ann.id_annuncio) {
+          <div class="active-ann clickable" (click)="apriModalAnnuncio(ann)">
+            <div class="active-ann-ico">{{ ann.emoji || '📦' }}</div>
+            <div>
+              <div class="active-ann-name">{{ ann.titolo }}</div>
+              <div class="active-ann-s">● Attivo · clicca per gestirlo</div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- SOSPESI — in trattativa, rimandano alla chat -->
+      @if (annunciSospesi.length > 0) {
+        <div class="u-section-label-mt">⏳ In trattativa</div>
+        @for (ann of annunciSospesi; track ann.id_annuncio) {
+          <div class="active-ann clickable" (click)="vaiAllaChat()">
+            <div class="active-ann-ico">{{ ann.emoji || '📦' }}</div>
+            <div>
+              <div class="active-ann-name">{{ ann.titolo }}</div>
+              <div class="active-ann-s u-clr-amber">⏳ In trattativa → vai alla chat</div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- CHIUSI — scambio completato o chiuso manualmente dall'utente -->
+      @if (annunciChiusi.length > 0) {
+        <div class="u-section-label-mt">✓ Chiusi</div>
+        @for (ann of annunciChiusi; track ann.id_annuncio) {
+          <div class="active-ann u-opacity55">
+            <div class="active-ann-ico">{{ ann.emoji || '📦' }}</div>
+            <div>
+              <div class="active-ann-name">{{ ann.titolo }}</div>
+              <div class="active-ann-s u-clr-txt3">✓ Chiuso</div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- OSCURATI — rimossi dall'amministratore per violazione -->
+      @if (annunciOscurati.length > 0) {
+        <div class="u-section-label-mt">🚫 Rimossi</div>
+        @for (ann of annunciOscurati; track ann.id_annuncio) {
+          <div class="active-ann u-opacity55">
+            <div class="active-ann-ico">🚫</div>
+            <div>
+              <div class="active-ann-name">{{ ann.titolo }}</div>
+              <div class="active-ann-s" style="color:var(--terra)">
+                ⚠️ Rimosso dall'amministratore
+              </div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- NESSUN ANNUNCIO -->
+      @if (annunciAttivi.length === 0 &&
+           annunciSospesi.length === 0 &&
+           annunciChiusi.length === 0 &&
+           annunciOscurati.length === 0) {
+        <p class="u-text-muted-sm" style="margin-top:8px">
+          Nessun annuncio ancora.
+          <a routerLink="/pubblica" style="color:var(--lime)">Pubblica il tuo primo!</a>
+        </p>
+      }
+
+      <!-- SEGNALAZIONI -->
+      <div class="prof-ann-t" style="margin-top:18px">🚩 Monitoraggio Segnalazioni</div>
+      <p class="u-text-note2-mb14">
+        Traccia lo stato delle segnalazioni inviate ai moderatori.
+      </p>
+
+      @for (s of segnalazioni(); track s.id_segnalazione) {
+        <div class="active-ann segnala-item">
+          <div class="active-ann-ico">🚩</div>
+          <div class="u-flex1 segnala-body">
+            <div class="active-ann-name segnala-title">
+              {{ s.annuncio_segnalato?.titolo }} (#{{ s.id_segnalazione }})
+            </div>
+            <div class="u-text-xs-muted segnala-nota">"{{ s.motivazione }}"</div>
+            <div class="active-ann-s segnala-stato"
+                 [class]="classeStatoSegnalazione(s.stato_segnalazione)">
+              ● {{ s.stato_segnalazione }}
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <p class="u-text-xs-muted">Nessuna segnalazione inviata.</p>
+      }
+    </div>
+  </div>
+
+  <!-- CONTENUTO PRINCIPALE -->
+  <div>
+
+    <!-- BADGE -->
+    <div class="badge-sec">
+      <div class="badge-sec-hdr">
+        <div class="badge-sec-t">🏅 I tuoi Badge</div>
+        <div class="badge-cnt">
+          {{ badge().length }} sbloccati su {{ tuttiBadge().length }}
+        </div>
+      </div>
+      <div class="badges-grid">
+        @for (b of tuttiBadge(); track b.nome_badge) {
+          <div class="badge-card"
+               [ngClass]="[b.colore, isSbloccato(b.nome_badge) ? 'unlocked' : 'locked']">
+
+            @if (isSbloccato(b.nome_badge)) {
+              <div class="badge-stamp">✓ Sbloccato</div>
+            }
+
+            <div class="badge-top">
+              <div class="badge-emo">{{ b.emoji }}</div>
+              <div>
+                <div class="badge-name">{{ b.nome_badge }}</div>
+                <div class="badge-cat">{{ b.soglia_punti }} punti</div>
+              </div>
+            </div>
+
+            <div class="badge-desc">{{ b.descrizione_badge }}</div>
+
+            @if (!isSbloccato(b.nome_badge)) {
+              <div class="badge-bar-t">
+                <div class="badge-bar-f"
+                     [style.width]="percentualeBadge(b.soglia_punti) + '%'">
+                </div>
+              </div>
+              <div class="badge-pct">
+                <span>{{ profilo()?.punteggio || 0 }}/{{ b.soglia_punti }} pt</span>
+                <span class="u-clr-sage">{{ percentualeBadge(b.soglia_punti) }}%</span>
+              </div>
+            }
+
+          </div>
+        } @empty {
+          <p class="u-text-muted-sm" style="grid-column:1/-1">
+            Nessun badge disponibile.
+          </p>
+        }
+      </div>
+    </div>
+
+    <!-- CLASSIFICA -->
+    <div class="lb-sec">
+      <div class="lb-t">🏆 Classifica</div>
+      <div class="lb-sub">I migliori scambiatori</div>
+      @for (u of leaderboard(); track u.id_utente_reg; let i = $index) {
+        <div class="lb-row" [class.you]="u.id_utente_reg === profilo()?.id_utente_reg">
+          <div class="lb-med">
+            @if (i === 0) { 🥇 }
+            @else if (i === 1) { 🥈 }
+            @else if (i === 2) { 🥉 }
+            @else { <span class="lb-rank u-opacity40">{{ i + 1 }}</span> }
+          </div>
+          <div class="lb-av av-lime">
+            {{ u.nome_completo.substring(0,2).toUpperCase() }}
+          </div>
+          <div class="lb-user">
+            <div class="lb-uname">
+              {{ u.nome_completo }}
+              @if (u.id_utente_reg === profilo()?.id_utente_reg) {
+                <span class="lb-you-tag">TU</span>
+              }
+            </div>
+            <div class="lb-uinfo">{{ u.co2_totale }} kg CO₂</div>
+          </div>
+          <div class="lb-score">{{ u.punteggio }}</div>
+        </div>
+      } @empty {
+        <p class="u-text-muted-sm">Classifica non disponibile.</p>
+      }
+    </div>
+
+    <!-- RECENSIONI -->
+    <div class="reviews-sec">
+      <div class="reviews-t">⭐ Recensioni ricevute</div>
+      @for (r of recensioni(); track r.recensore.id_utente_reg) {
+        <div class="rev-item">
+          <div class="rev-hdr">
+            <div class="rev-av av-sage">
+              {{ r.recensore.nome_completo.substring(0,2).toUpperCase() }}
+            </div>
+            <div class="rev-name">{{ r.recensore.nome_completo }}</div>
+            <div class="rev-stars">
+              @for (s of [1,2,3,4,5]; track s) {
+                {{ s <= r.voto ? '★' : '☆' }}
+              }
+            </div>
+          </div>
+          <div class="rev-txt">{{ r.descrizione_recensione }}</div>
+        </div>
+      } @empty {
+        <p class="u-text-muted-sm">Nessuna recensione ancora.</p>
+      }
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL GESTIONE ANNUNCIO — solo per annunci attivi -->
+@if (modalAnnuncioAperto()) {
+  <div class="modal-bg open" (click)="chiudiModalAnnuncio()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-h">📦 Gestisci annuncio</div>
+      <p class="modal-p">
+        <strong>{{ annuncioSelezionato()?.titolo }}</strong><br/>
+        Categoria: {{ annuncioSelezionato()?.categoria }} ·
+        €{{ annuncioSelezionato()?.prezzo_stimato }} ·
+        Condizioni: {{ annuncioSelezionato()?.condizioni }}
+      </p>
+      <div class="modal-acts" style="flex-direction:column;gap:8px">
+        <button class="btn-confirm"
+                style="background:var(--terra);color:#fff"
+                (click)="chiudiAnnuncio()">
+          🔒 Chiudi annuncio
+        </button>
+        <button class="btn-cancel2" (click)="chiudiModalAnnuncio()">
+          Annulla
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,57 @@
+@if (aperto) {
+  <div class="modal-bg open" (click)="onBgClick($event)" style="z-index:900">
+    <div class="modal u-mw520">
+
+      <div class="modal-h">🤝 Proponi uno scambio</div>
+      <p class="u-text-muted-mb6">
+        Vuoi scambiare: <strong class="u-clr-txt">{{ annuncioTarget?.titolo }}</strong>
+      </p>
+      <p class="u-text-note-mb16">
+        Seleziona uno o più tuoi annunci da offrire in cambio.
+      </p>
+
+      @if (loadingAnnunci()) {
+        <p class="u-text-muted-sm">Caricamento annunci...</p>
+      } @else {
+        <div class="u-col-gap8-mb18">
+          @for (ann of mieiAnnunci(); track ann.id_annuncio) {
+            <div class="ricevi-item-base"
+                 [style.borderColor]="isSelezionato(ann.id_annuncio) ? 'var(--lime)' : 'rgba(255,255,255,.07)'"
+                 (click)="toggleAnnuncio(ann.id_annuncio)">
+              <div class="u-text-lg">📦</div>
+              <div class="u-flex1">
+                <div class="u-text-sm-bold">{{ ann.titolo }}</div>
+                <div class="u-text-xs-muted">
+                  Condizioni: {{ ann.condizioni }} · valore stimato €{{ ann.prezzo_stimato }}
+                </div>
+              </div>
+              <div class="ricevi-check-base ricevi-check-flex"
+                   [style.background]="isSelezionato(ann.id_annuncio) ? 'var(--lime)' : ''"
+                   [style.color]="isSelezionato(ann.id_annuncio) ? '#07090f' : ''">
+                @if (isSelezionato(ann.id_annuncio)) { ✓ }
+              </div>
+            </div>
+          } @empty {
+            <p class="u-text-muted-sm">Nessun annuncio attivo da offrire.</p>
+          }
+        </div>
+      }
+
+      @if (nSelezionati > 0) {
+        <div class="proponi-note-box" style="display:block">
+          ✓ {{ nSelezionati }} {{ nSelezionati === 1 ? 'annuncio selezionato' : 'annunci selezionati' }}
+        </div>
+      }
+
+      <div class="modal-acts">
+        <button class="btn-confirm"
+                [disabled]="nSelezionati === 0 || loading()"
+                (click)="inviaProposta()">
+          {{ loading() ? 'Invio in corso...' : 'Invia proposta' }}
+        </button>
+        <button class="btn-cancel2" (click)="chiudi()">Annulla</button>
+      </div>
+
+    </div>
+  </div>
+}
