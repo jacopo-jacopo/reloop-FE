@@ -15,21 +15,65 @@
         <p class="admin-login-note">Caricamento...</p>
       }
 
-      @for (s of segnalazioni(); track s.id_segnalazione) {
-        <div class="admin-item-card"
-             [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
-             (click)="ispeziona(s)">
-          <div class="admin-card-header">
-            <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
-            <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
-          </div>
-          <div class="admin-card-title">
-              Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
-          </div>
-        </div>
-      } @empty {
-        @if (!loading()) {
+      @if (!loading()) {
+        @if (segnalazioni().length === 0) {
           <p class="admin-login-note">Nessuna segnalazione presente.</p>
+        } @else {
+
+          <div class="admin-section-title">In attesa</div>
+          @for (s of segnalazioniInAttesa(); track s.id_segnalazione) {
+            <div class="admin-item-card"
+                 [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
+                 (click)="ispeziona(s)">
+              <div class="admin-card-header">
+                <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
+                <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
+              </div>
+              <div class="admin-card-title">
+                  Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
+              </div>
+            </div>
+          } @empty {
+            <p class="admin-login-note">Nessuna segnalazione in attesa.</p>
+          }
+
+          <div class="admin-section-title">Gestite da me</div>
+          @for (s of segnalazioniMie(); track s.id_segnalazione) {
+            <div class="admin-item-card"
+                 [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
+                 (click)="ispeziona(s)">
+              <div class="admin-card-header">
+                <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
+                <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
+              </div>
+              <div class="admin-card-title">
+                  Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
+              </div>
+            </div>
+          } @empty {
+            <p class="admin-login-note">Nessuna segnalazione gestita da te.</p>
+          }
+
+          <div class="admin-section-title">Gestite da altri admin</div>
+          @for (s of segnalazioniAltri(); track s.id_segnalazione) {
+            <div class="admin-item-card"
+                 [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
+                 (click)="ispeziona(s)">
+              <div class="admin-card-header">
+                <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
+                <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
+              </div>
+              <div class="admin-card-title">
+                  Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
+              </div>
+              <div class="admin-card-admin">
+                Gestita da: {{ s.amministratore?.nome_completo }} (ID #{{ s.amministratore?.id_utente_adm }})
+              </div>
+            </div>
+          } @empty {
+            <p class="admin-login-note">Nessuna segnalazione gestita da altri admin.</p>
+          }
+
         }
       }
     </div>
@@ -97,7 +141,11 @@
           }
 
           <!-- AZIONI -->
-          @if (segnalazioneAttiva()!.stato_segnalazione !== 'chiusa') {
+          @if (segnalazioneAttiva()!.stato_segnalazione === 'chiusa') {
+            <div class="admin-archived-notice">
+              ✓ Questa segnalazione è stata archiviata e chiusa correttamente.
+            </div>
+          } @else if (puoAgire(segnalazioneAttiva())) {
             <div class="admin-actions-section">
               <div class="admin-actions-label">Risoluzione del ticket:</div>
               <div class="admin-actions-buttons">
@@ -111,7 +159,8 @@
             </div>
           } @else {
             <div class="admin-archived-notice">
-              ✓ Questa segnalazione è stata archiviata e chiusa correttamente.
+              📂 Presa in carico da {{ segnalazioneAttiva()!.amministratore?.nome_completo }}
+              (ID #{{ segnalazioneAttiva()!.amministratore?.id_utente_adm }}).
             </div>
           }
 

@@ -97,4 +97,40 @@ export class AdminComponent implements OnInit {
   testoStato(stato: string): string {
     return (stato || '').replace(/_/g, ' ');
   }
+
+  /** ID dell'admin attualmente loggato. */
+  idAdminCorrente(): number | null {
+    return this.auth.utenteCorrente()?.id_utente_adm ?? null;
+  }
+
+  /** Segnalazioni ancora da prendere in carico. */
+  segnalazioniInAttesa() {
+    return this.segnalazioni().filter(s => s.stato_segnalazione === 'in_attesa');
+  }
+
+  /** Segnalazioni prese in carico o chiuse dall'admin attualmente loggato. */
+  segnalazioniMie() {
+    const id = this.idAdminCorrente();
+    return this.segnalazioni().filter(s =>
+      s.stato_segnalazione !== 'in_attesa' && s.amministratore?.id_utente_adm === id
+    );
+  }
+
+  /** Segnalazioni prese in carico o chiuse da altri amministratori. */
+  segnalazioniAltri() {
+    const id = this.idAdminCorrente();
+    return this.segnalazioni().filter(s =>
+      s.stato_segnalazione !== 'in_attesa' && s.amministratore?.id_utente_adm !== id
+    );
+  }
+
+  /** Indica se l'admin loggato può agire su questa segnalazione (è sua o non ancora presa in carico). */
+  puoAgire(s: any): boolean {
+    if (!s) return false;
+    if (s.stato_segnalazione === 'chiusa') return false;
+    if (s.stato_segnalazione === 'presa_in_carico') {
+      return s.amministratore?.id_utente_adm === this.idAdminCorrente();
+    }
+    return true;
+  }
 }

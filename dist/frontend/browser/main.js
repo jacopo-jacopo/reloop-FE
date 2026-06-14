@@ -153,7 +153,7 @@ var routes = [
   },
   {
     path: "admin",
-    loadComponent: () => import("./chunk-IPDVCDLQ.js").then((m) => m.AdminComponent),
+    loadComponent: () => import("./chunk-B2MSPCFD.js").then((m) => m.AdminComponent),
     canActivate: [adminGuard]
   },
   {
