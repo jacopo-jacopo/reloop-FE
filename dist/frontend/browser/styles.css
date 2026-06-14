@@ -346,9 +346,11 @@ router-outlet + * {
   color: #334155;
   transition: color 0.15s ease;
 }
-.star-btn.active,
-.star-btn:hover {
+.star-btn.active {
   color: var(--amber);
+}
+app-login {
+  padding-top: 0 !important;
 }
 .login-pg {
   display: flex;
@@ -1442,6 +1444,11 @@ select.fi {
   flex: 1;
   cursor: pointer;
 }
+.btn-acc:disabled {
+  background: rgba(255, 255, 255, .08);
+  color: var(--txt2);
+  cursor: not-allowed;
+}
 .btn-ref {
   background: rgba(196, 98, 45, .12);
   color: var(--terra);
@@ -1499,6 +1506,24 @@ select.fi {
 }
 .conv.act {
   border-left: 2px solid var(--lime);
+}
+.conv.annullata {
+  opacity: .55;
+}
+.conv.annullata .conv-name {
+  color: #ef5350;
+}
+.conv.annullata .conv-prev {
+  text-decoration: line-through;
+}
+.conv.completata {
+  opacity: .65;
+}
+.conv.completata .conv-name {
+  color: var(--lime);
+}
+.conv.completata .conv-prev {
+  text-decoration: line-through;
 }
 .conv-av {
   width: 36px;
@@ -1646,6 +1671,11 @@ select.fi {
   transition: .12s;
   cursor: pointer;
 }
+.btn-complete:disabled {
+  background: rgba(255, 255, 255, .08);
+  color: var(--txt2);
+  cursor: wait;
+}
 .msgs-area {
   flex: 1;
   overflow-y: auto;
@@ -1691,6 +1721,47 @@ select.fi {
   border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 8px;
   padding: 6px 13px;
+}
+.sys-msg-annulla {
+  color: #ef5350;
+  background: rgba(211, 47, 47, .08);
+  border-color: rgba(211, 47, 47, .2);
+}
+.sys-msg-conferma {
+  color: var(--lime);
+  background: rgba(184, 224, 0, .08);
+  border-color: rgba(184, 224, 0, .2);
+}
+.sys-msg-recensione {
+  color: var(--amber);
+  background: rgba(255, 193, 7, .08);
+  border-color: rgba(255, 193, 7, .2);
+}
+.sys-msg-recensione-fatta {
+  align-self: center;
+  margin: 6px 0;
+}
+.btn-recensione-msg {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Instrument Sans", sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  color: #07090f;
+  background: var(--lime);
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  margin: 6px 0;
+  cursor: pointer;
+  transition: .15s;
+  box-shadow: 0 4px 16px rgba(184, 224, 0, .2);
+}
+.btn-recensione-msg:hover {
+  background: var(--lime2);
+  box-shadow: 0 6px 20px rgba(184, 224, 0, .35);
 }
 .msg-t {
   font-size: .66rem;
@@ -2198,16 +2269,27 @@ select.fi {
 }
 .badge-top {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 9px;
+  text-align: center;
+  gap: 6px;
   margin-bottom: 8px;
 }
 .badge-emo {
-  font-size: 1.8rem;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+.badge-emo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 .badge-name {
   font-weight: 700;
-  font-size: .87rem;
+  font-size: 1rem;
 }
 .badge-cat {
   font-size: .66rem;
@@ -2218,11 +2300,12 @@ select.fi {
 }
 .badge-desc {
   font-size: .74rem;
+  font-weight: 400;
   color: var(--txt2);
   line-height: 1.42;
-  margin-bottom: 9px;
 }
 .badge-bar-t {
+  margin-top: 9px;
   height: 3px;
   background: rgba(255, 255, 255, .06);
   border-radius: 2px;
@@ -2365,6 +2448,7 @@ select.fi {
   justify-content: center;
   font-size: .67rem;
   font-weight: 700;
+  flex-shrink: 0;
 }
 .rev-name {
   font-weight: 600;
@@ -2422,21 +2506,6 @@ select.fi {
   font-weight: 700;
   margin: 0;
   font-family: "Fraunces", serif;
-}
-.btn-admin-logout {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.btn-admin-logout:hover {
-  background: #dc2626;
-  border-color: #dc2626;
 }
 .admin-main-layout {
   display: grid;
@@ -2615,6 +2684,9 @@ select.fi {
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
 }
+.btn-confirm.btn-admin-danger:hover {
+  background: #b91c1c;
+}
 .btn-admin-flex {
   flex: 1;
   color: #ffffff;
@@ -2649,14 +2721,14 @@ select.fi {
   background: var(--ink2);
   border: 1px solid rgba(255, 255, 255, .1);
   border-radius: 20px;
-  max-width: 580px;
+  max-width: 720px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   animation: mIn .25s ease;
 }
 .ann-ov-img {
-  height: 200px;
+  height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2702,6 +2774,16 @@ select.fi {
   border-radius: 12px;
   margin-bottom: 20px;
 }
+.ann-ov-user-click {
+  cursor: pointer;
+  transition: background .15s;
+}
+.ann-ov-user-click:hover {
+  background: rgba(184, 224, 0, .08);
+}
+.ann-ov-user-click:hover .ann-ov-uname-btn {
+  color: var(--lime2);
+}
 .ann-ov-av {
   width: 40px;
   height: 40px;
@@ -2714,17 +2796,10 @@ select.fi {
   flex-shrink: 0;
 }
 .ann-ov-uname-btn {
-  background: none;
-  border: none;
   color: var(--lime);
   font-family: "Instrument Sans", sans-serif;
   font-size: .88rem;
   font-weight: 600;
-  padding: 0;
-  cursor: pointer;
-}
-.ann-ov-uname-btn:hover {
-  color: var(--lime2);
 }
 .ann-ov-uloc {
   font-size: .74rem;
@@ -2801,9 +2876,9 @@ select.fi {
   position: fixed;
   inset: 0;
   z-index: 900;
-  background: rgba(0, 0, 0, .82);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
+  background: rgba(7, 9, 15, .35);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   display: none;
   align-items: center;
   justify-content: center;
@@ -2855,7 +2930,7 @@ select.fi {
 }
 .uov-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-bottom: 22px;
 }
@@ -2870,11 +2945,21 @@ select.fi {
   font-weight: 700;
   font-size: 1.15rem;
   color: var(--lime);
+  white-space: nowrap;
 }
 .uov-stat-l {
   font-size: .68rem;
   color: var(--txt2);
   margin-top: 2px;
+}
+.uov-stat-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.uov-star {
+  font-size: .85rem;
 }
 .uov-reviews-t {
   font-family: "Fraunces", serif;

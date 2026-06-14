@@ -138,6 +138,8 @@ export class ProfiloComponent implements OnInit {
 
   apriModificaProfilo() { this.overlayService.apriModificaProfilo(); }
 
+  apriProfiloUtente(idUtente: number) { this.overlayService.apriUtente(idUtente); }
+
   apriModalAnnuncio(ann: any) {
     this.annuncioSelezionato.set(ann);
     this.modalAnnuncioAperto.set(true);
@@ -180,5 +182,5 @@ export class ProfiloComponent implements OnInit {
     return 'u-clr-attesa';
   }
 
-  vaiAllaChat() { this.router.navigate(['/chat']); }
+  vaiAllaChat(ann: any) { this.router.navigate(['/chat'], { queryParams: { idAnnuncio: ann.id_annuncio } }); }
 }

@@ -23,14 +23,13 @@ export class AnnunciComponent implements OnInit {
   searchQuery     = signal('');
 
   readonly categorie = [
-    { label: 'Tutti',              value: 'tutti'       },
-    { label: '🚲 Trasporti',       value: 'trasporti'   },
-    { label: '🏠 Arredamento',     value: 'arredamento' },
-    { label: '📚 Libri',           value: 'libri'       },
-    { label: '⚽ Sport',           value: 'sport'       },
-    { label: '💻 Elettronica',     value: 'elettronica' },
-    { label: '🍳 Casa & Cucina',   value: 'casa'        },
-    { label: '🎸 Musica',          value: 'musica'      },
+    { label: 'Tutti',          value: 'tutti'       },
+    { label: 'Arredamento',    value: 'arredamento' },
+    { label: 'Libri',          value: 'libri'       },
+    { label: 'Sport',          value: 'sport'       },
+    { label: 'Elettronica',    value: 'elettronica' },
+    { label: 'Casa & Cucina',  value: 'casa'        },
+    { label: 'Musica',         value: 'musica'      },
   ];
 
   ngOnInit() {

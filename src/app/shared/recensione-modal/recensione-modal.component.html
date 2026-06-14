@@ -8,10 +8,11 @@
 
       <!-- STELLE -->
       <div class="rating-stars-container">
-        <div class="rating-stars">
+        <div class="rating-stars" (mouseleave)="resetHoverStelle()">
           @for (s of stelle; track s) {
             <span class="star-btn"
-                  [class.active]="s <= voto()"
+                  [class.active]="s <= (hoverVoto() || voto())"
+                  (mouseenter)="hoverStella(s)"
                   (click)="impostaVoto(s)">★</span>
           }
         </div>
@@ -28,12 +29,12 @@
 
       <!-- AZIONI -->
       <div class="modal-acts">
+        <button class="btn-cancel2" (click)="chiudi()">Annulla</button>
         <button class="btn-confirm"
                 (click)="invia()"
                 [disabled]="loading()">
           {{ loading() ? 'Invio in corso...' : 'Invia recensione' }}
         </button>
-        <button class="btn-cancel2" (click)="chiudi()">Annulla</button>
       </div>
 
     </div>

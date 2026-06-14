@@ -317,12 +317,15 @@ router-outlet + * {
   transition: color 0.15s ease;
 }
 
-.star-btn.active,
-.star-btn:hover { color: var(--amber); }
+.star-btn.active { color: var(--amber); }
 
 /* ==========================================================================
    7. PAGINA: login (pages/login)
    ========================================================================== */
+app-login {
+  padding-top: 0 !important;
+}
+
 .login-pg {
   display: flex;
   min-height: 100vh;
@@ -1041,6 +1044,11 @@ select.fi {
   font-family: 'Instrument Sans', sans-serif; transition: .15s; flex: 1; cursor: pointer;
 }
 
+.btn-acc:disabled {
+  background: rgba(255, 255, 255, .08); color: var(--txt2);
+  cursor: not-allowed;
+}
+
 .btn-ref {
   background: rgba(196, 98, 45, .12); color: var(--terra);
   font-weight: 600; font-size: .82rem;
@@ -1080,6 +1088,14 @@ select.fi {
 .conv:hover,
 .conv.act   { background: rgba(184, 224, 0, .04); }
 .conv.act   { border-left: 2px solid var(--lime); }
+
+.conv.annullata        { opacity: .55; }
+.conv.annullata .conv-name { color: #ef5350; }
+.conv.annullata .conv-prev { text-decoration: line-through; }
+
+.conv.completata        { opacity: .65; }
+.conv.completata .conv-name { color: var(--lime); }
+.conv.completata .conv-prev { text-decoration: line-through; }
 
 .conv-av {
   width: 36px; height: 36px; border-radius: 50%;
@@ -1148,6 +1164,11 @@ select.fi {
   font-family: 'Instrument Sans', sans-serif; transition: .12s; cursor: pointer;
 }
 
+.btn-complete:disabled {
+  background: rgba(255, 255, 255, .08); color: var(--txt2);
+  cursor: wait;
+}
+
 /* Messaggi */
 .msgs-area {
   flex: 1; overflow-y: auto; min-height: 0;
@@ -1179,6 +1200,45 @@ select.fi {
   background: rgba(255, 255, 255, .03);
   border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 8px; padding: 6px 13px;
+}
+
+.sys-msg-annulla {
+  color: #ef5350;
+  background: rgba(211, 47, 47, .08);
+  border-color: rgba(211, 47, 47, .2);
+}
+
+.sys-msg-conferma {
+  color: var(--lime);
+  background: rgba(184, 224, 0, .08);
+  border-color: rgba(184, 224, 0, .2);
+}
+
+.sys-msg-recensione {
+  color: var(--amber);
+  background: rgba(255, 193, 7, .08);
+  border-color: rgba(255, 193, 7, .2);
+}
+
+.sys-msg-recensione-fatta {
+  align-self: center;
+  margin: 6px 0;
+}
+
+.btn-recensione-msg {
+  align-self: center;
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: .8rem; font-weight: 700;
+  color: #07090f; background: var(--lime);
+  border: none; border-radius: 999px;
+  padding: 10px 20px; margin: 6px 0;
+  cursor: pointer; transition: .15s;
+  box-shadow: 0 4px 16px rgba(184, 224, 0, .2);
+}
+.btn-recensione-msg:hover {
+  background: var(--lime2);
+  box-shadow: 0 6px 20px rgba(184, 224, 0, .35);
 }
 
 .msg-t { font-size: .66rem; color: var(--txt3); margin-bottom: 3px; }
@@ -1425,12 +1485,13 @@ select.fi {
 .bt-leg { background: linear-gradient(135deg, rgba(184,224,0,.2), rgba(184,224,0,.05)); --bc: var(--lime); }
 
 .badge-stamp  { position: absolute; top: 9px; right: 9px; background: var(--bc, var(--lime)); color: var(--ink); font-size: .56rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
-.badge-top    { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
-.badge-emo    { font-size: 1.8rem; }
-.badge-name   { font-weight: 700; font-size: .87rem; }
+.badge-top    { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; margin-bottom: 8px; }
+.badge-emo    { width: 56px; height: 56px; flex-shrink: 0; margin-bottom: 2px; }
+.badge-emo-img{ width: 100%; height: 100%; object-fit: contain; display: block; }
+.badge-name   { font-weight: 700; font-size: 1rem; }
 .badge-cat    { font-size: .66rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--bc, var(--lime)); }
-.badge-desc   { font-size: .74rem; color: var(--txt2); line-height: 1.42; margin-bottom: 9px; }
-.badge-bar-t  { height: 3px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
+.badge-desc   { font-size: .74rem; font-weight: 400; color: var(--txt2); line-height: 1.42; }
+.badge-bar-t  { margin-top: 9px; height: 3px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
 .badge-bar-f  { height: 100%; border-radius: 2px; background: var(--bc, var(--lime)); }
 .badge-pct    { font-size: .66rem; color: var(--txt2); display: flex; justify-content: space-between; margin-top: 4px; }
 
@@ -1467,7 +1528,7 @@ select.fi {
 .rev-item    { padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
 .rev-item:last-child { border-bottom: none; }
 .rev-hdr     { display: flex; align-items: center; gap: 9px; margin-bottom: 6px; }
-.rev-av      { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .67rem; font-weight: 700; }
+.rev-av      { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .67rem; font-weight: 700; flex-shrink: 0; }
 .rev-name    { font-weight: 600; font-size: .83rem; }
 .rev-stars   { color: var(--amber); font-size: .78rem; margin-left: auto; }
 .rev-txt     { font-size: .8rem; color: var(--txt2); line-height: 1.5; }
@@ -1497,16 +1558,6 @@ select.fi {
 
 .admin-title { font-size: 1.8rem; font-weight: 700; margin: 0; font-family: 'Fraunces', serif; }
 
-.btn-admin-logout {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #fff; padding: 6px 14px;
-  border-radius: 6px; font-size: 0.8rem;
-  font-weight: 500; cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-admin-logout:hover { background: #dc2626; border-color: #dc2626; }
 
 .admin-main-layout {
   display: grid; grid-template-columns: 1fr 1.2fr;
@@ -1587,6 +1638,8 @@ select.fi {
   box-shadow: 0 4px 12px rgba(220,38,38,0.2);
 }
 
+.btn-confirm.btn-admin-danger:hover { background: #b91c1c; }
+
 .btn-admin-flex {
   flex: 1; color: #ffffff; font-weight: 600;
   background: rgba(255,255,255,0.08);
@@ -1615,12 +1668,12 @@ select.fi {
   background: var(--ink2);
   border: 1px solid rgba(255,255,255,.1);
   border-radius: 20px;
-  max-width: 580px; width: 100%;
+  max-width: 720px; width: 100%;
   max-height: 90vh; overflow-y: auto;
   animation: mIn .25s ease;
 }
 
-.ann-ov-img   { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 5rem; border-radius: 20px 20px 0 0; position: relative; }
+.ann-ov-img   { height: 420px; display: flex; align-items: center; justify-content: center; font-size: 5rem; border-radius: 20px 20px 0 0; position: relative; }
 .ann-ov-body  { padding: 24px 28px 28px; }
 .ann-ov-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.4rem; margin-bottom: 10px; }
 .ann-ov-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
@@ -1633,9 +1686,12 @@ select.fi {
   border-radius: 12px; margin-bottom: 20px;
 }
 
+.ann-ov-user-click { cursor: pointer; transition: background .15s; }
+.ann-ov-user-click:hover { background: rgba(184,224,0,.08); }
+.ann-ov-user-click:hover .ann-ov-uname-btn { color: var(--lime2); }
+
 .ann-ov-av { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .82rem; flex-shrink: 0; }
-.ann-ov-uname-btn { background: none; border: none; color: var(--lime); font-family: 'Instrument Sans', sans-serif; font-size: .88rem; font-weight: 600; padding: 0; cursor: pointer; }
-.ann-ov-uname-btn:hover { color: var(--lime2); }
+.ann-ov-uname-btn { color: var(--lime); font-family: 'Instrument Sans', sans-serif; font-size: .88rem; font-weight: 600; }
 .ann-ov-uloc { font-size: .74rem; color: var(--txt2); }
 .ann-ov-acts { display: flex; gap: 10px; }
 
@@ -1672,8 +1728,8 @@ select.fi {
    ========================================================================== */
 .user-overlay-bg {
   position: fixed; inset: 0; z-index: 900;
-  background: rgba(0,0,0,.82);
-  backdrop-filter: blur(16px);
+  background: rgba(7,9,15,.35);
+  backdrop-filter: blur(10px);
   display: none; align-items: center; justify-content: center;
   padding: 24px;
 }
@@ -1691,10 +1747,12 @@ select.fi {
 .uov-name   { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 3px; }
 .uov-loc    { font-size: .78rem; color: var(--txt2); }
 .uov-body   { padding: 20px 28px 28px; }
-.uov-stats  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+.uov-stats  { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
 .uov-stat   { background: var(--ink3); border-radius: 10px; padding: 11px; text-align: center; }
-.uov-stat-n { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.15rem; color: var(--lime); }
+.uov-stat-n { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.15rem; color: var(--lime); white-space: nowrap; }
 .uov-stat-l { font-size: .68rem; color: var(--txt2); margin-top: 2px; }
+.uov-stat-rating { display: flex; align-items: center; justify-content: center; gap: 3px; }
+.uov-star { font-size: .85rem; }
 
 .uov-reviews-t { font-family: 'Fraunces', serif; font-weight: 700; font-size: .95rem; margin-bottom: 12px; }
 .uov-rev-item  { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.05); }

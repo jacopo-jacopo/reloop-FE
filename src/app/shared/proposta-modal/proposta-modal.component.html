@@ -44,12 +44,12 @@
       }
 
       <div class="modal-acts">
+        <button class="btn-cancel2" (click)="chiudi()">Annulla</button>
         <button class="btn-confirm"
                 [disabled]="nSelezionati === 0 || loading()"
                 (click)="inviaProposta()">
           {{ loading() ? 'Invio in corso...' : 'Invia proposta' }}
         </button>
-        <button class="btn-cancel2" (click)="chiudi()">Annulla</button>
       </div>
 
     </div>

@@ -31,7 +31,7 @@
 <div class="sec">
   <div class="sec-hdr">
     <div class="sec-t">Annunci recenti vicino a te</div>
-    <button class="sec-link" (click)="vai('/annunci')">Vedi tutti →</button>
+    <button class="sec-link" (click)="vai('/annunci')">Vedi tutti</button>
   </div>
 
   @if (loading()) {
@@ -97,15 +97,15 @@
       <div class="co2-eq-item">
         <div class="co2-eq-icon">🌳</div>
         <div>
-          <div class="co2-eq-n">~{{ alberiEquivalenti }} alberi</div>
-          <div class="co2-eq-l">stima EPA: 21 kg CO₂/albero/anno</div>
+          <div class="co2-eq-n">Come piantare ~{{ alberiEquivalenti }} alberi</div>
+          <div class="co2-eq-l">stima EPA: 21 kg CO₂ assorbiti da un albero in un anno</div>
         </div>
       </div>
       <div class="co2-eq-item">
         <div class="co2-eq-icon">🚗</div>
         <div>
-          <div class="co2-eq-n">~{{ kmAuto | number }} km</div>
-          <div class="co2-eq-l">auto non percorsi (0.242 kg CO₂/km)</div>
+          <div class="co2-eq-n">Come non guidare per ~{{ kmAuto | number }} km</div>
+          <div class="co2-eq-l">stima: 0.242 kg CO₂ emessi da un'auto per km</div>
         </div>
       </div>
     </div>

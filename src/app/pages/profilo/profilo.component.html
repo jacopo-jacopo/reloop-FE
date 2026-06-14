@@ -52,7 +52,7 @@
         <button class="btn-outline"
                 style="width:100%;margin-top:14px;font-size:.82rem"
                 (click)="apriModificaProfilo()">
-          ✏️ Modifica profilo
+          Modifica profilo
         </button>
 
       }
@@ -80,7 +80,7 @@
       @if (annunciSospesi.length > 0) {
         <div class="u-section-label-mt">⏳ In trattativa</div>
         @for (ann of annunciSospesi; track ann.id_annuncio) {
-          <div class="active-ann clickable" (click)="vaiAllaChat()">
+          <div class="active-ann clickable" (click)="vaiAllaChat(ann)">
             <div class="active-ann-ico">{{ ann.emoji || '📦' }}</div>
             <div>
               <div class="active-ann-name">{{ ann.titolo }}</div>
@@ -178,16 +178,14 @@
             }
 
             <div class="badge-top">
-              <div class="badge-emo">{{ b.emoji }}</div>
-              <div>
-                <div class="badge-name">{{ b.nome_badge }}</div>
-                <div class="badge-cat">{{ b.soglia_punti }} punti</div>
+              <div class="badge-emo">
+                <img [src]="'badges/' + b.icona_badge" class="badge-emo-img" />
               </div>
+              <div class="badge-name">{{ b.nome_badge }}</div>
+              <div class="badge-desc">{{ b.descrizione_badge }}</div>
             </div>
 
-            <div class="badge-desc">{{ b.descrizione_badge }}</div>
-
-            @if (!isSbloccato(b.nome_badge)) {
+            @if (!isSbloccato(b.nome_badge) && b.soglia_punti !== null) {
               <div class="badge-bar-t">
                 <div class="badge-bar-f"
                      [style.width]="percentualeBadge(b.soglia_punti) + '%'">
@@ -213,7 +211,7 @@
       <div class="lb-t">🏆 Classifica</div>
       <div class="lb-sub">I migliori scambiatori</div>
       @for (u of leaderboard(); track u.id_utente_reg; let i = $index) {
-        <div class="lb-row" [class.you]="u.id_utente_reg === profilo()?.id_utente_reg">
+        <div class="lb-row lb-row-click" [class.you]="u.id_utente_reg === profilo()?.id_utente_reg" (click)="apriProfiloUtente(u.id_utente_reg)">
           <div class="lb-med">
             @if (i === 0) { 🥇 }
             @else if (i === 1) { 🥈 }
@@ -221,7 +219,11 @@
             @else { <span class="lb-rank u-opacity40">{{ i + 1 }}</span> }
           </div>
           <div class="lb-av av-lime">
-            {{ u.nome_completo.substring(0,2).toUpperCase() }}
+            @if (u.foto_profilo) {
+              <img [src]="u.foto_profilo" class="av-img" />
+            } @else {
+              {{ u.nome_completo.substring(0,2).toUpperCase() }}
+            }
           </div>
           <div class="lb-user">
             <div class="lb-uname">
@@ -246,7 +248,11 @@
         <div class="rev-item">
           <div class="rev-hdr">
             <div class="rev-av av-sage">
-              {{ r.recensore.nome_completo.substring(0,2).toUpperCase() }}
+              @if (r.recensore.foto_profilo) {
+                <img [src]="r.recensore.foto_profilo" class="av-img" />
+              } @else {
+                {{ r.recensore.nome_completo.substring(0,2).toUpperCase() }}
+              }
             </div>
             <div class="rev-name">{{ r.recensore.nome_completo }}</div>
             <div class="rev-stars">
@@ -277,13 +283,13 @@
         Condizioni: {{ annuncioSelezionato()?.condizioni }}
       </p>
       <div class="modal-acts" style="flex-direction:column;gap:8px">
+        <button class="btn-cancel2" (click)="chiudiModalAnnuncio()">
+          Annulla
+        </button>
         <button class="btn-confirm"
                 style="background:var(--terra);color:#fff"
                 (click)="chiudiAnnuncio()">
-          🔒 Chiudi annuncio
-        </button>
-        <button class="btn-cancel2" (click)="chiudiModalAnnuncio()">
-          Annulla
+          Chiudi annuncio
         </button>
       </div>
     </div>

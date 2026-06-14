@@ -22,6 +22,19 @@ export class AnnOverlayComponent {
 
   private readonly SEGNALATI_KEY = 'reloop_segnalati';
 
+  // Etichette leggibili per i valori dell'enum condizioni del DB
+  private readonly LABEL_CONDIZIONI: Record<string, string> = {
+    scarso:     'Scarso',
+    discreto:   'Discreto',
+    buono:      'Buono',
+    ottimo:     'Ottimo',
+    come_nuovo: 'Come nuovo'
+  };
+
+  labelCondizione(value: string): string {
+    return this.LABEL_CONDIZIONI[value] ?? value;
+  }
+
   giaSegnalato      = signal(false);
   motivazione       = signal('');
   mostraSegnalaForm = signal(false);

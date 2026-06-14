@@ -1,8 +1,8 @@
 export interface Badge {
   nome_badge: string;
-  soglia_punti: number;
+  soglia_punti: number | null;
   descrizione_badge: string;
-  emoji: string;
+  icona_badge: string;
   colore: string;
 }
 

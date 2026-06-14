@@ -22,16 +22,19 @@ export class RecensioneModalComponent {
 
   private readonly API = 'http://localhost:8080/api';
 
-  voto    = signal(0);
-  testo   = signal('');
-  loading = signal(false);
+  voto      = signal(0);
+  hoverVoto = signal(0);
+  testo     = signal('');
+  loading   = signal(false);
 
   readonly stelle = [1, 2, 3, 4, 5];
 
   get aperto() { return this.overlayService.recensioneAperta(); }
 
   impostaVoto(v: number) { this.voto.set(v); }
-  chiudi() { this.overlayService.chiudiRecensione(); this.voto.set(0); this.testo.set(''); }
+  hoverStella(v: number) { this.hoverVoto.set(v); }
+  resetHoverStelle()     { this.hoverVoto.set(0); }
+  chiudi() { this.overlayService.chiudiRecensione(); this.voto.set(0); this.hoverVoto.set(0); this.testo.set(''); }
   onBgClick(e: MouseEvent) { if (e.target === e.currentTarget) this.chiudi(); }
 
   invia() {
@@ -39,11 +42,13 @@ export class RecensioneModalComponent {
     if (!this.testo().trim()) { this.toast.warn('Testo mancante', 'Inserisci un breve commento.', '⚠️'); return; }
     const idRecensito = this.overlayService.idUtenteRecensito();
     if (!idRecensito) return;
+    const idChat = this.overlayService.idChatCompletata();
     this.loading.set(true);
     this.http.post(`${this.API}/recensioni`, {
       id_utente_reg_recensito: idRecensito,
       voto:                    this.voto(),
-      descrizione_recensione:  this.testo().trim()
+      descrizione_recensione:  this.testo().trim(),
+      id_chat:                 idChat
     }).subscribe({
       next: () => {
         this.loading.set(false);

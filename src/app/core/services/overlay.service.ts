@@ -1,8 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Annuncio } from '../../models/annuncio.model';
+import { UtenteService } from './utente.service';
 
 @Injectable({ providedIn: 'root' })
 export class OverlayService {
+  private utenteService = inject(UtenteService);
 
   // ── Ann Overlay ──
   annOverlayAperto = signal(false);
@@ -21,15 +23,30 @@ export class OverlayService {
   // ── User Overlay ──
   userOverlayAperto = signal(false);
   idUtenteSelezionato = signal<number | null>(null);
+  utenteSelezionato = signal<any>(null);
+  recensioniUtente = signal<any[]>([]);
 
   apriUtente(idUtente: number) {
     this.idUtenteSelezionato.set(idUtente);
+    this.utenteSelezionato.set(null);
+    this.recensioniUtente.set([]);
     this.userOverlayAperto.set(true);
+
+    this.utenteService.getById(idUtente).subscribe({
+      next: (u) => this.utenteSelezionato.set(u),
+      error: () => {}
+    });
+    this.utenteService.getRecensioni(idUtente).subscribe({
+      next: (r) => this.recensioniUtente.set(r),
+      error: () => {}
+    });
   }
 
   chiudiUtente() {
     this.userOverlayAperto.set(false);
     this.idUtenteSelezionato.set(null);
+    this.utenteSelezionato.set(null);
+    this.recensioniUtente.set([]);
   }
 
   // ── Recensione Modal ──

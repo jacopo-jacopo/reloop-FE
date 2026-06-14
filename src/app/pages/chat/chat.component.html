@@ -12,6 +12,8 @@
       @for (c of chat(); track c.id_chat) {
         <div class="conv"
              [class.act]="chatAttiva()?.id_chat === c.id_chat"
+             [class.annullata]="c.stato_chat === 'annullata'"
+             [class.completata]="c.stato_chat === 'completata'"
              (click)="selezionaChat(c)">
           <div class="conv-av av-sage">
             @if (altroUtente(c)?.foto_profilo) {
@@ -22,7 +24,7 @@
           </div>
           <div class="u-flex1-mw0">
             <div class="conv-name">{{ altroUtente(c)?.nome_completo ?? 'Chat #' + c.id_chat }}</div>
-            <div class="conv-prev">{{ c.proposta_generante?.annuncio_interesse?.titolo }}</div>
+            <div class="conv-prev">{{ annuncioAltro(c)?.titolo }}</div>
           </div>
           <div class="conv-time">{{ c.timestamp_chat | date:'dd/MM' }}</div>
           @if (notif.hasChatNonLetta(c.id_chat)) {
@@ -55,22 +57,26 @@
             {{ altroUtente(chatAttiva())?.nome_completo ?? 'Chat #' + chatAttiva()!.id_chat }}
           </div>
           <div class="chat-top-swap">
-            <span class="chat-top-swap-item">
-              📦 {{ chatAttiva()!.proposta_generante?.annuncio_interesse?.titolo }}
+            <span class="chat-top-swap-item" title="Quello che offri tu">
+              🎁 Tu offri: {{ annuncioMio(chatAttiva())?.titolo }}
             </span>
             <span class="chat-top-arrow">⇄</span>
-            <span class="chat-top-swap-item">
-              🎁 {{ annuncioScelto(chatAttiva())?.titolo }}
+            <span class="chat-top-swap-item" title="Quello che offre l'altro utente">
+              📦 Ricevi: {{ annuncioAltro(chatAttiva())?.titolo }}
             </span>
           </div>
         </div>
         @if (chatAttiva()!.stato_chat === 'aperta') {
           <div class="chat-top-acts">
-            <button class="btn-ghost" (click)="annullaScambio()">Annulla scambio</button>
-            <button class="btn-complete" (click)="completaScambio()">✓ Scambio completato</button>
+            <button class="btn-ghost" (click)="apriConfermaAnnulla()">Annulla scambio</button>
+            <button class="btn-complete" [disabled]="hoGiaConfermato()" (click)="apriConfermaCompleta()">
+              {{ hoGiaConfermato() ? 'In attesa dell\'altro utente...' : 'Scambio completato' }}
+            </button>
           </div>
+        } @else if (chatAttiva()!.stato_chat === 'completata') {
+          <span class="chat-conclusa-badge">✓ Scambio completato</span>
         } @else {
-          <span class="chat-conclusa-badge">✓ Scambio {{ chatAttiva()!.stato_chat }}</span>
+          <span class="chat-conclusa-badge">✗ Scambio annullato</span>
         }
       </div>
 
@@ -83,6 +89,13 @@
           @if (dataLabel(i)) {
             <div class="sys-msg">{{ dataLabel(i) }}</div>
           }
+          @if (isMsgAnnulla(msg)) {
+            <div class="sys-msg sys-msg-annulla">✗ {{ msg.contenuto }}</div>
+          } @else if (isMsgConferma(msg)) {
+            <div class="sys-msg sys-msg-conferma">✓ {{ msg.contenuto }}</div>
+          } @else if (isMsgRecensione(msg)) {
+            <div class="sys-msg sys-msg-recensione">⭐ {{ msg.contenuto }}</div>
+          } @else {
           <div class="msg" [class.me]="isMio(msg)">
             @if (!isMio(msg)) {
               <div class="conv-av conv-av-sm av-sage">
@@ -105,8 +118,18 @@
               }
             </div>
           </div>
+          }
         } @empty {
           <div class="sys-msg">Nessun messaggio ancora. Inizia la conversazione!</div>
+        }
+        @if (chatAttiva()!.stato_chat === 'completata') {
+          @if (hoGiaRecensito()) {
+            <div class="sys-msg sys-msg-recensione-fatta">✓ Hai lasciato una recensione per questo scambio</div>
+          } @else {
+            <button class="btn-recensione-msg" (click)="apriRecensione()">
+              Lascia una recensione a {{ altroUtente(chatAttiva())?.nome_completo }}
+            </button>
+          }
         }
       </div>
 
@@ -130,3 +153,33 @@
   </div>
 
 </div>
+
+@if (confermaAnnullaAperta()) {
+  <div class="modal-bg open" (click)="$event.target === $event.currentTarget && chiudiConfermaAnnulla()" style="z-index:900">
+    <div class="modal u-mw520">
+      <div class="modal-h">✗ Annulla scambio</div>
+      <p class="modal-p">
+        Sei sicuro di voler annullare questo scambio? Gli annunci coinvolti torneranno attivi e la chat verrà contrassegnata come chiusa.
+      </p>
+      <div class="modal-acts">
+        <button class="btn-cancel2" (click)="chiudiConfermaAnnulla()">No, torna indietro</button>
+        <button class="btn-confirm" (click)="confermaAnnullaScambio()">Sì, annulla scambio</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (confermaCompletaAperta()) {
+  <div class="modal-bg open" (click)="$event.target === $event.currentTarget && chiudiConfermaCompleta()" style="z-index:900">
+    <div class="modal u-mw520">
+      <div class="modal-h">✓ Completa scambio</div>
+      <p class="modal-p">
+        Confermi che lo scambio è andato a buon fine? Lo scambio si concluderà solo quando anche l'altro utente avrà confermato.
+      </p>
+      <div class="modal-acts">
+        <button class="btn-cancel2" (click)="chiudiConfermaCompleta()">No, torna indietro</button>
+        <button class="btn-confirm" (click)="confermaCompletaScambio()">Sì, confermo</button>
+      </div>
+    </div>
+  </div>
+}

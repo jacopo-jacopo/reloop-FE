@@ -1,11 +1,11 @@
 import { Component, inject, signal, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { ChatService } from '../../core/services/chat.service';
 import { ToastService } from '../../shared/toast/toast.service';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { OverlayService } from '../../core/services/overlay.service';
-import { Router } from '@angular/router';
 import { interval, Subscription, switchMap } from 'rxjs';
 
 @Component({
@@ -22,7 +22,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   private toast          = inject(ToastService);
   private auth           = inject(AuthService);
   private overlayService = inject(OverlayService);
-  private router         = inject(Router);
+  private route          = inject(ActivatedRoute);
   notif                  = inject(NotificationService);
 
   chat       = signal<any[]>([]);
@@ -30,6 +30,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   messaggi   = signal<any[]>([]);
   loading    = signal(true);
   testoMsg   = signal('');
+  confermaAnnullaAperta = signal(false);
+  confermaCompletaAperta = signal(false);
 
   private _pollSub?: Subscription;
 
@@ -41,9 +43,28 @@ export class ChatComponent implements OnInit, OnDestroy {
   caricaChat() {
     this.loading.set(true);
     this.chatService.getMie().subscribe({
-      next: (data) => { this.chat.set(data); this.loading.set(false); },
+      next: (data) => {
+        this.chat.set(data);
+        this.loading.set(false);
+        this._selezionaChatDaQueryParam(data);
+      },
       error: () => { this.toast.err('Errore', 'Impossibile caricare le chat.', '❌'); this.loading.set(false); }
     });
+  }
+
+  /** Se l'URL contiene ?idAnnuncio=..., apre automaticamente la chat relativa a quell'annuncio. */
+  private _selezionaChatDaQueryParam(chats: any[]) {
+    const idAnnuncio = Number(this.route.snapshot.queryParamMap.get('idAnnuncio'));
+    if (!idAnnuncio) return;
+
+    const trovata = chats.find(c => {
+      const interesse = c.proposta_generante?.annuncio_interesse;
+      const offerti: any[] = c.proposta_generante?.annunci_offerti ?? [];
+      return interesse?.id_annuncio === idAnnuncio
+        || offerti.some(ao => ao.annuncio_offerto?.id_annuncio === idAnnuncio);
+    });
+
+    if (trovata) this.selezionaChat(trovata);
   }
 
   selezionaChat(c: any) {
@@ -86,25 +107,44 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   onEnter(event: KeyboardEvent) { if (event.key === 'Enter') this.inviaMessaggio(); }
 
-  completaScambio() {
+  apriConfermaCompleta()  { this.confermaCompletaAperta.set(true); }
+  chiudiConfermaCompleta() { this.confermaCompletaAperta.set(false); }
+
+  confermaCompletaScambio() {
     const chat = this.chatAttiva();
+    this.confermaCompletaAperta.set(false);
     if (!chat) return;
     this.chatService.completa(chat.id_chat).subscribe({
       next: (res: any) => {
-        this.toast.ok('Scambio completato! 🎉', 'CO₂ calcolata!', '🌱');
+        if (res.completato) {
+          this.toast.ok('Scambio completato! 🎉', 'CO₂ calcolata!', '🌱');
+          this.chatAttiva.update(c => c ? { ...c, stato_chat: 'completata' } : c);
+          if (res.id_altro_utente != null)
+            setTimeout(() => this.overlayService.apriRecensione(res.id_altro_utente, chat.id_chat), 1500);
+        } else {
+          this.toast.info('Conferma registrata', "In attesa che l'altro utente confermi.", '🤝');
+        }
         this.caricaChat();
-        if (res.id_altro_utente != null)
-          setTimeout(() => this.overlayService.apriRecensione(res.id_altro_utente, chat.id_chat), 1500);
+        this.selezionaChat(this.chatAttiva());
       },
       error: () => this.toast.err('Errore', 'Impossibile completare lo scambio.', '❌')
     });
   }
 
-  annullaScambio() {
+  apriConfermaAnnulla()  { this.confermaAnnullaAperta.set(true); }
+  chiudiConfermaAnnulla() { this.confermaAnnullaAperta.set(false); }
+
+  confermaAnnullaScambio() {
     const chat = this.chatAttiva();
+    this.confermaAnnullaAperta.set(false);
     if (!chat) return;
     this.chatService.annulla(chat.id_chat).subscribe({
-      next: () => { this.toast.info('Scambio annullato', 'Gli annunci tornano attivi.', '✗'); this.router.navigate(['/proposte']); },
+      next: () => {
+        this.toast.info('Scambio annullato', 'Gli annunci tornano attivi.', '✗');
+        this.chatAttiva.update(c => c ? { ...c, stato_chat: 'annullata' } : c);
+        this.caricaChat();
+        this.selezionaChat(this.chatAttiva());
+      },
       error: () => this.toast.err('Errore', 'Impossibile annullare.', '❌')
     });
   }
@@ -145,6 +185,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
+  apriRecensione() {
+    const chat  = this.chatAttiva();
+    const altro = this.altroUtente(chat);
+    if (!chat || !altro) return;
+    this.overlayService.apriRecensione(altro.id_utente_reg, chat.id_chat);
+  }
+
   altroUtente(chat: any): any {
     if (!chat) return null;
     const id  = this.utenteCorrente?.id_utente_reg;
@@ -156,6 +203,53 @@ export class ChatComponent implements OnInit, OnDestroy {
   annuncioScelto(chat: any): any {
     const offerti: any[] = chat?.proposta_generante?.annunci_offerti ?? [];
     return (offerti.find(ao => ao.flag_selezionato) ?? offerti[0])?.annuncio_offerto ?? null;
+  }
+
+  /** Annuncio messo in gioco dall'utente corrente in questa chat. */
+  annuncioMio(chat: any): any {
+    if (!chat) return null;
+    const id  = this.utenteCorrente?.id_utente_reg;
+    const pub = chat.proposta_generante?.annuncio_interesse?.pubblicante;
+    return id === pub?.id_utente_reg
+      ? chat.proposta_generante?.annuncio_interesse
+      : this.annuncioScelto(chat);
+  }
+
+  /** Annuncio messo in gioco dall'altro utente in questa chat. */
+  annuncioAltro(chat: any): any {
+    if (!chat) return null;
+    const id  = this.utenteCorrente?.id_utente_reg;
+    const pub = chat.proposta_generante?.annuncio_interesse?.pubblicante;
+    return id === pub?.id_utente_reg
+      ? this.annuncioScelto(chat)
+      : chat.proposta_generante?.annuncio_interesse;
+  }
+
+  /** Riconosce il messaggio di sistema generato all'annullamento dello scambio. */
+  isMsgAnnulla(msg: any): boolean {
+    return typeof msg?.contenuto === 'string' && msg.contenuto.endsWith('ha annullato lo scambio');
+  }
+
+  /** Riconosce il messaggio di sistema generato dalla conferma di completamento. */
+  isMsgConferma(msg: any): boolean {
+    return typeof msg?.contenuto === 'string' && msg.contenuto.endsWith('ha confermato che lo scambio è stato completato');
+  }
+
+  /** True se l'utente corrente ha già confermato il completamento di questa chat. */
+  hoGiaConfermato(): boolean {
+    const id = this.utenteCorrente?.id_utente_reg;
+    return this.messaggi().some(m => this.isMsgConferma(m) && m.mittente?.id_utente_reg === id);
+  }
+
+  /** Riconosce il messaggio di sistema generato dall'invio di una recensione. */
+  isMsgRecensione(msg: any): boolean {
+    return typeof msg?.contenuto === 'string' && msg.contenuto.endsWith('ha lasciato una recensione');
+  }
+
+  /** True se l'utente corrente ha già lasciato una recensione in questa chat. */
+  hoGiaRecensito(): boolean {
+    const id = this.utenteCorrente?.id_utente_reg;
+    return this.messaggi().some(m => this.isMsgRecensione(m) && m.mittente?.id_utente_reg === id);
   }
 
   initials(name: string | undefined): string {

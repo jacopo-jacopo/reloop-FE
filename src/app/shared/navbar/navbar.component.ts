@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -42,7 +42,13 @@ export class NavbarComponent implements OnDestroy {
 
   vaiAlProfilo() { this.router.navigate(['/profilo']); }
 
+  confermaLogoutAperta = signal(false);
+
+  apriConfermaLogout()  { this.confermaLogoutAperta.set(true); }
+  chiudiConfermaLogout() { this.confermaLogoutAperta.set(false); }
+
   logout() {
+    this.confermaLogoutAperta.set(false);
     this.auth.logout();
     this.toast.info('Arrivederci!', 'Sessione terminata correttamente.', '👋');
   }

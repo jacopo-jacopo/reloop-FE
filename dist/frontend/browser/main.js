@@ -21,20 +21,19 @@ import {
   ɵNgSelectMultipleOption
 } from "./chunk-BBR5L3LN.js";
 import {
-  UtenteService
-} from "./chunk-MS2JQD6X.js";
-import {
   SegnalazioneService
 } from "./chunk-EOAE7ACB.js";
 import {
-  OverlayService
-} from "./chunk-LAONVNUN.js";
+  OverlayService,
+  UtenteService
+} from "./chunk-EEAG4X3M.js";
 import {
   AnnuncioService
 } from "./chunk-VUMWJ5MW.js";
 import {
   AuthService,
   CommonModule,
+  DecimalPipe,
   HttpClient,
   NavigationEnd,
   Router,
@@ -64,6 +63,8 @@ import {
   ɵɵgetCurrentView,
   ɵɵlistener,
   ɵɵnextContext,
+  ɵɵpipe,
+  ɵɵpipeBind2,
   ɵɵproperty,
   ɵɵrepeater,
   ɵɵrepeaterCreate,
@@ -116,42 +117,42 @@ var routes = [
   },
   {
     path: "login",
-    loadComponent: () => import("./chunk-JVU552LO.js").then((m) => m.LoginComponent),
+    loadComponent: () => import("./chunk-X2JNW63G.js").then((m) => m.LoginComponent),
     canActivate: [loginGuard]
   },
   {
     path: "home",
-    loadComponent: () => import("./chunk-RQFVZZFJ.js").then((m) => m.HomeComponent),
+    loadComponent: () => import("./chunk-SPZ5LARV.js").then((m) => m.HomeComponent),
     canActivate: [authGuard]
   },
   {
     path: "annunci",
-    loadComponent: () => import("./chunk-236WTU4P.js").then((m) => m.AnnunciComponent),
+    loadComponent: () => import("./chunk-HHJKPC7U.js").then((m) => m.AnnunciComponent),
     canActivate: [authGuard]
   },
   {
     path: "proposte",
-    loadComponent: () => import("./chunk-TRBVYRTF.js").then((m) => m.ProposteComponent),
+    loadComponent: () => import("./chunk-63ZPTG4M.js").then((m) => m.ProposteComponent),
     canActivate: [authGuard]
   },
   {
     path: "chat",
-    loadComponent: () => import("./chunk-CABQ5LZM.js").then((m) => m.ChatComponent),
+    loadComponent: () => import("./chunk-V42G4FCD.js").then((m) => m.ChatComponent),
     canActivate: [authGuard]
   },
   {
     path: "pubblica",
-    loadComponent: () => import("./chunk-DQN7VMXX.js").then((m) => m.PubblicaComponent),
+    loadComponent: () => import("./chunk-QISTXC2M.js").then((m) => m.PubblicaComponent),
     canActivate: [authGuard]
   },
   {
     path: "profilo",
-    loadComponent: () => import("./chunk-AOABKQGG.js").then((m) => m.ProfiloComponent),
+    loadComponent: () => import("./chunk-6QRIDX25.js").then((m) => m.ProfiloComponent),
     canActivate: [authGuard]
   },
   {
     path: "admin",
-    loadComponent: () => import("./chunk-LN7SPHIJ.js").then((m) => m.AdminComponent),
+    loadComponent: () => import("./chunk-2H4J3FXZ.js").then((m) => m.AdminComponent),
     canActivate: [adminGuard]
   },
   {
@@ -186,21 +187,21 @@ var appConfig = {
 // src/app/shared/navbar/navbar.component.ts
 function NavbarComponent_Conditional_0_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 7);
+    \u0275\u0275elementStart(0, "span", 8);
     \u0275\u0275text(1, "!");
     \u0275\u0275elementEnd();
   }
 }
 function NavbarComponent_Conditional_0_Conditional_13_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 7);
+    \u0275\u0275elementStart(0, "span", 8);
     \u0275\u0275text(1, "!");
     \u0275\u0275elementEnd();
   }
 }
 function NavbarComponent_Conditional_0_Conditional_19_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 16);
+    \u0275\u0275element(0, "img", 17);
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(3);
@@ -219,16 +220,16 @@ function NavbarComponent_Conditional_0_Conditional_19_Conditional_3_Template(rf,
 function NavbarComponent_Conditional_0_Conditional_19_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 14);
+    \u0275\u0275elementStart(0, "div", 15);
     \u0275\u0275listener("click", function NavbarComponent_Conditional_0_Conditional_19_Template_div_click_0_listener() {
       \u0275\u0275restoreView(_r2);
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.vaiAlProfilo());
     });
-    \u0275\u0275elementStart(1, "div", 15);
-    \u0275\u0275template(2, NavbarComponent_Conditional_0_Conditional_19_Conditional_2_Template, 1, 1, "img", 16)(3, NavbarComponent_Conditional_0_Conditional_19_Conditional_3_Template, 1, 1);
+    \u0275\u0275elementStart(1, "div", 16);
+    \u0275\u0275template(2, NavbarComponent_Conditional_0_Conditional_19_Conditional_2_Template, 1, 1, "img", 17)(3, NavbarComponent_Conditional_0_Conditional_19_Conditional_3_Template, 1, 1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "span", 17);
+    \u0275\u0275elementStart(4, "span", 18);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd()();
   }
@@ -244,36 +245,36 @@ function NavbarComponent_Conditional_0_Conditional_19_Template(rf, ctx) {
 function NavbarComponent_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "nav", 0)(1, "a", 1);
-    \u0275\u0275element(2, "img", 2);
+    \u0275\u0275elementStart(0, "nav", 0)(1, "a", 2);
+    \u0275\u0275element(2, "img", 3);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 3)(4, "a", 4);
+    \u0275\u0275elementStart(3, "div", 4)(4, "a", 5);
     \u0275\u0275text(5, "Home");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "a", 5);
+    \u0275\u0275elementStart(6, "a", 6);
     \u0275\u0275text(7, "Annunci");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(8, "a", 6);
+    \u0275\u0275elementStart(8, "a", 7);
     \u0275\u0275text(9, " Proposte ");
-    \u0275\u0275template(10, NavbarComponent_Conditional_0_Conditional_10_Template, 2, 0, "span", 7);
+    \u0275\u0275template(10, NavbarComponent_Conditional_0_Conditional_10_Template, 2, 0, "span", 8);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "a", 8);
+    \u0275\u0275elementStart(11, "a", 9);
     \u0275\u0275text(12, " Chat ");
-    \u0275\u0275template(13, NavbarComponent_Conditional_0_Conditional_13_Template, 2, 0, "span", 7);
+    \u0275\u0275template(13, NavbarComponent_Conditional_0_Conditional_13_Template, 2, 0, "span", 8);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(14, "a", 9);
+    \u0275\u0275elementStart(14, "a", 10);
     \u0275\u0275text(15, "Pubblica");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(16, "a", 10);
+    \u0275\u0275elementStart(16, "a", 11);
     \u0275\u0275text(17, "Profilo");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(18, "div", 11);
-    \u0275\u0275template(19, NavbarComponent_Conditional_0_Conditional_19_Template, 6, 2, "div", 12);
-    \u0275\u0275elementStart(20, "button", 13);
+    \u0275\u0275elementStart(18, "div", 12);
+    \u0275\u0275template(19, NavbarComponent_Conditional_0_Conditional_19_Template, 6, 2, "div", 13);
+    \u0275\u0275elementStart(20, "button", 14);
     \u0275\u0275listener("click", function NavbarComponent_Conditional_0_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.logout());
+      return \u0275\u0275resetView(ctx_r2.apriConfermaLogout());
     });
     \u0275\u0275text(21, "Esci");
     \u0275\u0275elementEnd()()();
@@ -286,6 +287,39 @@ function NavbarComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275conditional(ctx_r2.notif.chatBadge() ? 13 : -1);
     \u0275\u0275advance(6);
     \u0275\u0275conditional(ctx_r2.auth.utenteCorrente() ? 19 : -1);
+  }
+}
+function NavbarComponent_Conditional_1_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r4 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 19);
+    \u0275\u0275listener("click", function NavbarComponent_Conditional_1_Template_div_click_0_listener($event) {
+      \u0275\u0275restoreView(_r4);
+      const ctx_r2 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView($event.target === $event.currentTarget && ctx_r2.chiudiConfermaLogout());
+    });
+    \u0275\u0275elementStart(1, "div", 20)(2, "div", 21);
+    \u0275\u0275text(3, "Esci da reloop");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "p", 22);
+    \u0275\u0275text(5, "Sei sicuro di voler uscire dal tuo account?");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "div", 23)(7, "button", 24);
+    \u0275\u0275listener("click", function NavbarComponent_Conditional_1_Template_button_click_7_listener() {
+      \u0275\u0275restoreView(_r4);
+      const ctx_r2 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r2.chiudiConfermaLogout());
+    });
+    \u0275\u0275text(8, "No, torna indietro");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(9, "button", 25);
+    \u0275\u0275listener("click", function NavbarComponent_Conditional_1_Template_button_click_9_listener() {
+      \u0275\u0275restoreView(_r4);
+      const ctx_r2 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r2.logout());
+    });
+    \u0275\u0275text(10, "S\xEC, esci");
+    \u0275\u0275elementEnd()()()();
   }
 }
 var NavbarComponent = class _NavbarComponent {
@@ -310,19 +344,29 @@ var NavbarComponent = class _NavbarComponent {
   vaiAlProfilo() {
     this.router.navigate(["/profilo"]);
   }
+  confermaLogoutAperta = signal(false);
+  apriConfermaLogout() {
+    this.confermaLogoutAperta.set(true);
+  }
+  chiudiConfermaLogout() {
+    this.confermaLogoutAperta.set(false);
+  }
   logout() {
+    this.confermaLogoutAperta.set(false);
     this.auth.logout();
     this.toast.info("Arrivederci!", "Sessione terminata correttamente.", "\u{1F44B}");
   }
   static \u0275fac = function NavbarComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _NavbarComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NavbarComponent, selectors: [["app-navbar"]], decls: 1, vars: 1, consts: [["id", "mainNav"], ["routerLink", "/home", 1, "nav-logo"], ["src", "LOGO.png", "alt", "reloop", 1, "logo-nav"], [1, "nav-links"], ["routerLink", "/home", "routerLinkActive", "act", 1, "nav-link"], ["routerLink", "/annunci", "routerLinkActive", "act", 1, "nav-link"], ["routerLink", "/proposte", "routerLinkActive", "act", 1, "nav-link"], [1, "nav-badge"], ["routerLink", "/chat", "routerLinkActive", "act", 1, "nav-link"], ["routerLink", "/pubblica", "routerLinkActive", "act", 1, "nav-link"], ["routerLink", "/profilo", "routerLinkActive", "act", 1, "nav-link"], [1, "nav-right"], [1, "nav-pill", 2, "display", "flex", "align-items", "center", "gap", "8px", "padding", "3px 10px 3px 3px", "cursor", "pointer"], [1, "btn-nav", 3, "click"], [1, "nav-pill", 2, "display", "flex", "align-items", "center", "gap", "8px", "padding", "3px 10px 3px 3px", "cursor", "pointer", 3, "click"], [2, "width", "28px", "height", "28px", "border-radius", "50%", "overflow", "hidden", "background", "rgba(184,224,0,.15)", "display", "flex", "align-items", "center", "justify-content", "center", "font-size", ".65rem", "font-weight", "700", "color", "var(--lime)", "flex-shrink", "0"], [2, "width", "100%", "height", "100%", "object-fit", "cover", 3, "src"], [2, "font-size", ".72rem", "color", "var(--lime)", "font-weight", "600"]], template: function NavbarComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NavbarComponent, selectors: [["app-navbar"]], decls: 2, vars: 2, consts: [["id", "mainNav"], [1, "modal-bg", "open"], ["routerLink", "/home", 1, "nav-logo"], ["src", "LOGO.png", "alt", "reloop", 1, "logo-nav"], [1, "nav-links"], ["routerLink", "/home", "routerLinkActive", "act", 1, "nav-link"], ["routerLink", "/annunci", "routerLinkActive", "act", 1, "nav-link"], ["routerLink", "/proposte", "routerLinkActive", "act", 1, "nav-link"], [1, "nav-badge"], ["routerLink", "/chat", "routerLinkActive", "act", 1, "nav-link"], ["routerLink", "/pubblica", "routerLinkActive", "act", 1, "nav-link"], ["routerLink", "/profilo", "routerLinkActive", "act", 1, "nav-link"], [1, "nav-right"], [1, "nav-pill", 2, "display", "flex", "align-items", "center", "gap", "8px", "padding", "3px 10px 3px 3px", "cursor", "pointer"], [1, "btn-nav", 3, "click"], [1, "nav-pill", 2, "display", "flex", "align-items", "center", "gap", "8px", "padding", "3px 10px 3px 3px", "cursor", "pointer", 3, "click"], [2, "width", "28px", "height", "28px", "border-radius", "50%", "overflow", "hidden", "background", "rgba(184,224,0,.15)", "display", "flex", "align-items", "center", "justify-content", "center", "font-size", ".65rem", "font-weight", "700", "color", "var(--lime)", "flex-shrink", "0"], [2, "width", "100%", "height", "100%", "object-fit", "cover", 3, "src"], [2, "font-size", ".72rem", "color", "var(--lime)", "font-weight", "600"], [1, "modal-bg", "open", 3, "click"], [1, "modal", "u-mw520"], [1, "modal-h"], [1, "modal-p"], [1, "modal-acts"], [1, "btn-cancel2", 3, "click"], [1, "btn-confirm", "btn-admin-danger", 3, "click"]], template: function NavbarComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275template(0, NavbarComponent_Conditional_0_Template, 22, 3, "nav", 0);
+      \u0275\u0275template(0, NavbarComponent_Conditional_0_Template, 22, 3, "nav", 0)(1, NavbarComponent_Conditional_1_Template, 11, 0, "div", 1);
     }
     if (rf & 2) {
       \u0275\u0275conditional(ctx.auth.isLoggedIn() && !ctx.auth.isAdmin() ? 0 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.confermaLogoutAperta() ? 1 : -1);
     }
   }, dependencies: [CommonModule, RouterModule, RouterLink, RouterLinkActive], encapsulation: 2 });
 };
@@ -384,7 +428,7 @@ var ToastComponent = class _ToastComponent {
 // src/app/shared/ann-overlay/ann-overlay.component.ts
 function AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_For_6_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "span", 25);
+    \u0275\u0275element(0, "span", 26);
   }
   if (rf & 2) {
     const $index_r4 = ctx.$index;
@@ -395,7 +439,7 @@ function AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_For_6_Tem
 function AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r3 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 21);
+    \u0275\u0275elementStart(0, "button", 22);
     \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_Template_button_click_0_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(3);
@@ -403,7 +447,7 @@ function AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_Template(
     });
     \u0275\u0275text(1, "\u2039");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "button", 22);
+    \u0275\u0275elementStart(2, "button", 23);
     \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_Template_button_click_2_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(3);
@@ -411,8 +455,8 @@ function AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_Template(
     });
     \u0275\u0275text(3, "\u203A");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "div", 23);
-    \u0275\u0275repeaterCreate(5, AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_For_6_Template, 1, 2, "span", 24, \u0275\u0275repeaterTrackByIndex);
+    \u0275\u0275elementStart(4, "div", 24);
+    \u0275\u0275repeaterCreate(5, AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_For_6_Template, 1, 2, "span", 25, \u0275\u0275repeaterTrackByIndex);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -423,7 +467,7 @@ function AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_Template(
 }
 function AnnOverlayComponent_Conditional_0_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 20);
+    \u0275\u0275element(0, "img", 21);
     \u0275\u0275template(1, AnnOverlayComponent_Conditional_0_Conditional_3_Conditional_1_Template, 7, 0);
   }
   if (rf & 2) {
@@ -438,52 +482,71 @@ function AnnOverlayComponent_Conditional_0_Conditional_4_Template(rf, ctx) {
     \u0275\u0275text(0, " \u{1F4E6} ");
   }
 }
-function AnnOverlayComponent_Conditional_0_Conditional_30_Template(rf, ctx) {
+function AnnOverlayComponent_Conditional_0_Conditional_19_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "img", 11);
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275property("src", ctx_r1.annuncio.pubblicante == null ? null : ctx_r1.annuncio.pubblicante.foto_profilo, \u0275\u0275sanitizeUrl);
+  }
+}
+function AnnOverlayComponent_Conditional_0_Conditional_20_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275text(0);
+  }
+  if (rf & 2) {
+    let tmp_2_0;
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275textInterpolate1(" ", ctx_r1.annuncio.pubblicante == null ? null : ctx_r1.annuncio.pubblicante.nome_completo == null ? null : (tmp_2_0 = ctx_r1.annuncio.pubblicante.nome_completo.substring(0, 2)) == null ? null : tmp_2_0.toUpperCase(), " ");
+  }
+}
+function AnnOverlayComponent_Conditional_0_Conditional_29_Template(rf, ctx) {
   if (rf & 1) {
     const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 26);
-    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_30_Template_button_click_0_listener() {
+    \u0275\u0275elementStart(0, "button", 27);
+    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_29_Template_button_click_0_listener() {
       \u0275\u0275restoreView(_r5);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.apriModalProposta());
     });
-    \u0275\u0275text(1, " \u{1F91D} Proponi scambio ");
+    \u0275\u0275text(1, " Proponi scambio ");
+    \u0275\u0275elementEnd();
+  }
+}
+function AnnOverlayComponent_Conditional_0_Conditional_31_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "button", 18);
+    \u0275\u0275text(1, " Annuncio gi\xE0 segnalato ");
     \u0275\u0275elementEnd();
   }
 }
 function AnnOverlayComponent_Conditional_0_Conditional_32_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "button", 17);
-    \u0275\u0275text(1, " \u2713 Annuncio gi\xE0 segnalato ");
-    \u0275\u0275elementEnd();
-  }
-}
-function AnnOverlayComponent_Conditional_0_Conditional_33_Template(rf, ctx) {
-  if (rf & 1) {
     const _r6 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 18)(1, "textarea", 27);
-    \u0275\u0275listener("input", function AnnOverlayComponent_Conditional_0_Conditional_33_Template_textarea_input_1_listener($event) {
+    \u0275\u0275elementStart(0, "div", 19)(1, "textarea", 28);
+    \u0275\u0275listener("input", function AnnOverlayComponent_Conditional_0_Conditional_32_Template_textarea_input_1_listener($event) {
       \u0275\u0275restoreView(_r6);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.motivazione.set($event.target.value));
     });
     \u0275\u0275text(2, "              ");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 28)(4, "button", 29);
-    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_33_Template_button_click_4_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.inviaSegnalazione());
-    });
-    \u0275\u0275text(5, " \u{1F6A9} Invia segnalazione ");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "button", 30);
-    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_33_Template_button_click_6_listener() {
+    \u0275\u0275elementStart(3, "div", 29)(4, "button", 30);
+    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_32_Template_button_click_4_listener() {
       \u0275\u0275restoreView(_r6);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.mostraSegnalaForm.set(false));
     });
-    \u0275\u0275text(7, " Annulla ");
+    \u0275\u0275text(5, " Annulla ");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "button", 31);
+    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_32_Template_button_click_6_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.inviaSegnalazione());
+    });
+    \u0275\u0275text(7, " Invia segnalazione ");
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
@@ -492,16 +555,16 @@ function AnnOverlayComponent_Conditional_0_Conditional_33_Template(rf, ctx) {
     \u0275\u0275property("value", ctx_r1.motivazione());
   }
 }
-function AnnOverlayComponent_Conditional_0_Conditional_34_Template(rf, ctx) {
+function AnnOverlayComponent_Conditional_0_Conditional_33_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 31);
-    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_34_Template_button_click_0_listener() {
+    \u0275\u0275elementStart(0, "button", 32);
+    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Conditional_33_Template_button_click_0_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.apriSegnalaForm());
     });
-    \u0275\u0275text(1, " \u{1F6A9} Segnala annuncio ");
+    \u0275\u0275text(1, " Segnala annuncio ");
     \u0275\u0275elementEnd();
   }
 }
@@ -528,43 +591,40 @@ function AnnOverlayComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "span", 7);
     \u0275\u0275text(14);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(15, "span", 7);
-    \u0275\u0275text(16);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 8);
-    \u0275\u0275text(18);
+    \u0275\u0275elementStart(15, "div", 8);
+    \u0275\u0275text(16);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(19, "div", 9)(20, "div", 10);
-    \u0275\u0275text(21);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(22, "div")(23, "button", 11);
-    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Template_button_click_23_listener() {
+    \u0275\u0275elementStart(17, "div", 9);
+    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Template_div_click_17_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.apriProfiloUtente());
     });
-    \u0275\u0275text(24);
+    \u0275\u0275elementStart(18, "div", 10);
+    \u0275\u0275template(19, AnnOverlayComponent_Conditional_0_Conditional_19_Template, 1, 1, "img", 11)(20, AnnOverlayComponent_Conditional_0_Conditional_20_Template, 1, 1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(25, "div", 12);
-    \u0275\u0275text(26);
+    \u0275\u0275elementStart(21, "div")(22, "div", 12);
+    \u0275\u0275text(23);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(24, "div", 13);
+    \u0275\u0275text(25);
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(27, "div", 13)(28, "button", 14);
-    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Template_button_click_28_listener() {
+    \u0275\u0275elementStart(26, "div", 14)(27, "button", 15);
+    \u0275\u0275listener("click", function AnnOverlayComponent_Conditional_0_Template_button_click_27_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.chiudi());
     });
-    \u0275\u0275text(29, "\u2715 Chiudi");
+    \u0275\u0275text(28, "Chiudi");
     \u0275\u0275elementEnd();
-    \u0275\u0275template(30, AnnOverlayComponent_Conditional_0_Conditional_30_Template, 2, 0, "button", 15);
+    \u0275\u0275template(29, AnnOverlayComponent_Conditional_0_Conditional_29_Template, 2, 0, "button", 16);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(31, "div", 16);
-    \u0275\u0275template(32, AnnOverlayComponent_Conditional_0_Conditional_32_Template, 2, 0, "button", 17)(33, AnnOverlayComponent_Conditional_0_Conditional_33_Template, 8, 1, "div", 18)(34, AnnOverlayComponent_Conditional_0_Conditional_34_Template, 2, 0, "button", 19);
+    \u0275\u0275elementStart(30, "div", 17);
+    \u0275\u0275template(31, AnnOverlayComponent_Conditional_0_Conditional_31_Template, 2, 0, "button", 18)(32, AnnOverlayComponent_Conditional_0_Conditional_32_Template, 8, 1, "div", 19)(33, AnnOverlayComponent_Conditional_0_Conditional_33_Template, 2, 0, "button", 20);
     \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
-    let tmp_9_0;
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
     \u0275\u0275classProp("ann-bg-bici", !ctx_r1.fotoCorrente);
@@ -577,21 +637,19 @@ function AnnOverlayComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate1("\u{1F4B0} \u20AC", ctx_r1.annuncio.prezzo_stimato, "");
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1("\u2B50 ", ctx_r1.annuncio.condizioni, "");
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1("\u{1F7E2} ", ctx_r1.annuncio.stato_annuncio, "");
+    \u0275\u0275textInterpolate1("\u2B50 ", ctx_r1.labelCondizione(ctx_r1.annuncio.condizioni), "");
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(ctx_r1.annuncio.descrizione_annuncio);
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate1(" ", ctx_r1.annuncio.pubblicante == null ? null : ctx_r1.annuncio.pubblicante.nome_completo == null ? null : (tmp_9_0 = ctx_r1.annuncio.pubblicante.nome_completo.substring(0, 2)) == null ? null : tmp_9_0.toUpperCase(), " ");
-    \u0275\u0275advance(3);
+    \u0275\u0275conditional((ctx_r1.annuncio.pubblicante == null ? null : ctx_r1.annuncio.pubblicante.foto_profilo) ? 19 : 20);
+    \u0275\u0275advance(4);
     \u0275\u0275textInterpolate1(" ", ctx_r1.annuncio.pubblicante == null ? null : ctx_r1.annuncio.pubblicante.nome_completo, " ");
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate2(" \u{1F4CD} ", ctx_r1.annuncio.pubblicante == null ? null : ctx_r1.annuncio.pubblicante.quartiere == null ? null : ctx_r1.annuncio.pubblicante.quartiere.nome_quartiere, ", ", ctx_r1.annuncio.pubblicante == null ? null : ctx_r1.annuncio.pubblicante.quartiere == null ? null : ctx_r1.annuncio.pubblicante.quartiere.citta, " ");
     \u0275\u0275advance(4);
-    \u0275\u0275conditional(!ctx_r1.isMio() ? 30 : -1);
+    \u0275\u0275conditional(!ctx_r1.isMio() ? 29 : -1);
     \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.giaSegnalato() ? 32 : ctx_r1.mostraSegnalaForm() ? 33 : 34);
+    \u0275\u0275conditional(ctx_r1.giaSegnalato() ? 31 : ctx_r1.mostraSegnalaForm() ? 32 : 33);
   }
 }
 var AnnOverlayComponent = class _AnnOverlayComponent {
@@ -601,6 +659,17 @@ var AnnOverlayComponent = class _AnnOverlayComponent {
   auth = inject(AuthService);
   overlayService = inject(OverlayService);
   SEGNALATI_KEY = "reloop_segnalati";
+  // Etichette leggibili per i valori dell'enum condizioni del DB
+  LABEL_CONDIZIONI = {
+    scarso: "Scarso",
+    discreto: "Discreto",
+    buono: "Buono",
+    ottimo: "Ottimo",
+    come_nuovo: "Come nuovo"
+  };
+  labelCondizione(value) {
+    return this.LABEL_CONDIZIONI[value] ?? value;
+  }
   giaSegnalato = signal(false);
   motivazione = signal("");
   mostraSegnalaForm = signal(false);
@@ -701,9 +770,9 @@ var AnnOverlayComponent = class _AnnOverlayComponent {
   static \u0275fac = function AnnOverlayComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _AnnOverlayComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AnnOverlayComponent, selectors: [["app-ann-overlay"]], decls: 1, vars: 1, consts: [[1, "ann-overlay-bg", "open"], [1, "ann-overlay-bg", "open", 3, "click"], [1, "ann-overlay-box"], [1, "ann-ov-img"], [1, "ann-ov-body"], [1, "ann-ov-title"], [1, "ann-ov-chips"], [1, "ann-ov-chip"], [1, "ann-ov-desc"], [1, "ann-ov-user"], [1, "ann-ov-av", "av-lime"], [1, "ann-ov-uname-btn", 3, "click"], [1, "ann-ov-uloc"], [1, "ann-ov-acts"], [1, "btn-ov-close", 3, "click"], [1, "btn-ov-prop"], [1, "ann-ov-segnala-wrapper"], ["disabled", "", 1, "btn-ov-segnala-mini"], [2, "width", "100%", "margin-top", "10px"], [1, "btn-ov-segnala-mini"], [2, "width", "100%", "height", "100%", "object-fit", "cover", "border-radius", "12px 12px 0 0", 3, "src"], [1, "foto-nav", "foto-nav-prev", 3, "click"], [1, "foto-nav", "foto-nav-next", 3, "click"], [1, "foto-dots"], [1, "foto-dot", 3, "active"], [1, "foto-dot"], [1, "btn-ov-prop", 3, "click"], ["rows", "3", "placeholder", "Descrivi il motivo della segnalazione...", 1, "fi", 2, "width", "100%", "margin-bottom", "8px", 3, "input", "value"], [2, "display", "flex", "gap", "8px"], [1, "btn-segnala-invia", 3, "click"], [1, "btn-cancel2", 2, "flex", "1", 3, "click"], [1, "btn-ov-segnala-mini", 3, "click"]], template: function AnnOverlayComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AnnOverlayComponent, selectors: [["app-ann-overlay"]], decls: 1, vars: 1, consts: [[1, "ann-overlay-bg", "open"], [1, "ann-overlay-bg", "open", 3, "click"], [1, "ann-overlay-box"], [1, "ann-ov-img"], [1, "ann-ov-body"], [1, "ann-ov-title"], [1, "ann-ov-chips"], [1, "ann-ov-chip"], [1, "ann-ov-desc"], [1, "ann-ov-user", "ann-ov-user-click", 3, "click"], [1, "ann-ov-av", "av-lime"], [1, "av-img", 3, "src"], [1, "ann-ov-uname-btn"], [1, "ann-ov-uloc"], [1, "ann-ov-acts"], [1, "btn-ov-close", 3, "click"], [1, "btn-ov-prop"], [1, "ann-ov-segnala-wrapper"], ["disabled", "", 1, "btn-ov-segnala-mini"], [2, "width", "100%", "margin-top", "10px"], [1, "btn-ov-segnala-mini"], [2, "width", "100%", "height", "100%", "object-fit", "cover", "border-radius", "12px 12px 0 0", 3, "src"], [1, "foto-nav", "foto-nav-prev", 3, "click"], [1, "foto-nav", "foto-nav-next", 3, "click"], [1, "foto-dots"], [1, "foto-dot", 3, "active"], [1, "foto-dot"], [1, "btn-ov-prop", 3, "click"], ["rows", "3", "placeholder", "Descrivi il motivo della segnalazione...", 1, "fi", 2, "width", "100%", "margin-bottom", "8px", 3, "input", "value"], [2, "display", "flex", "gap", "8px"], [1, "btn-cancel2", 2, "flex", "1", 3, "click"], [1, "btn-segnala-invia", 3, "click"], [1, "btn-ov-segnala-mini", 3, "click"]], template: function AnnOverlayComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275template(0, AnnOverlayComponent_Conditional_0_Template, 35, 15, "div", 0);
+      \u0275\u0275template(0, AnnOverlayComponent_Conditional_0_Template, 34, 14, "div", 0);
     }
     if (rf & 2) {
       \u0275\u0275conditional(ctx.aperto ? 0 : -1);
@@ -722,57 +791,106 @@ function UserOverlayComponent_Conditional_0_Conditional_2_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
 }
+function UserOverlayComponent_Conditional_0_Conditional_3_Conditional_2_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "img", 7);
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275property("src", ctx_r1.overlayService.utenteSelezionato().foto_profilo, \u0275\u0275sanitizeUrl);
+  }
+}
+function UserOverlayComponent_Conditional_0_Conditional_3_Conditional_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275text(0);
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275textInterpolate1(" ", ctx_r1.iniziali, " ");
+  }
+}
+function UserOverlayComponent_Conditional_0_Conditional_3_Conditional_27_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 15);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "number");
+    \u0275\u0275elementStart(3, "span", 17);
+    \u0275\u0275text(4, "\u2B50");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind2(2, 1, ctx_r1.mediaVoto, "1.1-1"), " ");
+  }
+}
+function UserOverlayComponent_Conditional_0_Conditional_3_Conditional_28_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 13);
+    \u0275\u0275text(1, "\u2014");
+    \u0275\u0275elementEnd();
+  }
+}
 function UserOverlayComponent_Conditional_0_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     const _r3 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 5)(1, "div", 6);
-    \u0275\u0275text(2);
+    \u0275\u0275template(2, UserOverlayComponent_Conditional_0_Conditional_3_Conditional_2_Template, 1, 1, "img", 7)(3, UserOverlayComponent_Conditional_0_Conditional_3_Conditional_3_Template, 1, 1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div")(4, "div", 7);
-    \u0275\u0275text(5);
+    \u0275\u0275elementStart(4, "div")(5, "div", 8);
+    \u0275\u0275text(6);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "div", 8);
-    \u0275\u0275text(7);
+    \u0275\u0275elementStart(7, "div", 9);
+    \u0275\u0275text(8);
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(8, "div", 9)(9, "div", 10)(10, "div", 11)(11, "div", 12);
-    \u0275\u0275text(12);
+    \u0275\u0275elementStart(9, "div", 10)(10, "div", 11)(11, "div", 12)(12, "div", 13);
+    \u0275\u0275text(13);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(13, "div", 13);
-    \u0275\u0275text(14, "punti");
+    \u0275\u0275elementStart(14, "div", 14);
+    \u0275\u0275text(15, "punti");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(15, "div", 11)(16, "div", 12);
-    \u0275\u0275text(17);
+    \u0275\u0275elementStart(16, "div", 12)(17, "div", 13);
+    \u0275\u0275text(18);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(18, "div", 13);
-    \u0275\u0275text(19, "kg CO\u2082");
+    \u0275\u0275elementStart(19, "div", 14);
+    \u0275\u0275text(20, "kg CO\u2082");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(20, "div", 11)(21, "div", 12);
-    \u0275\u0275text(22, "\u2014");
+    \u0275\u0275elementStart(21, "div", 12)(22, "div", 13);
+    \u0275\u0275text(23);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(23, "div", 13);
-    \u0275\u0275text(24, "scambi");
+    \u0275\u0275elementStart(24, "div", 14);
+    \u0275\u0275text(25, "scambi");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(26, "div", 12);
+    \u0275\u0275template(27, UserOverlayComponent_Conditional_0_Conditional_3_Conditional_27_Template, 5, 4, "div", 15)(28, UserOverlayComponent_Conditional_0_Conditional_3_Conditional_28_Template, 2, 0, "div", 13);
+    \u0275\u0275elementStart(29, "div", 14);
+    \u0275\u0275text(30, "recensioni");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(25, "button", 14);
-    \u0275\u0275listener("click", function UserOverlayComponent_Conditional_0_Conditional_3_Template_button_click_25_listener() {
+    \u0275\u0275elementStart(31, "button", 16);
+    \u0275\u0275listener("click", function UserOverlayComponent_Conditional_0_Conditional_3_Template_button_click_31_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.chiudi());
     });
-    \u0275\u0275text(26, "\u2715 Chiudi");
+    \u0275\u0275text(32, "Chiudi");
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(ctx_r1.iniziali);
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(ctx_r1.utente().nome_completo);
+    \u0275\u0275conditional(ctx_r1.overlayService.utenteSelezionato().foto_profilo ? 2 : 3);
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate(ctx_r1.overlayService.utenteSelezionato().nome_completo);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1("\u{1F4CD} ", ctx_r1.utente().indirizzo, "");
+    \u0275\u0275textInterpolate1("\u{1F4CD} ", ctx_r1.overlayService.utenteSelezionato().indirizzo, "");
     \u0275\u0275advance(5);
-    \u0275\u0275textInterpolate(ctx_r1.utente().punteggio);
+    \u0275\u0275textInterpolate(ctx_r1.overlayService.utenteSelezionato().punteggio);
     \u0275\u0275advance(5);
-    \u0275\u0275textInterpolate(ctx_r1.utente().co2_totale);
+    \u0275\u0275textInterpolate(ctx_r1.overlayService.utenteSelezionato().co2_totale);
+    \u0275\u0275advance(5);
+    \u0275\u0275textInterpolate(ctx_r1.overlayService.utenteSelezionato().scambi_completati);
+    \u0275\u0275advance(4);
+    \u0275\u0275conditional(ctx_r1.mediaVoto ? 27 : 28);
   }
 }
 function UserOverlayComponent_Conditional_0_Template(rf, ctx) {
@@ -785,47 +903,27 @@ function UserOverlayComponent_Conditional_0_Template(rf, ctx) {
       return \u0275\u0275resetView(ctx_r1.onBgClick($event));
     });
     \u0275\u0275elementStart(1, "div", 2);
-    \u0275\u0275template(2, UserOverlayComponent_Conditional_0_Conditional_2_Template, 3, 0, "div", 3)(3, UserOverlayComponent_Conditional_0_Conditional_3_Template, 27, 5);
+    \u0275\u0275template(2, UserOverlayComponent_Conditional_0_Conditional_2_Template, 3, 0, "div", 3)(3, UserOverlayComponent_Conditional_0_Conditional_3_Template, 33, 7);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.loading() ? 2 : ctx_r1.utente() ? 3 : -1);
+    \u0275\u0275conditional(!ctx_r1.overlayService.utenteSelezionato() ? 2 : 3);
   }
 }
 var UserOverlayComponent = class _UserOverlayComponent {
-  utenteService = inject(UtenteService);
   overlayService = inject(OverlayService);
-  utente = signal(null);
-  loading = signal(false);
-  recensioni = signal([]);
-  get aperto() {
-    return this.overlayService.userOverlayAperto();
-  }
   get iniziali() {
-    const nome = this.utente()?.nome_completo || "";
+    const nome = this.overlayService.utenteSelezionato()?.nome_completo || "";
     return nome.split(" ").map((p) => p[0]).join("").substring(0, 2).toUpperCase();
   }
-  constructor() {
-    effect(() => {
-      const id = this.overlayService.idUtenteSelezionato();
-      if (id) {
-        this.loading.set(true);
-        this.utenteService.getById(id).subscribe({
-          next: (u) => {
-            this.utente.set(u);
-            this.loading.set(false);
-          },
-          error: () => this.loading.set(false)
-        });
-        this.utenteService.getRecensioni(id).subscribe({
-          next: (r) => this.recensioni.set(r),
-          error: () => {
-          }
-        });
-      }
-    });
+  /** Media dei voti delle recensioni ricevute, oppure null se non ce ne sono. */
+  get mediaVoto() {
+    const r = this.overlayService.recensioniUtente();
+    if (!r.length)
+      return null;
+    return r.reduce((acc, x) => acc + x.voto, 0) / r.length;
   }
   chiudi() {
     this.overlayService.chiudiUtente();
@@ -837,17 +935,17 @@ var UserOverlayComponent = class _UserOverlayComponent {
   static \u0275fac = function UserOverlayComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _UserOverlayComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _UserOverlayComponent, selectors: [["app-user-overlay"]], decls: 1, vars: 1, consts: [[1, "user-overlay-bg", "open"], [1, "user-overlay-bg", "open", 3, "click"], [1, "user-overlay-box"], [2, "padding", "40px", "text-align", "center"], [1, "u-text-muted-sm"], [1, "uov-header"], [1, "uov-av", "av-lime"], [1, "uov-name"], [1, "uov-loc"], [1, "uov-body"], [1, "uov-stats"], [1, "uov-stat"], [1, "uov-stat-n"], [1, "uov-stat-l"], [1, "btn-uov-close", 3, "click"]], template: function UserOverlayComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _UserOverlayComponent, selectors: [["app-user-overlay"]], decls: 1, vars: 1, consts: [[1, "user-overlay-bg", "open"], [1, "user-overlay-bg", "open", 3, "click"], [1, "user-overlay-box"], [2, "padding", "40px", "text-align", "center"], [1, "u-text-muted-sm"], [1, "uov-header"], [1, "uov-av", "av-lime"], [1, "av-img", 3, "src"], [1, "uov-name"], [1, "uov-loc"], [1, "uov-body"], [1, "uov-stats"], [1, "uov-stat"], [1, "uov-stat-n"], [1, "uov-stat-l"], [1, "uov-stat-n", "uov-stat-rating"], [1, "btn-uov-close", 3, "click"], [1, "uov-star"]], template: function UserOverlayComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, UserOverlayComponent_Conditional_0_Template, 4, 1, "div", 0);
     }
     if (rf & 2) {
-      \u0275\u0275conditional(ctx.aperto ? 0 : -1);
+      \u0275\u0275conditional(ctx.overlayService.userOverlayAperto() ? 0 : -1);
     }
-  }, dependencies: [CommonModule], encapsulation: 2 });
+  }, dependencies: [CommonModule, DecimalPipe], encapsulation: 2 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(UserOverlayComponent, { className: "UserOverlayComponent", filePath: "app/shared/user-overlay/user-overlay.component.ts", lineNumber: 13 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(UserOverlayComponent, { className: "UserOverlayComponent", filePath: "app/shared/user-overlay/user-overlay.component.ts", lineNumber: 12 });
 })();
 
 // src/app/shared/recensione-modal/recensione-modal.component.ts
@@ -855,7 +953,11 @@ function RecensioneModalComponent_Conditional_0_For_11_Template(rf, ctx) {
   if (rf & 1) {
     const _r3 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "span", 14);
-    \u0275\u0275listener("click", function RecensioneModalComponent_Conditional_0_For_11_Template_span_click_0_listener() {
+    \u0275\u0275listener("mouseenter", function RecensioneModalComponent_Conditional_0_For_11_Template_span_mouseenter_0_listener() {
+      const s_r4 = \u0275\u0275restoreView(_r3).$implicit;
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.hoverStella(s_r4));
+    })("click", function RecensioneModalComponent_Conditional_0_For_11_Template_span_click_0_listener() {
       const s_r4 = \u0275\u0275restoreView(_r3).$implicit;
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.impostaVoto(s_r4));
@@ -866,7 +968,7 @@ function RecensioneModalComponent_Conditional_0_For_11_Template(rf, ctx) {
   if (rf & 2) {
     const s_r4 = ctx.$implicit;
     const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275classProp("active", s_r4 <= ctx_r1.voto());
+    \u0275\u0275classProp("active", s_r4 <= (ctx_r1.hoverVoto() || ctx_r1.voto()));
   }
 }
 function RecensioneModalComponent_Conditional_0_Template(rf, ctx) {
@@ -888,6 +990,11 @@ function RecensioneModalComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275text(7, "Seleziona il voto in stelle e inserisci un breve commento.");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(8, "div", 6)(9, "div", 7);
+    \u0275\u0275listener("mouseleave", function RecensioneModalComponent_Conditional_0_Template_div_mouseleave_9_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.resetHoverStelle());
+    });
     \u0275\u0275repeaterCreate(10, RecensioneModalComponent_Conditional_0_For_11_Template, 2, 2, "span", 8, \u0275\u0275repeaterTrackByIdentity);
     \u0275\u0275elementEnd()();
     \u0275\u0275elementStart(12, "div", 9)(13, "textarea", 10);
@@ -902,17 +1009,17 @@ function RecensioneModalComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275listener("click", function RecensioneModalComponent_Conditional_0_Template_button_click_16_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.invia());
+      return \u0275\u0275resetView(ctx_r1.chiudi());
     });
-    \u0275\u0275text(17);
+    \u0275\u0275text(17, "Annulla");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(18, "button", 13);
     \u0275\u0275listener("click", function RecensioneModalComponent_Conditional_0_Template_button_click_18_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.chiudi());
+      return \u0275\u0275resetView(ctx_r1.invia());
     });
-    \u0275\u0275text(19, "Annulla");
+    \u0275\u0275text(19);
     \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
@@ -921,7 +1028,7 @@ function RecensioneModalComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.stelle);
     \u0275\u0275advance(3);
     \u0275\u0275property("value", ctx_r1.testo());
-    \u0275\u0275advance(3);
+    \u0275\u0275advance(5);
     \u0275\u0275property("disabled", ctx_r1.loading());
     \u0275\u0275advance();
     \u0275\u0275textInterpolate1(" ", ctx_r1.loading() ? "Invio in corso..." : "Invia recensione", " ");
@@ -935,6 +1042,7 @@ var RecensioneModalComponent = class _RecensioneModalComponent {
   router = inject(Router);
   API = "http://localhost:8080/api";
   voto = signal(0);
+  hoverVoto = signal(0);
   testo = signal("");
   loading = signal(false);
   stelle = [1, 2, 3, 4, 5];
@@ -944,9 +1052,16 @@ var RecensioneModalComponent = class _RecensioneModalComponent {
   impostaVoto(v) {
     this.voto.set(v);
   }
+  hoverStella(v) {
+    this.hoverVoto.set(v);
+  }
+  resetHoverStelle() {
+    this.hoverVoto.set(0);
+  }
   chiudi() {
     this.overlayService.chiudiRecensione();
     this.voto.set(0);
+    this.hoverVoto.set(0);
     this.testo.set("");
   }
   onBgClick(e) {
@@ -965,11 +1080,13 @@ var RecensioneModalComponent = class _RecensioneModalComponent {
     const idRecensito = this.overlayService.idUtenteRecensito();
     if (!idRecensito)
       return;
+    const idChat = this.overlayService.idChatCompletata();
     this.loading.set(true);
     this.http.post(`${this.API}/recensioni`, {
       id_utente_reg_recensito: idRecensito,
       voto: this.voto(),
-      descrizione_recensione: this.testo().trim()
+      descrizione_recensione: this.testo().trim(),
+      id_chat: idChat
     }).subscribe({
       next: () => {
         this.loading.set(false);
@@ -986,7 +1103,7 @@ var RecensioneModalComponent = class _RecensioneModalComponent {
   static \u0275fac = function RecensioneModalComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _RecensioneModalComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RecensioneModalComponent, selectors: [["app-recensione-modal"]], decls: 1, vars: 1, consts: [[1, "modal-bg", "open"], [1, "modal-bg", "open", 3, "click"], [1, "modal", "u-mw520"], [1, "modal-h"], [1, "u-text-muted-mb6"], [1, "u-text-note-mb16"], [1, "rating-stars-container"], [1, "rating-stars"], [1, "star-btn", 3, "active"], [1, "fg", "u-mb16-w100", 2, "margin-top", "16px"], ["rows", "3", "placeholder", "Come \xE8 andato lo scambio con il tuo vicino?", 1, "fi", 3, "input", "value"], [1, "modal-acts"], [1, "btn-confirm", 3, "click", "disabled"], [1, "btn-cancel2", 3, "click"], [1, "star-btn", 3, "click"]], template: function RecensioneModalComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RecensioneModalComponent, selectors: [["app-recensione-modal"]], decls: 1, vars: 1, consts: [[1, "modal-bg", "open"], [1, "modal-bg", "open", 3, "click"], [1, "modal", "u-mw520"], [1, "modal-h"], [1, "u-text-muted-mb6"], [1, "u-text-note-mb16"], [1, "rating-stars-container"], [1, "rating-stars", 3, "mouseleave"], [1, "star-btn", 3, "active"], [1, "fg", "u-mb16-w100", 2, "margin-top", "16px"], ["rows", "3", "placeholder", "Come \xE8 andato lo scambio con il tuo vicino?", 1, "fi", 3, "input", "value"], [1, "modal-acts"], [1, "btn-cancel2", 3, "click"], [1, "btn-confirm", 3, "click", "disabled"], [1, "star-btn", 3, "mouseenter", "click"]], template: function RecensioneModalComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, RecensioneModalComponent_Conditional_0_Template, 20, 3, "div", 0);
     }
@@ -1105,17 +1222,17 @@ function PropostaModalComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275listener("click", function PropostaModalComponent_Conditional_0_Template_button_click_14_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.inviaProposta());
+      return \u0275\u0275resetView(ctx_r1.chiudi());
     });
-    \u0275\u0275text(15);
+    \u0275\u0275text(15, "Annulla");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "button", 12);
     \u0275\u0275listener("click", function PropostaModalComponent_Conditional_0_Template_button_click_16_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.chiudi());
+      return \u0275\u0275resetView(ctx_r1.inviaProposta());
     });
-    \u0275\u0275text(17, "Annulla");
+    \u0275\u0275text(17);
     \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
@@ -1126,7 +1243,7 @@ function PropostaModalComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275conditional(ctx_r1.loadingAnnunci() ? 10 : 11);
     \u0275\u0275advance(2);
     \u0275\u0275conditional(ctx_r1.nSelezionati > 0 ? 12 : -1);
-    \u0275\u0275advance(2);
+    \u0275\u0275advance(4);
     \u0275\u0275property("disabled", ctx_r1.nSelezionati === 0 || ctx_r1.loading());
     \u0275\u0275advance();
     \u0275\u0275textInterpolate1(" ", ctx_r1.loading() ? "Invio in corso..." : "Invia proposta", " ");
@@ -1209,7 +1326,7 @@ var PropostaModalComponent = class _PropostaModalComponent {
   static \u0275fac = function PropostaModalComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _PropostaModalComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _PropostaModalComponent, selectors: [["app-proposta-modal"]], decls: 1, vars: 1, consts: [[1, "modal-bg", "open", 2, "z-index", "900"], [1, "modal-bg", "open", 2, "z-index", "900", 3, "click"], [1, "modal", "u-mw520"], [1, "modal-h"], [1, "u-text-muted-mb6"], [1, "u-clr-txt"], [1, "u-text-note-mb16"], [1, "u-text-muted-sm"], [1, "u-col-gap8-mb18"], [1, "proponi-note-box", 2, "display", "block"], [1, "modal-acts"], [1, "btn-confirm", 3, "click", "disabled"], [1, "btn-cancel2", 3, "click"], [1, "ricevi-item-base", 3, "borderColor"], [1, "ricevi-item-base", 3, "click"], [1, "u-text-lg"], [1, "u-flex1"], [1, "u-text-sm-bold"], [1, "u-text-xs-muted"], [1, "ricevi-check-base", "ricevi-check-flex"]], template: function PropostaModalComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _PropostaModalComponent, selectors: [["app-proposta-modal"]], decls: 1, vars: 1, consts: [[1, "modal-bg", "open", 2, "z-index", "900"], [1, "modal-bg", "open", 2, "z-index", "900", 3, "click"], [1, "modal", "u-mw520"], [1, "modal-h"], [1, "u-text-muted-mb6"], [1, "u-clr-txt"], [1, "u-text-note-mb16"], [1, "u-text-muted-sm"], [1, "u-col-gap8-mb18"], [1, "proponi-note-box", 2, "display", "block"], [1, "modal-acts"], [1, "btn-cancel2", 3, "click"], [1, "btn-confirm", 3, "click", "disabled"], [1, "ricevi-item-base", 3, "borderColor"], [1, "ricevi-item-base", 3, "click"], [1, "u-text-lg"], [1, "u-flex1"], [1, "u-text-sm-bold"], [1, "u-text-xs-muted"], [1, "ricevi-check-base", "ricevi-check-flex"]], template: function PropostaModalComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, PropostaModalComponent_Conditional_0_Template, 18, 5, "div", 0);
     }
@@ -1252,7 +1369,7 @@ function ModificaProfiloComponent_Conditional_0_Conditional_12_Template(rf, ctx)
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.fotoPreview.set(null));
     });
-    \u0275\u0275text(1, " \u2715 Rimuovi foto ");
+    \u0275\u0275text(1, " Rimuovi foto ");
     \u0275\u0275elementEnd();
   }
 }
@@ -1349,17 +1466,17 @@ function ModificaProfiloComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275listener("click", function ModificaProfiloComponent_Conditional_0_Template_button_click_42_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.salva());
+      return \u0275\u0275resetView(ctx_r1.chiudi());
     });
-    \u0275\u0275text(43, " \u{1F4BE} Salva modifiche ");
+    \u0275\u0275text(43, " Annulla ");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(44, "button", 23);
     \u0275\u0275listener("click", function ModificaProfiloComponent_Conditional_0_Template_button_click_44_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.chiudi());
+      return \u0275\u0275resetView(ctx_r1.salva());
     });
-    \u0275\u0275text(45, " Annulla ");
+    \u0275\u0275text(45, " Salva modifiche ");
     \u0275\u0275elementEnd()()()()();
   }
   if (rf & 2) {
@@ -1472,7 +1589,7 @@ var ModificaProfiloComponent = class _ModificaProfiloComponent {
   static \u0275fac = function ModificaProfiloComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _ModificaProfiloComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ModificaProfiloComponent, selectors: [["app-modifica-profilo"]], decls: 1, vars: 1, consts: [[1, "modal-bg", "open"], [1, "modal-bg", "open", 3, "click"], [1, "modal", "u-mw520"], [1, "modal-h"], [3, "formGroup"], [2, "display", "flex", "flex-direction", "column", "align-items", "center", "gap", "12px", "margin-bottom", "20px"], [1, "prof-av", 2, "width", "80px", "height", "80px", "font-size", "2rem", "position", "relative"], [2, "width", "100%", "height", "100%", "object-fit", "cover", "border-radius", "50%", 3, "src"], [2, "cursor", "pointer", "color", "var(--lime)", "font-size", ".82rem", "font-weight", "600"], ["type", "file", "accept", "image/*", 2, "display", "none", 3, "change"], ["type", "button", 2, "background", "none", "border", "none", "color", "var(--terra)", "font-size", ".75rem", "cursor", "pointer"], [1, "fg", 2, "margin-bottom", "12px"], [1, "fl"], ["type", "text", "formControlName", "indirizzo", "placeholder", "Via Roma 12", 1, "fi"], ["formControlName", "citta", 1, "fi", 3, "change"], ["value", ""], [3, "value"], ["formControlName", "id_quartiere", 1, "fi"], ["type", "password", "formControlName", "password_nuova", "placeholder", "Lascia vuoto per non modificarla", 1, "fi"], [1, "fg", 2, "margin-bottom", "20px"], ["type", "password", "formControlName", "password_conferma", "placeholder", "Ripeti la nuova password", 1, "fi"], [1, "modal-acts"], ["type", "button", 1, "btn-confirm", 3, "click"], ["type", "button", 1, "btn-cancel2", 3, "click"], ["type", "button", 2, "background", "none", "border", "none", "color", "var(--terra)", "font-size", ".75rem", "cursor", "pointer", 3, "click"]], template: function ModificaProfiloComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ModificaProfiloComponent, selectors: [["app-modifica-profilo"]], decls: 1, vars: 1, consts: [[1, "modal-bg", "open"], [1, "modal-bg", "open", 3, "click"], [1, "modal", "u-mw520"], [1, "modal-h"], [3, "formGroup"], [2, "display", "flex", "flex-direction", "column", "align-items", "center", "gap", "12px", "margin-bottom", "20px"], [1, "prof-av", 2, "width", "80px", "height", "80px", "font-size", "2rem", "position", "relative"], [2, "width", "100%", "height", "100%", "object-fit", "cover", "border-radius", "50%", 3, "src"], [2, "cursor", "pointer", "color", "var(--lime)", "font-size", ".82rem", "font-weight", "600"], ["type", "file", "accept", "image/*", 2, "display", "none", 3, "change"], ["type", "button", 2, "background", "none", "border", "none", "color", "var(--terra)", "font-size", ".75rem", "cursor", "pointer"], [1, "fg", 2, "margin-bottom", "12px"], [1, "fl"], ["type", "text", "formControlName", "indirizzo", "placeholder", "Via Roma 12", 1, "fi"], ["formControlName", "citta", 1, "fi", 3, "change"], ["value", ""], [3, "value"], ["formControlName", "id_quartiere", 1, "fi"], ["type", "password", "formControlName", "password_nuova", "placeholder", "Lascia vuoto per non modificarla", 1, "fi"], [1, "fg", 2, "margin-bottom", "20px"], ["type", "password", "formControlName", "password_conferma", "placeholder", "Ripeti la nuova password", 1, "fi"], [1, "modal-acts"], ["type", "button", 1, "btn-cancel2", 3, "click"], ["type", "button", 1, "btn-confirm", 3, "click"], ["type", "button", 2, "background", "none", "border", "none", "color", "var(--terra)", "font-size", ".75rem", "cursor", "pointer", 3, "click"]], template: function ModificaProfiloComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, ModificaProfiloComponent_Conditional_0_Template, 46, 4, "div", 0);
     }

@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../shared/toast/toast.service';
@@ -37,10 +37,19 @@ export class LoginComponent implements OnInit {
     password: ['', Validators.required]
   });
 
+  // Almeno 8 caratteri, 1 maiuscola, 1 minuscola, 1 numero, 1 carattere speciale tra !?#-_
+  static readonly PASSWORD_PATTERN = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!?#\-_]).{8,}$/;
+
+  // Il dominio @reloop.it è riservato agli amministratori
+  static emailNonRiservata(control: AbstractControl): ValidationErrors | null {
+    const value = (control.value || '').toLowerCase();
+    return value.endsWith('@reloop.it') ? { email: true } : null;
+  }
+
   formReg: FormGroup = this.fb.group({
     nome_completo: ['', Validators.required],
-    email:         ['', [Validators.required, Validators.email]],
-    password:      ['', [Validators.required, Validators.minLength(8)]],
+    email:         ['', [Validators.required, Validators.email, LoginComponent.emailNonRiservata]],
+    password:      ['', [Validators.required, Validators.pattern(LoginComponent.PASSWORD_PATTERN)]],
     password2:     ['', Validators.required],
     indirizzo:     ['', Validators.required],
     citta:         ['', Validators.required],

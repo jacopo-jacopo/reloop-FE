@@ -103,11 +103,11 @@
             <button class="btn-acc"
                     [disabled]="!canAccetta(p)"
                     (click)="accetta(p)">
-              {{ accettando() === p.id_proposta ? 'Accettazione in corso...' : '✓ Accetta proposta' }}
+              {{ accettando() === p.id_proposta ? 'Accettazione in corso...' : 'Accetta proposta' }}
             </button>
             <button class="btn-ref"
                     [disabled]="accettando() !== null"
-                    (click)="rifiuta(p)">✗ Rifiuta</button>
+                    (click)="rifiuta(p)">Rifiuta</button>
           </div>
         }
 

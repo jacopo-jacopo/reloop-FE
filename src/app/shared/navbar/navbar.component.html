@@ -45,7 +45,20 @@
           </span>
         </div>
       }
-      <button class="btn-nav" (click)="logout()">Esci</button>
+      <button class="btn-nav" (click)="apriConfermaLogout()">Esci</button>
     </div>
   </nav>
+}
+
+@if (confermaLogoutAperta()) {
+  <div class="modal-bg open" (click)="$event.target === $event.currentTarget && chiudiConfermaLogout()">
+    <div class="modal u-mw520">
+      <div class="modal-h">Esci da reloop</div>
+      <p class="modal-p">Sei sicuro di voler uscire dal tuo account?</p>
+      <div class="modal-acts">
+        <button class="btn-cancel2" (click)="chiudiConfermaLogout()">No, torna indietro</button>
+        <button class="btn-confirm btn-admin-danger" (click)="logout()">Sì, esci</button>
+      </div>
+    </div>
+  </div>
 }

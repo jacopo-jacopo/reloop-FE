@@ -2,7 +2,7 @@
 
   <div class="admin-header">
     <h1 class="admin-title">🛡️ Centro Moderazione Reloop</h1>
-    <button class="btn-admin-logout" (click)="logout()">Logout 🚪</button>
+    <button class="btn-nav" (click)="apriConfermaLogout()">Esci</button>
   </div>
 
   <div class="admin-main-layout">
@@ -88,10 +88,10 @@
               <div class="admin-actions-label">Risoluzione del ticket:</div>
               <div class="admin-actions-buttons">
                 <button class="btn-confirm btn-admin-danger" (click)="risolvi(true)">
-                  ❌ Chiudi e Oscura Annuncio
+                  Chiudi e Oscura Annuncio
                 </button>
                 <button class="btn-cancel2 btn-admin-flex" (click)="risolvi(false)">
-                  🟢 Lascia Annuncio Attivo
+                  Lascia Annuncio Attivo
                 </button>
               </div>
             </div>
@@ -107,3 +107,16 @@
 
   </div>
 </div>
+
+@if (confermaLogoutAperta()) {
+  <div class="modal-bg open" (click)="$event.target === $event.currentTarget && chiudiConfermaLogout()">
+    <div class="modal u-mw520">
+      <div class="modal-h">Esci da reloop</div>
+      <p class="modal-p">Sei sicuro di voler uscire dal tuo account?</p>
+      <div class="modal-acts">
+        <button class="btn-cancel2" (click)="chiudiConfermaLogout()">No, torna indietro</button>
+        <button class="btn-confirm btn-admin-danger" (click)="logout()">Sì, esci</button>
+      </div>
+    </div>
+  </div>
+}

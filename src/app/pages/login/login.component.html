@@ -2,7 +2,7 @@
 
   <div class="login-left">
     <div class="ll-logo">
-      <img class="logo-login" src="LOGO_LIME.png" alt="reloop" />
+      <img class="logo-login" src="LOGO_SCRITTA.png" alt="reloop" />
     </div>
 
     <div class="tab-row">
@@ -31,12 +31,8 @@
           }
         </div>
         <button class="btn-login" type="submit" [disabled]="loading">
-          {{ loading ? 'Accesso in corso...' : 'Entra in reloop →' }}
+          {{ loading ? 'Accesso in corso...' : 'Entra in reloop' }}
         </button>
-        <p class="admin-login-note u-text-center">
-          💡 Accedendo con un dominio <strong>&#64;reloop.it</strong>
-          si entrerà nella Dashboard Amministratore.
-        </p>
       </form>
     }
 
@@ -102,9 +98,9 @@
           <label class="fl">Password</label>
           <input class="fi" [class.err]="invalid(formReg, 'password')"
                  type="password" formControlName="password"
-                 placeholder="min. 8 caratteri" />
+                 placeholder="••••••••" />
           @if (invalid(formReg, 'password')) {
-            <span class="ferr show">Minimo 8 caratteri</span>
+            <span class="ferr show">Almeno 8 caratteri con 1 maiuscola, 1 minuscola, 1 numero e 1 carattere speciale (!?#-_)</span>
           }
         </div>
         <div class="fg">
@@ -117,7 +113,7 @@
           }
         </div>
         <button class="btn-login" type="submit" [disabled]="loading">
-          {{ loading ? 'Creazione account...' : 'Crea il tuo account →' }}
+          {{ loading ? 'Creazione account...' : 'Crea il tuo account' }}
         </button>
       </form>
     }

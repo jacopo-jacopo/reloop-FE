@@ -16,6 +16,7 @@ export interface Annuncio {
     indirizzo?: string;
     punteggio?: number;
     co2_totale?: number;
+    foto_profilo?: string;
     quartiere?: {
       id_quartiere: number;
       nome_quartiere: string;

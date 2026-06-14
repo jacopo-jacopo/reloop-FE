@@ -32,10 +32,9 @@ export class PubblicaComponent {
   ];
 
   readonly categorie = [
-    '🚲 Trasporti', '🏠 Arredamento', '👗 Abbigliamento',
-    '📚 Libri & Cultura', '⚽ Sport & Tempo libero',
-    '💻 Elettronica', '🍳 Cucina', '🎸 Musica',
-    '🔧 Fai da te', '🌿 Altro'
+    'Arredamento', 'Abbigliamento',
+    'Libri & Cultura', 'Sport & Tempo libero',
+    'Elettronica', 'Cucina', 'Musica'
   ];
 
   form: FormGroup = this.fb.group({

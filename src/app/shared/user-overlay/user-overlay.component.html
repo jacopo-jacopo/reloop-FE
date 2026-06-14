@@ -1,37 +1,51 @@
-@if (aperto) {
+@if (overlayService.userOverlayAperto()) {
   <div class="user-overlay-bg open" (click)="onBgClick($event)">
     <div class="user-overlay-box">
 
-      @if (loading()) {
+      @if (!overlayService.utenteSelezionato()) {
         <div style="padding:40px;text-align:center">
           <p class="u-text-muted-sm">Caricamento profilo...</p>
         </div>
-      } @else if (utente()) {
+      } @else {
         <div class="uov-header">
-          <div class="uov-av av-lime">{{ iniziali }}</div>
+          <div class="uov-av av-lime">
+            @if (overlayService.utenteSelezionato().foto_profilo) {
+              <img [src]="overlayService.utenteSelezionato().foto_profilo" class="av-img" />
+            } @else {
+              {{ iniziali }}
+            }
+          </div>
           <div>
-            <div class="uov-name">{{ utente()!.nome_completo }}</div>
-            <div class="uov-loc">📍 {{ utente()!.indirizzo }}</div>
+            <div class="uov-name">{{ overlayService.utenteSelezionato().nome_completo }}</div>
+            <div class="uov-loc">📍 {{ overlayService.utenteSelezionato().indirizzo }}</div>
           </div>
         </div>
 
         <div class="uov-body">
           <div class="uov-stats">
             <div class="uov-stat">
-              <div class="uov-stat-n">{{ utente()!.punteggio }}</div>
+              <div class="uov-stat-n">{{ overlayService.utenteSelezionato().punteggio }}</div>
               <div class="uov-stat-l">punti</div>
             </div>
             <div class="uov-stat">
-              <div class="uov-stat-n">{{ utente()!.co2_totale }}</div>
+              <div class="uov-stat-n">{{ overlayService.utenteSelezionato().co2_totale }}</div>
               <div class="uov-stat-l">kg CO₂</div>
             </div>
             <div class="uov-stat">
-              <div class="uov-stat-n">—</div>
+              <div class="uov-stat-n">{{ overlayService.utenteSelezionato().scambi_completati }}</div>
               <div class="uov-stat-l">scambi</div>
+            </div>
+            <div class="uov-stat">
+              @if (mediaVoto) {
+                <div class="uov-stat-n uov-stat-rating">{{ mediaVoto | number:'1.1-1' }} <span class="uov-star">⭐</span></div>
+              } @else {
+                <div class="uov-stat-n">—</div>
+              }
+              <div class="uov-stat-l">recensioni</div>
             </div>
           </div>
 
-          <button class="btn-uov-close" (click)="chiudi()">✕ Chiudi</button>
+          <button class="btn-uov-close" (click)="chiudi()">Chiudi</button>
         </div>
       }
 
