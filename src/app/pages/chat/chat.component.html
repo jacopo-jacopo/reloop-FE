@@ -89,7 +89,9 @@
           @if (dataLabel(i)) {
             <div class="sys-msg">{{ dataLabel(i) }}</div>
           }
-          @if (isMsgAnnulla(msg)) {
+          @if (isMsgOscuramento(msg)) {
+            <div class="sys-msg sys-msg-oscuramento">{{ msg.contenuto }}</div>
+          } @else if (isMsgAnnulla(msg)) {
             <div class="sys-msg sys-msg-annulla">✗ {{ msg.contenuto }}</div>
           } @else if (isMsgConferma(msg)) {
             <div class="sys-msg sys-msg-conferma">✓ {{ msg.contenuto }}</div>

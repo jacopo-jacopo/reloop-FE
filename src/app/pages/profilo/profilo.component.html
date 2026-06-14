@@ -144,10 +144,13 @@
             <div class="active-ann-name segnala-title">
               {{ s.annuncio_segnalato?.titolo }} (#{{ s.id_segnalazione }})
             </div>
+            <div class="u-text-xs-muted segnala-nota">
+              Proprietario: {{ s.annuncio_segnalato?.pubblicante?.nome_completo }}
+            </div>
             <div class="u-text-xs-muted segnala-nota">"{{ s.motivazione }}"</div>
             <div class="active-ann-s segnala-stato"
                  [class]="classeStatoSegnalazione(s.stato_segnalazione)">
-              ● {{ s.stato_segnalazione }}
+              ● {{ testoStatoSegnalazione(s.stato_segnalazione) }}
             </div>
           </div>
         </div>
@@ -169,7 +172,7 @@
         </div>
       </div>
       <div class="badges-grid">
-        @for (b of tuttiBadge(); track b.nome_badge) {
+        @for (b of tuttiBadgeOrdinati; track b.nome_badge) {
           <div class="badge-card"
                [ngClass]="[b.colore, isSbloccato(b.nome_badge) ? 'unlocked' : 'locked']">
 

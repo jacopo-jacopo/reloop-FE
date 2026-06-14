@@ -1,12 +1,12 @@
 import {
   QuartiereService
-} from "./chunk-4E3FYBZI.js";
+} from "./chunk-TU36ZM4H.js";
 import {
   PropostaService
-} from "./chunk-QLIDZFYC.js";
+} from "./chunk-TMEL3XZI.js";
 import {
   NotificationService
-} from "./chunk-OAKHWBYB.js";
+} from "./chunk-PVRZVAKQ.js";
 import {
   DefaultValueAccessor,
   FormBuilder,
@@ -19,17 +19,17 @@ import {
   SelectControlValueAccessor,
   ɵNgNoValidate,
   ɵNgSelectMultipleOption
-} from "./chunk-BBR5L3LN.js";
+} from "./chunk-HAS6CWBK.js";
 import {
   SegnalazioneService
-} from "./chunk-EOAE7ACB.js";
+} from "./chunk-DP4R4AS2.js";
 import {
   OverlayService,
   UtenteService
-} from "./chunk-EEAG4X3M.js";
+} from "./chunk-7VNEKI35.js";
 import {
   AnnuncioService
-} from "./chunk-H3KUEFTO.js";
+} from "./chunk-Y4UJ2NKZ.js";
 import {
   AuthService,
   CommonModule,
@@ -46,6 +46,7 @@ import {
   effect,
   filter,
   inject,
+  provideAppInitializer,
   provideHttpClient,
   provideRouter,
   signal,
@@ -79,7 +80,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵtextInterpolate2
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/core/guards/auth.guard.ts
 var authGuard = () => {
@@ -117,42 +118,42 @@ var routes = [
   },
   {
     path: "login",
-    loadComponent: () => import("./chunk-X2JNW63G.js").then((m) => m.LoginComponent),
+    loadComponent: () => import("./chunk-ZTVARQI5.js").then((m) => m.LoginComponent),
     canActivate: [loginGuard]
   },
   {
     path: "home",
-    loadComponent: () => import("./chunk-LYBTTI2C.js").then((m) => m.HomeComponent),
+    loadComponent: () => import("./chunk-RFZ7Q6HR.js").then((m) => m.HomeComponent),
     canActivate: [authGuard]
   },
   {
     path: "annunci",
-    loadComponent: () => import("./chunk-NQ6R3BQG.js").then((m) => m.AnnunciComponent),
+    loadComponent: () => import("./chunk-HZXVQPAA.js").then((m) => m.AnnunciComponent),
     canActivate: [authGuard]
   },
   {
     path: "proposte",
-    loadComponent: () => import("./chunk-63ZPTG4M.js").then((m) => m.ProposteComponent),
+    loadComponent: () => import("./chunk-SYSJ52YR.js").then((m) => m.ProposteComponent),
     canActivate: [authGuard]
   },
   {
     path: "chat",
-    loadComponent: () => import("./chunk-V42G4FCD.js").then((m) => m.ChatComponent),
+    loadComponent: () => import("./chunk-7GGC3BRB.js").then((m) => m.ChatComponent),
     canActivate: [authGuard]
   },
   {
     path: "pubblica",
-    loadComponent: () => import("./chunk-C7PYPOQE.js").then((m) => m.PubblicaComponent),
+    loadComponent: () => import("./chunk-2724ZHFY.js").then((m) => m.PubblicaComponent),
     canActivate: [authGuard]
   },
   {
     path: "profilo",
-    loadComponent: () => import("./chunk-7LMJIZHE.js").then((m) => m.ProfiloComponent),
+    loadComponent: () => import("./chunk-YTZHDTFN.js").then((m) => m.ProfiloComponent),
     canActivate: [authGuard]
   },
   {
     path: "admin",
-    loadComponent: () => import("./chunk-KXAXNAGP.js").then((m) => m.AdminComponent),
+    loadComponent: () => import("./chunk-IPDVCDLQ.js").then((m) => m.AdminComponent),
     canActivate: [adminGuard]
   },
   {
@@ -165,14 +166,17 @@ var routes = [
 var authInterceptor = (req, next) => {
   const auth = inject(AuthService);
   const utente = auth.utenteCorrente();
+  let headers = {};
   if (utente) {
     const id = utente.id_utente_reg ?? utente.id_utente_adm;
     if (id) {
-      req = req.clone({
-        setHeaders: { "X-User-Id": String(id) }
-      });
+      headers["X-User-Id"] = String(id);
     }
   }
+  req = req.clone({
+    setHeaders: headers,
+    withCredentials: true
+  });
   return next(req);
 };
 
@@ -180,7 +184,11 @@ var authInterceptor = (req, next) => {
 var appConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor]))
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideAppInitializer(() => {
+      const auth = inject(AuthService);
+      return auth.inizializzaSessione();
+    })
   ]
 };
 
@@ -513,6 +521,10 @@ function AnnOverlayComponent_Conditional_0_Conditional_29_Template(rf, ctx) {
     \u0275\u0275text(1, " Proponi scambio ");
     \u0275\u0275elementEnd();
   }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275property("disabled", ctx_r1.giaSegnalato())("title", ctx_r1.giaSegnalato() ? "Non puoi proporre uno scambio per un annuncio che hai segnalato" : "");
+  }
 }
 function AnnOverlayComponent_Conditional_0_Conditional_31_Template(rf, ctx) {
   if (rf & 1) {
@@ -618,7 +630,7 @@ function AnnOverlayComponent_Conditional_0_Template(rf, ctx) {
     });
     \u0275\u0275text(28, "Chiudi");
     \u0275\u0275elementEnd();
-    \u0275\u0275template(29, AnnOverlayComponent_Conditional_0_Conditional_29_Template, 2, 0, "button", 16);
+    \u0275\u0275template(29, AnnOverlayComponent_Conditional_0_Conditional_29_Template, 2, 2, "button", 16);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(30, "div", 17);
     \u0275\u0275template(31, AnnOverlayComponent_Conditional_0_Conditional_31_Template, 2, 0, "button", 18)(32, AnnOverlayComponent_Conditional_0_Conditional_32_Template, 8, 1, "div", 19)(33, AnnOverlayComponent_Conditional_0_Conditional_33_Template, 2, 0, "button", 20);
@@ -730,7 +742,7 @@ var AnnOverlayComponent = class _AnnOverlayComponent {
   }
   apriModalProposta() {
     const ann = this.annuncio;
-    if (!ann)
+    if (!ann || this.giaSegnalato())
       return;
     this.chiudi();
     this.overlayService.apriProposta(ann);
@@ -777,7 +789,7 @@ var AnnOverlayComponent = class _AnnOverlayComponent {
   static \u0275fac = function AnnOverlayComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _AnnOverlayComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AnnOverlayComponent, selectors: [["app-ann-overlay"]], decls: 1, vars: 1, consts: [[1, "ann-overlay-bg", "open"], [1, "ann-overlay-bg", "open", 3, "click"], [1, "ann-overlay-box"], [1, "ann-ov-img"], [1, "ann-ov-body"], [1, "ann-ov-title"], [1, "ann-ov-chips"], [1, "ann-ov-chip"], [1, "ann-ov-desc"], [1, "ann-ov-user", "ann-ov-user-click", 3, "click"], [1, "ann-ov-av", "av-lime"], [1, "av-img", 3, "src"], [1, "ann-ov-uname-btn"], [1, "ann-ov-uloc"], [1, "ann-ov-acts"], [1, "btn-ov-close", 3, "click"], [1, "btn-ov-prop"], [1, "ann-ov-segnala-wrapper"], ["disabled", "", 1, "btn-ov-segnala-mini"], [2, "width", "100%", "margin-top", "10px"], [1, "btn-ov-segnala-mini"], [2, "width", "100%", "height", "100%", "object-fit", "cover", "border-radius", "12px 12px 0 0", 3, "src"], [1, "foto-nav", "foto-nav-prev", 3, "click"], [1, "foto-nav", "foto-nav-next", 3, "click"], [1, "foto-dots"], [1, "foto-dot", 3, "active"], [1, "foto-dot"], [1, "btn-ov-prop", 3, "click"], ["rows", "3", "placeholder", "Descrivi il motivo della segnalazione...", 1, "fi", 2, "width", "100%", "margin-bottom", "8px", 3, "input", "value"], [2, "display", "flex", "gap", "8px"], [1, "btn-cancel2", 2, "flex", "1", 3, "click"], [1, "btn-segnala-invia", 3, "click"], [1, "btn-ov-segnala-mini", 3, "click"]], template: function AnnOverlayComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AnnOverlayComponent, selectors: [["app-ann-overlay"]], decls: 1, vars: 1, consts: [[1, "ann-overlay-bg", "open"], [1, "ann-overlay-bg", "open", 3, "click"], [1, "ann-overlay-box"], [1, "ann-ov-img"], [1, "ann-ov-body"], [1, "ann-ov-title"], [1, "ann-ov-chips"], [1, "ann-ov-chip"], [1, "ann-ov-desc"], [1, "ann-ov-user", "ann-ov-user-click", 3, "click"], [1, "ann-ov-av", "av-lime"], [1, "av-img", 3, "src"], [1, "ann-ov-uname-btn"], [1, "ann-ov-uloc"], [1, "ann-ov-acts"], [1, "btn-ov-close", 3, "click"], [1, "btn-ov-prop", 3, "disabled", "title"], [1, "ann-ov-segnala-wrapper"], ["disabled", "", 1, "btn-ov-segnala-mini"], [2, "width", "100%", "margin-top", "10px"], [1, "btn-ov-segnala-mini"], [2, "width", "100%", "height", "100%", "object-fit", "cover", "border-radius", "12px 12px 0 0", 3, "src"], [1, "foto-nav", "foto-nav-prev", 3, "click"], [1, "foto-nav", "foto-nav-next", 3, "click"], [1, "foto-dots"], [1, "foto-dot", 3, "active"], [1, "foto-dot"], [1, "btn-ov-prop", 3, "click", "disabled", "title"], ["rows", "3", "placeholder", "Descrivi il motivo della segnalazione...", 1, "fi", 2, "width", "100%", "margin-bottom", "8px", 3, "input", "value"], [2, "display", "flex", "gap", "8px"], [1, "btn-cancel2", 2, "flex", "1", 3, "click"], [1, "btn-segnala-invia", 3, "click"], [1, "btn-ov-segnala-mini", 3, "click"]], template: function AnnOverlayComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, AnnOverlayComponent_Conditional_0_Template, 34, 14, "div", 0);
     }

@@ -21,6 +21,7 @@ export class AdminComponent implements OnInit {
   segnalazioni       = signal<any[]>([]);
   segnalazioneAttiva = signal<any | null>(null);
   annuncioAttivo     = signal<any | null>(null);
+  fotoAnnuncio       = signal<string[]>([]);
   loading            = signal(true);
 
   ngOnInit() { this.caricaSegnalazioni(); }
@@ -34,10 +35,15 @@ export class AdminComponent implements OnInit {
 
   ispeziona(s: any) {
     this.segnalazioneAttiva.set(s);
+    this.fotoAnnuncio.set([]);
     const idAnnuncio = s.annuncio_segnalato?.id_annuncio;
     if (idAnnuncio) {
       this.annuncioService.getById(idAnnuncio).subscribe({
         next: (ann) => this.annuncioAttivo.set(ann),
+        error: () => {}
+      });
+      this.annuncioService.getFoto(idAnnuncio).subscribe({
+        next: (f) => this.fotoAnnuncio.set(f),
         error: () => {}
       });
     }
@@ -86,5 +92,9 @@ export class AdminComponent implements OnInit {
     if (stato === 'presa_in_carico') return 'badge-stato badge-carico';
     if (stato === 'chiusa')          return 'badge-stato badge-chiusa';
     return 'badge-stato badge-attesa';
+  }
+
+  testoStato(stato: string): string {
+    return (stato || '').replace(/_/g, ' ');
   }
 }

@@ -55,7 +55,10 @@
         <div class="ann-ov-acts">
           <button class="btn-ov-close" (click)="chiudi()">Chiudi</button>
           @if (!isMio()) {
-            <button class="btn-ov-prop" (click)="apriModalProposta()">
+            <button class="btn-ov-prop"
+                    [disabled]="giaSegnalato()"
+                    [title]="giaSegnalato() ? 'Non puoi proporre uno scambio per un annuncio che hai segnalato' : ''"
+                    (click)="apriModalProposta()">
               Proponi scambio
             </button>
           }

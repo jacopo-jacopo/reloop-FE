@@ -15539,6 +15539,13 @@ function isSubscribable(obj) {
   return !!obj && typeof obj.subscribe === "function";
 }
 var APP_INITIALIZER = new InjectionToken(ngDevMode ? "Application Initializer" : "");
+function provideAppInitializer(initializerFn) {
+  return makeEnvironmentProviders([{
+    provide: APP_INITIALIZER,
+    multi: true,
+    useValue: initializerFn
+  }]);
+}
 var ApplicationInitStatus = class _ApplicationInitStatus {
   // Using non null assertion, these fields are defined below
   // within the `new Promise` callback (synchronously).
@@ -38483,7 +38490,7 @@ var AuthService = class _AuthService {
     this.router = router;
   }
   login(email, password) {
-    return this.http.post(`${this.API}/auth/login`, { email, password }).pipe(tap((res) => this._impostaSessione(res.tipo, res.utente)));
+    return this.http.post(`${this.API}/auth/login`, { email, password }, { withCredentials: true }).pipe(tap((res) => this._impostaSessione(res.tipo, res.utente)));
   }
   registra(dati) {
     return this.http.post(`${this.API}/auth/registra`, {
@@ -38492,12 +38499,21 @@ var AuthService = class _AuthService {
       password: dati.password,
       indirizzo: dati.indirizzo,
       id_quartiere: dati.quartiere?.id_quartiere
-    }).pipe(tap((res) => this._impostaSessione(res.tipo, res.utente)));
+    }, { withCredentials: true }).pipe(tap((res) => this._impostaSessione(res.tipo, res.utente)));
   }
   aggiornaProfilo(utente) {
     this._impostaSessione(this.tipoUtente(), utente);
   }
+  /**
+   * Verifica il cookie di sessione tramite /api/auth/me e ripristina
+   * utenteCorrente/tipoUtente se valido. Usata all'avvio dell'app per
+   * mantenere la sessione dopo un refresh della pagina.
+   */
+  inizializzaSessione() {
+    return this.http.get(`${this.API}/auth/me`, { withCredentials: true }).pipe(tap((res) => this._impostaSessione(res.tipo, res.utente)), catchError(() => of(null)));
+  }
   logout() {
+    this.http.post(`${this.API}/auth/logout`, {}, { withCredentials: true }).subscribe();
     this.utenteCorrente.set(null);
     this.tipoUtente.set(null);
     this.router.navigate(["/login"]);
@@ -38590,6 +38606,7 @@ export {
   setClassMetadata,
   isPromise2 as isPromise,
   isSubscribable,
+  provideAppInitializer,
   ɵɵattribute,
   ɵɵproperty,
   ɵɵstyleProp,
@@ -38766,4 +38783,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-3SNN5JWR.js.map
+//# sourceMappingURL=chunk-3V7QK2LV.js.map

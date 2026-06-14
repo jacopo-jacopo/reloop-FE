@@ -250,7 +250,7 @@ router-outlet + * {
 .modal-bg {
   position: fixed;
   inset: 0;
-  z-index: 700;
+  z-index: 950;
   background: rgba(0, 0, 0, .72);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -1727,6 +1727,12 @@ select.fi {
   background: rgba(211, 47, 47, .08);
   border-color: rgba(211, 47, 47, .2);
 }
+.sys-msg-oscuramento {
+  color: #ef5350;
+  background: rgba(211, 47, 47, .08);
+  border-color: rgba(211, 47, 47, .2);
+  font-weight: 600;
+}
 .sys-msg-conferma {
   color: var(--lime);
   background: rgba(184, 224, 0, .08);
@@ -2677,6 +2683,19 @@ select.fi {
   font-style: italic;
   font-size: .82rem;
 }
+.admin-preview-foto-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+.admin-preview-foto {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
 .btn-admin-danger {
   background: #dc2626;
   color: #ffffff;
@@ -2836,6 +2855,14 @@ select.fi {
 }
 .btn-ov-prop:hover {
   background: var(--lime2);
+}
+.btn-ov-prop:disabled {
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .35);
+  cursor: not-allowed;
+}
+.btn-ov-prop:disabled:hover {
+  background: rgba(255, 255, 255, .08);
 }
 .ann-ov-segnala-wrapper {
   display: block;

@@ -2,7 +2,7 @@ import {
   HttpClient,
   inject,
   ɵɵdefineInjectable
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/core/services/segnalazione.service.ts
 var SegnalazioneService = class _SegnalazioneService {
@@ -45,4 +45,4 @@ var SegnalazioneService = class _SegnalazioneService {
 export {
   SegnalazioneService
 };
-//# sourceMappingURL=chunk-EOAE7ACB.js.map
+//# sourceMappingURL=chunk-DP4R4AS2.js.map

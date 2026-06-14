@@ -3,7 +3,7 @@ import {
   inject,
   signal,
   ɵɵdefineInjectable
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/core/services/utente.service.ts
 var UtenteService = class _UtenteService {
@@ -130,4 +130,4 @@ export {
   UtenteService,
   OverlayService
 };
-//# sourceMappingURL=chunk-EEAG4X3M.js.map
+//# sourceMappingURL=chunk-7VNEKI35.js.map

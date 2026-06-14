@@ -230,6 +230,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     return typeof msg?.contenuto === 'string' && msg.contenuto.endsWith('ha annullato lo scambio');
   }
 
+  /** Riconosce il messaggio di sistema generato quando un admin oscura un annuncio coinvolto nella chat. */
+  isMsgOscuramento(msg: any): boolean {
+    return typeof msg?.contenuto === 'string'
+      && msg.contenuto.includes('è stato rimosso da un amministratore e non è più disponibile.');
+  }
+
   /** Riconosce il messaggio di sistema generato dalla conferma di completamento. */
   isMsgConferma(msg: any): boolean {
     return typeof msg?.contenuto === 'string' && msg.contenuto.endsWith('ha confermato che lo scambio è stato completato');

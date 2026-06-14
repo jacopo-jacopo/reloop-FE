@@ -4,7 +4,7 @@ import {
   inject,
   signal,
   ɵɵdefineInjectable
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/core/services/notification.service.ts
 var NotificationService = class _NotificationService {
@@ -86,4 +86,4 @@ var NotificationService = class _NotificationService {
 export {
   NotificationService
 };
-//# sourceMappingURL=chunk-OAKHWBYB.js.map
+//# sourceMappingURL=chunk-PVRZVAKQ.js.map

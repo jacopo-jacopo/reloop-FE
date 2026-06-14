@@ -3,7 +3,7 @@ import {
   HttpClient,
   inject,
   ɵɵdefineInjectable
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/core/services/annuncio.service.ts
 var AnnuncioService = class _AnnuncioService {
@@ -76,4 +76,4 @@ var AnnuncioService = class _AnnuncioService {
 export {
   AnnuncioService
 };
-//# sourceMappingURL=chunk-H3KUEFTO.js.map
+//# sourceMappingURL=chunk-Y4UJ2NKZ.js.map

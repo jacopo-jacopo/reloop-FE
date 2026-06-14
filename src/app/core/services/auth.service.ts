@@ -1,8 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.API}/auth/login`, { email, password }).pipe(
+    return this.http.post<any>(`${this.API}/auth/login`, { email, password }, { withCredentials: true }).pipe(
       tap(res => this._impostaSessione(res.tipo, res.utente))
     );
   }
@@ -33,7 +33,7 @@ export class AuthService {
       password:      dati.password,
       indirizzo:     dati.indirizzo,
       id_quartiere:  dati.quartiere?.id_quartiere
-    }).pipe(
+    }, { withCredentials: true }).pipe(
       tap(res => this._impostaSessione(res.tipo, res.utente))
     );
   }
@@ -42,7 +42,20 @@ export class AuthService {
     this._impostaSessione(this.tipoUtente()!, utente);
   }
 
+  /**
+   * Verifica il cookie di sessione tramite /api/auth/me e ripristina
+   * utenteCorrente/tipoUtente se valido. Usata all'avvio dell'app per
+   * mantenere la sessione dopo un refresh della pagina.
+   */
+  inizializzaSessione(): Observable<any> {
+    return this.http.get<any>(`${this.API}/auth/me`, { withCredentials: true }).pipe(
+      tap(res => this._impostaSessione(res.tipo, res.utente)),
+      catchError(() => of(null))
+    );
+  }
+
   logout(): void {
+    this.http.post(`${this.API}/auth/logout`, {}, { withCredentials: true }).subscribe();
     this.utenteCorrente.set(null);
     this.tipoUtente.set(null);
     this.router.navigate(['/login']);

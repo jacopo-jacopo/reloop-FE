@@ -2,7 +2,7 @@ import {
   HttpClient,
   inject,
   ɵɵdefineInjectable
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/core/services/proposta.service.ts
 var PropostaService = class _PropostaService {
@@ -42,4 +42,4 @@ var PropostaService = class _PropostaService {
 export {
   PropostaService
 };
-//# sourceMappingURL=chunk-QLIDZFYC.js.map
+//# sourceMappingURL=chunk-TMEL3XZI.js.map

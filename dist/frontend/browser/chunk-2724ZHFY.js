@@ -13,10 +13,10 @@ import {
   Validators,
   ɵNgNoValidate,
   ɵNgSelectMultipleOption
-} from "./chunk-BBR5L3LN.js";
+} from "./chunk-HAS6CWBK.js";
 import {
   AnnuncioService
-} from "./chunk-H3KUEFTO.js";
+} from "./chunk-Y4UJ2NKZ.js";
 import {
   CommonModule,
   Router,
@@ -46,7 +46,7 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/pages/pubblica/pubblica.component.ts
 var _forTrack0 = ($index, $item) => $item.value;
@@ -335,4 +335,4 @@ var PubblicaComponent = class _PubblicaComponent {
 export {
   PubblicaComponent
 };
-//# sourceMappingURL=chunk-C7PYPOQE.js.map
+//# sourceMappingURL=chunk-2724ZHFY.js.map

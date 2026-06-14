@@ -1,9 +1,9 @@
 import {
   PropostaService
-} from "./chunk-QLIDZFYC.js";
+} from "./chunk-TMEL3XZI.js";
 import {
   NotificationService
-} from "./chunk-OAKHWBYB.js";
+} from "./chunk-PVRZVAKQ.js";
 import {
   ActivatedRoute,
   CommonModule,
@@ -36,7 +36,7 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/pages/proposte/proposte.component.ts
 var _forTrack0 = ($index, $item) => $item.id_proposta;
@@ -636,4 +636,4 @@ var ProposteComponent = class _ProposteComponent {
 export {
   ProposteComponent
 };
-//# sourceMappingURL=chunk-63ZPTG4M.js.map
+//# sourceMappingURL=chunk-SYSJ52YR.js.map

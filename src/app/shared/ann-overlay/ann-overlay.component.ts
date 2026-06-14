@@ -91,7 +91,7 @@ export class AnnOverlayComponent {
 
   apriModalProposta() {
     const ann = this.annuncio;
-    if (!ann) return;
+    if (!ann || this.giaSegnalato()) return;
     this.chiudi();
     this.overlayService.apriProposta(ann);
   }

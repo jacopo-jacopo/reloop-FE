@@ -21,7 +21,7 @@
              (click)="ispeziona(s)">
           <div class="admin-card-header">
             <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
-            <span [class]="badgeClass(s.stato_segnalazione)">{{ s.stato_segnalazione }}</span>
+            <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
           </div>
           <div class="admin-card-title">
               Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
@@ -54,7 +54,7 @@
               Ispezione #{{ segnalazioneAttiva()!.id_segnalazione }}
             </h3>
             <span [class]="badgeClass(segnalazioneAttiva()!.stato_segnalazione)">
-              {{ segnalazioneAttiva()!.stato_segnalazione }}
+              {{ testoStato(segnalazioneAttiva()!.stato_segnalazione) }}
             </span>
           </div>
 
@@ -67,14 +67,28 @@
             <div class="preview-annuncio-box">
               <div class="preview-box-label">Contesto Annuncio</div>
               <div class="preview-box-title">{{ annuncioAttivo()!.titolo }}</div>
+
+              @if (fotoAnnuncio().length > 0) {
+                <div class="admin-preview-foto-row">
+                  @for (f of fotoAnnuncio(); track $index) {
+                    <img [src]="f" class="admin-preview-foto" />
+                  }
+                </div>
+              }
+
               <div class="u-text-xs-muted admin-preview-row">
                 <strong>Categoria:</strong> {{ annuncioAttivo()!.categoria }}
               </div>
               <div class="u-text-xs-muted admin-preview-row">
                 <strong>Condizioni:</strong> {{ annuncioAttivo()!.condizioni }}
               </div>
-              <div class="u-text-xs-muted admin-preview-row-last">
+              <div class="u-text-xs-muted admin-preview-row">
                 <strong>Valore stimato:</strong> €{{ annuncioAttivo()!.prezzo_stimato }}
+              </div>
+              <div class="u-text-xs-muted admin-preview-row-last">
+                <strong>Pubblicato da:</strong>
+                {{ annuncioAttivo()!.pubblicante?.nome_completo }}
+                (ID #{{ annuncioAttivo()!.pubblicante?.id_utente_reg }})
               </div>
               <div class="u-text-xs-muted admin-preview-desc">
                 <strong>Descrizione:</strong> "{{ annuncioAttivo()!.descrizione_annuncio }}"

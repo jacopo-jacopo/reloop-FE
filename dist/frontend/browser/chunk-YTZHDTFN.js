@@ -1,13 +1,13 @@
 import {
   SegnalazioneService
-} from "./chunk-EOAE7ACB.js";
+} from "./chunk-DP4R4AS2.js";
 import {
   OverlayService,
   UtenteService
-} from "./chunk-EEAG4X3M.js";
+} from "./chunk-7VNEKI35.js";
 import {
   AnnuncioService
-} from "./chunk-H3KUEFTO.js";
+} from "./chunk-Y4UJ2NKZ.js";
 import {
   AuthService,
   CommonModule,
@@ -46,7 +46,7 @@ import {
   ɵɵtextInterpolate1,
   ɵɵtextInterpolate2,
   ɵɵtextInterpolate3
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/pages/profilo/profilo.component.ts
 var _c0 = (a0, a1) => [a0, a1];
@@ -317,8 +317,11 @@ function ProfiloComponent_For_18_Template(rf, ctx) {
     \u0275\u0275elementStart(6, "div", 52);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(8, "div", 53);
+    \u0275\u0275elementStart(8, "div", 52);
     \u0275\u0275text(9);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(10, "div", 53);
+    \u0275\u0275text(11);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
@@ -327,11 +330,13 @@ function ProfiloComponent_For_18_Template(rf, ctx) {
     \u0275\u0275advance(5);
     \u0275\u0275textInterpolate2(" ", s_r9.annuncio_segnalato == null ? null : s_r9.annuncio_segnalato.titolo, " (#", s_r9.id_segnalazione, ") ");
     \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" Proprietario: ", s_r9.annuncio_segnalato == null ? null : s_r9.annuncio_segnalato.pubblicante == null ? null : s_r9.annuncio_segnalato.pubblicante.nome_completo, " ");
+    \u0275\u0275advance(2);
     \u0275\u0275textInterpolate1('"', s_r9.motivazione, '"');
     \u0275\u0275advance();
     \u0275\u0275classMap(ctx_r1.classeStatoSegnalazione(s_r9.stato_segnalazione));
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" \u25CF ", s_r9.stato_segnalazione, " ");
+    \u0275\u0275textInterpolate1(" \u25CF ", ctx_r1.testoStatoSegnalazione(s_r9.stato_segnalazione), " ");
   }
 }
 function ProfiloComponent_ForEmpty_19_Template(rf, ctx) {
@@ -433,9 +438,9 @@ function ProfiloComponent_For_37_Conditional_5_Template(rf, ctx) {
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const \u0275$index_239_r13 = \u0275\u0275nextContext().$index;
+    const \u0275$index_242_r13 = \u0275\u0275nextContext().$index;
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275$index_239_r13 + 1);
+    \u0275\u0275textInterpolate(\u0275$index_242_r13 + 1);
   }
 }
 function ProfiloComponent_For_37_Conditional_7_Template(rf, ctx) {
@@ -493,11 +498,11 @@ function ProfiloComponent_For_37_Template(rf, ctx) {
     let tmp_11_0;
     let tmp_15_0;
     const u_r12 = ctx.$implicit;
-    const \u0275$index_239_r13 = ctx.$index;
+    const \u0275$index_242_r13 = ctx.$index;
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275classProp("you", u_r12.id_utente_reg === ((tmp_11_0 = ctx_r1.profilo()) == null ? null : tmp_11_0.id_utente_reg));
     \u0275\u0275advance(2);
-    \u0275\u0275conditional(\u0275$index_239_r13 === 0 ? 2 : \u0275$index_239_r13 === 1 ? 3 : \u0275$index_239_r13 === 2 ? 4 : 5);
+    \u0275\u0275conditional(\u0275$index_242_r13 === 0 ? 2 : \u0275$index_242_r13 === 1 ? 3 : \u0275$index_242_r13 === 2 ? 4 : 5);
     \u0275\u0275advance(5);
     \u0275\u0275conditional(u_r12.foto_profilo ? 7 : 8);
     \u0275\u0275advance(4);
@@ -660,6 +665,26 @@ var ProfiloComponent = class _ProfiloComponent {
   get annunciOscurati() {
     return this.annunci().filter((a) => a.stato_annuncio === "oscurato");
   }
+  // Ordine di visualizzazione dei badge nel profilo
+  ORDINE_BADGE = [
+    "Primo passo",
+    "Riciclatore Seriale",
+    "Leggenda verde",
+    "Green Hero",
+    "In cima al mondo",
+    "Vicino di fiducia",
+    "Punto di riferimento",
+    "Verde profondo",
+    "Eco-Mostro",
+    "Irraggiungibilmente green"
+  ];
+  get tuttiBadgeOrdinati() {
+    return [...this.tuttiBadge()].sort((a, b) => {
+      const ia = this.ORDINE_BADGE.findIndex((n) => n.toLowerCase() === a.nome_badge?.toLowerCase());
+      const ib = this.ORDINE_BADGE.findIndex((n) => n.toLowerCase() === b.nome_badge?.toLowerCase());
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+    });
+  }
   get iniziali() {
     const nome = this.profilo()?.nome_completo || "";
     return nome.split(" ").map((p) => p[0]).join("").substring(0, 2).toUpperCase();
@@ -774,6 +799,9 @@ var ProfiloComponent = class _ProfiloComponent {
       return "u-clr-chiusa";
     return "u-clr-attesa";
   }
+  testoStatoSegnalazione(stato) {
+    return (stato || "").replace(/_/g, " ");
+  }
   vaiAllaChat(ann) {
     this.router.navigate(["/chat"], { queryParams: { idAnnuncio: ann.id_annuncio } });
   }
@@ -795,7 +823,7 @@ var ProfiloComponent = class _ProfiloComponent {
       \u0275\u0275elementStart(15, "p", 8);
       \u0275\u0275text(16, " Traccia lo stato delle segnalazioni inviate ai moderatori. ");
       \u0275\u0275elementEnd();
-      \u0275\u0275repeaterCreate(17, ProfiloComponent_For_18_Template, 10, 6, "div", 9, _forTrack0, false, ProfiloComponent_ForEmpty_19_Template, 2, 0, "p", 10);
+      \u0275\u0275repeaterCreate(17, ProfiloComponent_For_18_Template, 12, 7, "div", 9, _forTrack0, false, ProfiloComponent_ForEmpty_19_Template, 2, 0, "p", 10);
       \u0275\u0275elementEnd()();
       \u0275\u0275elementStart(20, "div")(21, "div", 11)(22, "div", 12)(23, "div", 13);
       \u0275\u0275text(24, "\u{1F3C5} I tuoi Badge");
@@ -839,7 +867,7 @@ var ProfiloComponent = class _ProfiloComponent {
       \u0275\u0275advance(9);
       \u0275\u0275textInterpolate2(" ", ctx.badge().length, " sbloccati su ", ctx.tuttiBadge().length, " ");
       \u0275\u0275advance(2);
-      \u0275\u0275repeater(ctx.tuttiBadge());
+      \u0275\u0275repeater(ctx.tuttiBadgeOrdinati);
       \u0275\u0275advance(8);
       \u0275\u0275repeater(ctx.leaderboard());
       \u0275\u0275advance(6);
@@ -855,4 +883,4 @@ var ProfiloComponent = class _ProfiloComponent {
 export {
   ProfiloComponent
 };
-//# sourceMappingURL=chunk-7LMJIZHE.js.map
+//# sourceMappingURL=chunk-YTZHDTFN.js.map

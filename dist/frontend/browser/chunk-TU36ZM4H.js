@@ -2,7 +2,7 @@ import {
   HttpClient,
   inject,
   ɵɵdefineInjectable
-} from "./chunk-3SNN5JWR.js";
+} from "./chunk-3V7QK2LV.js";
 
 // src/app/core/services/quartiere.service.ts
 var QuartiereService = class _QuartiereService {
@@ -20,4 +20,4 @@ var QuartiereService = class _QuartiereService {
 export {
   QuartiereService
 };
-//# sourceMappingURL=chunk-4E3FYBZI.js.map
+//# sourceMappingURL=chunk-TU36ZM4H.js.map

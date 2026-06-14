@@ -43,6 +43,28 @@ export class ProfiloComponent implements OnInit {
   get annunciChiusi()   { return this.annunci().filter(a => a.stato_annuncio === 'chiuso'); }
   get annunciOscurati() { return this.annunci().filter(a => a.stato_annuncio === 'oscurato'); }
 
+  // Ordine di visualizzazione dei badge nel profilo
+  private readonly ORDINE_BADGE = [
+    'Primo passo',
+    'Riciclatore Seriale',
+    'Leggenda verde',
+    'Green Hero',
+    'In cima al mondo',
+    'Vicino di fiducia',
+    'Punto di riferimento',
+    'Verde profondo',
+    'Eco-Mostro',
+    'Irraggiungibilmente green'
+  ];
+
+  get tuttiBadgeOrdinati() {
+    return [...this.tuttiBadge()].sort((a, b) => {
+      const ia = this.ORDINE_BADGE.findIndex(n => n.toLowerCase() === a.nome_badge?.toLowerCase());
+      const ib = this.ORDINE_BADGE.findIndex(n => n.toLowerCase() === b.nome_badge?.toLowerCase());
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+    });
+  }
+
   get iniziali(): string {
     const nome = this.profilo()?.nome_completo || '';
     return nome.split(' ').map((p: string) => p[0]).join('').substring(0, 2).toUpperCase();
@@ -165,6 +187,10 @@ export class ProfiloComponent implements OnInit {
     if (stato === 'presa_in_carico') return 'u-clr-carico';
     if (stato === 'chiusa')          return 'u-clr-chiusa';
     return 'u-clr-attesa';
+  }
+
+  testoStatoSegnalazione(stato: string): string {
+    return (stato || '').replace(/_/g, ' ');
   }
 
   vaiAllaChat(ann: any) { this.router.navigate(['/chat'], { queryParams: { idAnnuncio: ann.id_annuncio } }); }
