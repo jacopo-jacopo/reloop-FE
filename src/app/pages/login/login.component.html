@@ -66,9 +66,9 @@
           <select class="fi" [class.err]="invalid(formReg, 'id_quartiere')"
                   formControlName="id_quartiere">
             <option value="">
-              {{ quartieriFiltrarti.length === 0 ? 'Scegli prima una città...' : 'Seleziona quartiere...' }}
+              {{ quartieriFiltrati.length === 0 ? 'Scegli prima una città...' : 'Seleziona quartiere...' }}
             </option>
-            @for (q of quartieriFiltrarti; track q.id_quartiere) {
+            @for (q of quartieriFiltrati; track q.id_quartiere) {
               <option [value]="q.id_quartiere">{{ q.nome_quartiere }}</option>
             }
           </select>

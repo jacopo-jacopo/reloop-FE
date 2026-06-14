@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   quartieri: any[]          = [];
   citta: string[]           = [];
-  quartieriFiltrarti: any[] = [];
+  quartieriFiltrati: any[] = [];
   stats = signal<any>(null);
 
   formLogin: FormGroup = this.fb.group({
@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
   onCittaChange(event: Event) {
     const citta = (event.target as HTMLSelectElement).value;
     this.formReg.get('id_quartiere')?.setValue('');
-    this.quartieriFiltrarti = this.quartieri.filter((q: any) => q.citta === citta);
+    this.quartieriFiltrati = this.quartieri.filter((q: any) => q.citta === citta);
   }
 
   doLogin() {

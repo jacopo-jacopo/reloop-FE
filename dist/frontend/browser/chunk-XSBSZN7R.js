@@ -264,9 +264,9 @@ function LoginComponent_Conditional_10_Template(rf, ctx) {
     \u0275\u0275advance(4);
     \u0275\u0275classProp("err", ctx_r1.invalid(ctx_r1.formReg, "id_quartiere"));
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", ctx_r1.quartieriFiltrarti.length === 0 ? "Scegli prima una citt\xE0..." : "Seleziona quartiere...", " ");
+    \u0275\u0275textInterpolate1(" ", ctx_r1.quartieriFiltrati.length === 0 ? "Scegli prima una citt\xE0..." : "Seleziona quartiere...", " ");
     \u0275\u0275advance();
-    \u0275\u0275repeater(ctx_r1.quartieriFiltrarti);
+    \u0275\u0275repeater(ctx_r1.quartieriFiltrati);
     \u0275\u0275advance(2);
     \u0275\u0275conditional(ctx_r1.invalid(ctx_r1.formReg, "id_quartiere") ? 23 : -1);
     \u0275\u0275advance(4);
@@ -303,7 +303,7 @@ var LoginComponent = class _LoginComponent {
   loading = false;
   quartieri = [];
   citta = [];
-  quartieriFiltrarti = [];
+  quartieriFiltrati = [];
   stats = signal(null);
   formLogin = this.fb.group({
     email: ["", [Validators.required, Validators.email]],
@@ -345,7 +345,7 @@ var LoginComponent = class _LoginComponent {
   onCittaChange(event) {
     const citta = event.target.value;
     this.formReg.get("id_quartiere")?.setValue("");
-    this.quartieriFiltrarti = this.quartieri.filter((q) => q.citta === citta);
+    this.quartieriFiltrati = this.quartieri.filter((q) => q.citta === citta);
   }
   doLogin() {
     if (this.formLogin.invalid) {
@@ -551,4 +551,4 @@ var LoginComponent = class _LoginComponent {
 export {
   LoginComponent
 };
-//# sourceMappingURL=chunk-ZTVARQI5.js.map
+//# sourceMappingURL=chunk-XSBSZN7R.js.map

@@ -111,51 +111,61 @@ var loginGuard = () => {
 
 // src/app/app.routes.ts
 var routes = [
+  // Rotta vuota -> reindirizza al login
   {
     path: "",
     pathMatch: "full",
     redirectTo: "login"
   },
+  // Pagina di login, accessibile solo se NON si è già loggati (loginGuard)
   {
     path: "login",
-    loadComponent: () => import("./chunk-ZTVARQI5.js").then((m) => m.LoginComponent),
+    loadComponent: () => import("./chunk-XSBSZN7R.js").then((m) => m.LoginComponent),
     canActivate: [loginGuard]
   },
+  // Home, richiede utente autenticato (authGuard)
   {
     path: "home",
     loadComponent: () => import("./chunk-RFZ7Q6HR.js").then((m) => m.HomeComponent),
     canActivate: [authGuard]
   },
+  // Elenco/ricerca annunci
   {
     path: "annunci",
     loadComponent: () => import("./chunk-HZXVQPAA.js").then((m) => m.AnnunciComponent),
     canActivate: [authGuard]
   },
+  // Proposte di scambio inviate/ricevute
   {
     path: "proposte",
     loadComponent: () => import("./chunk-SYSJ52YR.js").then((m) => m.ProposteComponent),
     canActivate: [authGuard]
   },
+  // Chat tra utenti
   {
     path: "chat",
     loadComponent: () => import("./chunk-7GGC3BRB.js").then((m) => m.ChatComponent),
     canActivate: [authGuard]
   },
+  // Pubblicazione di un nuovo annuncio
   {
     path: "pubblica",
     loadComponent: () => import("./chunk-2724ZHFY.js").then((m) => m.PubblicaComponent),
     canActivate: [authGuard]
   },
+  // Profilo utente
   {
     path: "profilo",
     loadComponent: () => import("./chunk-YTZHDTFN.js").then((m) => m.ProfiloComponent),
     canActivate: [authGuard]
   },
+  // Dashboard amministrazione, riservata agli admin (adminGuard)
   {
     path: "admin",
     loadComponent: () => import("./chunk-B2MSPCFD.js").then((m) => m.AdminComponent),
     canActivate: [adminGuard]
   },
+  // Qualsiasi altra rotta non definita -> reindirizza al login
   {
     path: "**",
     redirectTo: "login"
