@@ -3,7 +3,7 @@ import {
 } from "./chunk-EEAG4X3M.js";
 import {
   AnnuncioService
-} from "./chunk-VUMWJ5MW.js";
+} from "./chunk-H3KUEFTO.js";
 import {
   CommonModule,
   DecimalPipe,
@@ -340,4 +340,4 @@ var HomeComponent = class _HomeComponent {
 export {
   HomeComponent
 };
-//# sourceMappingURL=chunk-SPZ5LARV.js.map
+//# sourceMappingURL=chunk-LYBTTI2C.js.map

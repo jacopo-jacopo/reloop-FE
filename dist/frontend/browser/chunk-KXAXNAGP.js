@@ -3,7 +3,7 @@ import {
 } from "./chunk-EOAE7ACB.js";
 import {
   AnnuncioService
-} from "./chunk-VUMWJ5MW.js";
+} from "./chunk-H3KUEFTO.js";
 import {
   AuthService,
   CommonModule,
@@ -365,4 +365,4 @@ var AdminComponent = class _AdminComponent {
 export {
   AdminComponent
 };
-//# sourceMappingURL=chunk-2H4J3FXZ.js.map
+//# sourceMappingURL=chunk-KXAXNAGP.js.map

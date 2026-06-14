@@ -20,8 +20,6 @@ export class AnnOverlayComponent {
   private auth                = inject(AuthService);
   overlayService              = inject(OverlayService);
 
-  private readonly SEGNALATI_KEY = 'reloop_segnalati';
-
   // Etichette leggibili per i valori dell'enum condizioni del DB
   private readonly LABEL_CONDIZIONI: Record<string, string> = {
     scarso:     'Scarso',
@@ -58,7 +56,8 @@ export class AnnOverlayComponent {
         this.isMio.set(ann.pubblicante?.id_utente_reg === utente?.id_utente_reg);
         this.mostraSegnalaForm.set(false);
         this.motivazione.set('');
-        this.giaSegnalato.set(this._eGiaSegnalato(ann.id_annuncio));
+        this.giaSegnalato.set(false);
+        this._controllaGiaSegnalato(ann.id_annuncio);
         this.foto.set([]);
         this.fotoIndice.set(0);
 
@@ -108,30 +107,34 @@ export class AnnOverlayComponent {
     }
     this.segnalazioneService.invia(ann.id_annuncio, mot).subscribe({
       next: () => {
-        this._salvaSegnalato(ann.id_annuncio);
         this.giaSegnalato.set(true);
         this.mostraSegnalaForm.set(false);
         this.toast.err('Segnalazione inviata', 'I moderatori esamineranno l\'annuncio.', '🚩');
         setTimeout(() => this.chiudi(), 1200);
       },
-      error: () => this.toast.err('Errore', 'Impossibile inviare la segnalazione.', '❌')
+      error: (err) => {
+        if (err.status === 409) {
+          this.giaSegnalato.set(true);
+          this.mostraSegnalaForm.set(false);
+          this.toast.warn('Già segnalato', 'Hai già segnalato questo annuncio.', '🚩');
+        } else {
+          this.toast.err('Errore', 'Impossibile inviare la segnalazione.', '❌');
+        }
+      }
     });
   }
 
-  private _eGiaSegnalato(idAnnuncio: number): boolean {
-    const segnalati: number[] = JSON.parse(
-      localStorage.getItem(this.SEGNALATI_KEY) || '[]'
-    );
-    return segnalati.includes(idAnnuncio);
-  }
-
-  private _salvaSegnalato(idAnnuncio: number): void {
-    const segnalati: number[] = JSON.parse(
-      localStorage.getItem(this.SEGNALATI_KEY) || '[]'
-    );
-    if (!segnalati.includes(idAnnuncio)) {
-      segnalati.push(idAnnuncio);
-      localStorage.setItem(this.SEGNALATI_KEY, JSON.stringify(segnalati));
-    }
+  /** Controlla sul BE se l'utente ha già una segnalazione non chiusa per questo annuncio */
+  private _controllaGiaSegnalato(idAnnuncio: number): void {
+    this.segnalazioneService.getMie().subscribe({
+      next: (segnalazioni) => {
+        const giaSegnalato = segnalazioni.some(s =>
+          s.annuncio_segnalato?.id_annuncio === idAnnuncio
+          && s.stato_segnalazione !== 'chiusa'
+        );
+        this.giaSegnalato.set(giaSegnalato);
+      },
+      error: () => {}
+    });
   }
 }

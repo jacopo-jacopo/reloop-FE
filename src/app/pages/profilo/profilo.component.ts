@@ -25,9 +25,6 @@ export class ProfiloComponent implements OnInit {
   private overlayService      = inject(OverlayService);
   private router              = inject(Router);
 
-  // Chiave localStorage per tracciare gli annunci oscurati già notificati
-  private readonly OSCURATI_KEY = 'reloop_oscurati_notificati';
-
   profilo      = signal<any>(null);
   annunci      = signal<any[]>([]);
   badge        = signal<any[]>([]);
@@ -103,37 +100,25 @@ export class ProfiloComponent implements OnInit {
   }
 
   /**
-   * Controlla se ci sono annunci oscurati dall'admin non ancora notificati.
-   * Gli ID già notificati vengono salvati in localStorage per non ripetere il toast.
+   * Controlla se ci sono annunci oscurati dall'admin non ancora notificati
+   * (notifica_oscuramento_letta = 0 sul DB), mostra il toast e segna la
+   * notifica come letta sul BE per non ripeterla.
    */
   private _notificaAnnunciOscurati(annunci: any[]) {
-    // Recupera gli ID già notificati
-    const giàNotificati: number[] = JSON.parse(
-      localStorage.getItem(this.OSCURATI_KEY) || '[]'
-    );
-
-    // Filtra gli oscurati non ancora notificati
     const nuoviOscurati = annunci.filter(
-      a => a.stato_annuncio === 'oscurato' && !giàNotificati.includes(a.id_annuncio)
+      a => a.stato_annuncio === 'oscurato' && !a.notifica_oscuramento_letta
     );
 
-    // Mostra un toast per ogni nuovo annuncio oscurato
     nuoviOscurati.forEach(ann => {
       this.toast.err(
         'Annuncio rimosso',
         `Il tuo annuncio "${ann.titolo}" è stato rimosso da un amministratore.`,
         '🚫'
       );
+      this.annuncioService.segnaNotificaOscuramentoLetta(ann.id_annuncio).subscribe({
+        error: () => {}
+      });
     });
-
-    // Salva i nuovi oscurati notificati nel localStorage
-    if (nuoviOscurati.length > 0) {
-      const aggiornati = [
-        ...giàNotificati,
-        ...nuoviOscurati.map((a: any) => a.id_annuncio)
-      ];
-      localStorage.setItem(this.OSCURATI_KEY, JSON.stringify(aggiornati));
-    }
   }
 
   apriModificaProfilo() { this.overlayService.apriModificaProfilo(); }

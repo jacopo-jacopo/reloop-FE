@@ -7,7 +7,7 @@ import {
 } from "./chunk-EEAG4X3M.js";
 import {
   AnnuncioService
-} from "./chunk-VUMWJ5MW.js";
+} from "./chunk-H3KUEFTO.js";
 import {
   AuthService,
   CommonModule,
@@ -637,8 +637,6 @@ var ProfiloComponent = class _ProfiloComponent {
   auth = inject(AuthService);
   overlayService = inject(OverlayService);
   router = inject(Router);
-  // Chiave localStorage per tracciare gli annunci oscurati già notificati
-  OSCURATI_KEY = "reloop_oscurati_notificati";
   profilo = signal(null);
   annunci = signal([]);
   badge = signal([]);
@@ -718,22 +716,19 @@ var ProfiloComponent = class _ProfiloComponent {
     }
   }
   /**
-   * Controlla se ci sono annunci oscurati dall'admin non ancora notificati.
-   * Gli ID già notificati vengono salvati in localStorage per non ripetere il toast.
+   * Controlla se ci sono annunci oscurati dall'admin non ancora notificati
+   * (notifica_oscuramento_letta = 0 sul DB), mostra il toast e segna la
+   * notifica come letta sul BE per non ripeterla.
    */
   _notificaAnnunciOscurati(annunci) {
-    const gi\u00E0Notificati = JSON.parse(localStorage.getItem(this.OSCURATI_KEY) || "[]");
-    const nuoviOscurati = annunci.filter((a) => a.stato_annuncio === "oscurato" && !gi\u00E0Notificati.includes(a.id_annuncio));
+    const nuoviOscurati = annunci.filter((a) => a.stato_annuncio === "oscurato" && !a.notifica_oscuramento_letta);
     nuoviOscurati.forEach((ann) => {
       this.toast.err("Annuncio rimosso", `Il tuo annuncio "${ann.titolo}" \xE8 stato rimosso da un amministratore.`, "\u{1F6AB}");
+      this.annuncioService.segnaNotificaOscuramentoLetta(ann.id_annuncio).subscribe({
+        error: () => {
+        }
+      });
     });
-    if (nuoviOscurati.length > 0) {
-      const aggiornati = [
-        ...gi\u00E0Notificati,
-        ...nuoviOscurati.map((a) => a.id_annuncio)
-      ];
-      localStorage.setItem(this.OSCURATI_KEY, JSON.stringify(aggiornati));
-    }
   }
   apriModificaProfilo() {
     this.overlayService.apriModificaProfilo();
@@ -860,4 +855,4 @@ var ProfiloComponent = class _ProfiloComponent {
 export {
   ProfiloComponent
 };
-//# sourceMappingURL=chunk-6QRIDX25.js.map
+//# sourceMappingURL=chunk-7LMJIZHE.js.map

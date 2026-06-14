@@ -29,7 +29,7 @@ import {
 } from "./chunk-EEAG4X3M.js";
 import {
   AnnuncioService
-} from "./chunk-VUMWJ5MW.js";
+} from "./chunk-H3KUEFTO.js";
 import {
   AuthService,
   CommonModule,
@@ -122,12 +122,12 @@ var routes = [
   },
   {
     path: "home",
-    loadComponent: () => import("./chunk-SPZ5LARV.js").then((m) => m.HomeComponent),
+    loadComponent: () => import("./chunk-LYBTTI2C.js").then((m) => m.HomeComponent),
     canActivate: [authGuard]
   },
   {
     path: "annunci",
-    loadComponent: () => import("./chunk-HHJKPC7U.js").then((m) => m.AnnunciComponent),
+    loadComponent: () => import("./chunk-NQ6R3BQG.js").then((m) => m.AnnunciComponent),
     canActivate: [authGuard]
   },
   {
@@ -142,17 +142,17 @@ var routes = [
   },
   {
     path: "pubblica",
-    loadComponent: () => import("./chunk-QISTXC2M.js").then((m) => m.PubblicaComponent),
+    loadComponent: () => import("./chunk-C7PYPOQE.js").then((m) => m.PubblicaComponent),
     canActivate: [authGuard]
   },
   {
     path: "profilo",
-    loadComponent: () => import("./chunk-6QRIDX25.js").then((m) => m.ProfiloComponent),
+    loadComponent: () => import("./chunk-7LMJIZHE.js").then((m) => m.ProfiloComponent),
     canActivate: [authGuard]
   },
   {
     path: "admin",
-    loadComponent: () => import("./chunk-2H4J3FXZ.js").then((m) => m.AdminComponent),
+    loadComponent: () => import("./chunk-KXAXNAGP.js").then((m) => m.AdminComponent),
     canActivate: [adminGuard]
   },
   {
@@ -658,7 +658,6 @@ var AnnOverlayComponent = class _AnnOverlayComponent {
   toast = inject(ToastService);
   auth = inject(AuthService);
   overlayService = inject(OverlayService);
-  SEGNALATI_KEY = "reloop_segnalati";
   // Etichette leggibili per i valori dell'enum condizioni del DB
   LABEL_CONDIZIONI = {
     scarso: "Scarso",
@@ -694,7 +693,8 @@ var AnnOverlayComponent = class _AnnOverlayComponent {
         this.isMio.set(ann.pubblicante?.id_utente_reg === utente?.id_utente_reg);
         this.mostraSegnalaForm.set(false);
         this.motivazione.set("");
-        this.giaSegnalato.set(this._eGiaSegnalato(ann.id_annuncio));
+        this.giaSegnalato.set(false);
+        this._controllaGiaSegnalato(ann.id_annuncio);
         this.foto.set([]);
         this.fotoIndice.set(0);
         this.annuncioService.getFoto(ann.id_annuncio).subscribe({
@@ -747,25 +747,32 @@ var AnnOverlayComponent = class _AnnOverlayComponent {
     }
     this.segnalazioneService.invia(ann.id_annuncio, mot).subscribe({
       next: () => {
-        this._salvaSegnalato(ann.id_annuncio);
         this.giaSegnalato.set(true);
         this.mostraSegnalaForm.set(false);
         this.toast.err("Segnalazione inviata", "I moderatori esamineranno l'annuncio.", "\u{1F6A9}");
         setTimeout(() => this.chiudi(), 1200);
       },
-      error: () => this.toast.err("Errore", "Impossibile inviare la segnalazione.", "\u274C")
+      error: (err) => {
+        if (err.status === 409) {
+          this.giaSegnalato.set(true);
+          this.mostraSegnalaForm.set(false);
+          this.toast.warn("Gi\xE0 segnalato", "Hai gi\xE0 segnalato questo annuncio.", "\u{1F6A9}");
+        } else {
+          this.toast.err("Errore", "Impossibile inviare la segnalazione.", "\u274C");
+        }
+      }
     });
   }
-  _eGiaSegnalato(idAnnuncio) {
-    const segnalati = JSON.parse(localStorage.getItem(this.SEGNALATI_KEY) || "[]");
-    return segnalati.includes(idAnnuncio);
-  }
-  _salvaSegnalato(idAnnuncio) {
-    const segnalati = JSON.parse(localStorage.getItem(this.SEGNALATI_KEY) || "[]");
-    if (!segnalati.includes(idAnnuncio)) {
-      segnalati.push(idAnnuncio);
-      localStorage.setItem(this.SEGNALATI_KEY, JSON.stringify(segnalati));
-    }
+  /** Controlla sul BE se l'utente ha già una segnalazione non chiusa per questo annuncio */
+  _controllaGiaSegnalato(idAnnuncio) {
+    this.segnalazioneService.getMie().subscribe({
+      next: (segnalazioni) => {
+        const giaSegnalato = segnalazioni.some((s) => s.annuncio_segnalato?.id_annuncio === idAnnuncio && s.stato_segnalazione !== "chiusa");
+        this.giaSegnalato.set(giaSegnalato);
+      },
+      error: () => {
+      }
+    });
   }
   static \u0275fac = function AnnOverlayComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _AnnOverlayComponent)();

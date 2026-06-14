@@ -16,7 +16,7 @@ import {
 } from "./chunk-BBR5L3LN.js";
 import {
   AnnuncioService
-} from "./chunk-VUMWJ5MW.js";
+} from "./chunk-H3KUEFTO.js";
 import {
   CommonModule,
   Router,
@@ -335,4 +335,4 @@ var PubblicaComponent = class _PubblicaComponent {
 export {
   PubblicaComponent
 };
-//# sourceMappingURL=chunk-QISTXC2M.js.map
+//# sourceMappingURL=chunk-C7PYPOQE.js.map

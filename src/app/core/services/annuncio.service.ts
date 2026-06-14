@@ -57,6 +57,13 @@ export class AnnuncioService {
     });
   }
 
+  /** Segna come letta la notifica di oscuramento di un annuncio */
+  segnaNotificaOscuramentoLetta(id: number): Observable<any> {
+    return this.http.put<any>(`${this.API}/annunci/${id}`, {
+      notifica_oscuramento_letta: true
+    });
+  }
+
   /** Elimina definitivamente un annuncio */
   elimina(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API}/annunci/${id}`);

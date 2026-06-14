@@ -51,6 +51,12 @@ var AnnuncioService = class _AnnuncioService {
       stato_annuncio: "chiuso"
     });
   }
+  /** Segna come letta la notifica di oscuramento di un annuncio */
+  segnaNotificaOscuramentoLetta(id) {
+    return this.http.put(`${this.API}/annunci/${id}`, {
+      notifica_oscuramento_letta: true
+    });
+  }
   /** Elimina definitivamente un annuncio */
   elimina(id) {
     return this.http.delete(`${this.API}/annunci/${id}`);
@@ -70,4 +76,4 @@ var AnnuncioService = class _AnnuncioService {
 export {
   AnnuncioService
 };
-//# sourceMappingURL=chunk-VUMWJ5MW.js.map
+//# sourceMappingURL=chunk-H3KUEFTO.js.map

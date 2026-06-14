@@ -3,7 +3,7 @@ import {
 } from "./chunk-EEAG4X3M.js";
 import {
   AnnuncioService
-} from "./chunk-VUMWJ5MW.js";
+} from "./chunk-H3KUEFTO.js";
 import {
   CommonModule,
   ToastService,
@@ -278,4 +278,4 @@ var AnnunciComponent = class _AnnunciComponent {
 export {
   AnnunciComponent
 };
-//# sourceMappingURL=chunk-HHJKPC7U.js.map
+//# sourceMappingURL=chunk-NQ6R3BQG.js.map
