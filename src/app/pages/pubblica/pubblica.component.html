@@ -12,12 +12,14 @@
       @if (fotoPreview.length === 0) {
         <div class="upload-placeholder-inner">
           <div class="u-text-2xl">📸</div>
-          <div class="u-text-muted-sm">Aggiungi almeno una foto</div>
+          <div class="u-text-muted-sm">Aggiungi almeno una foto (massimo {{ maxFoto }})</div>
         </div>
       }
-      <input type="file" accept="image/*" multiple
-             style="position:absolute;inset:0;opacity:0;cursor:pointer"
-             (change)="onFotoChange($event)" />
+      @if (fotoPreview.length < maxFoto) {
+        <input type="file" accept="image/*" multiple
+               style="position:absolute;inset:0;opacity:0;cursor:pointer"
+               (change)="onFotoChange($event)" />
+      }
 
       @if (fotoPreview.length > 0) {
         <div class="photo-grid">
@@ -31,6 +33,7 @@
             </div>
           }
         </div>
+        <div class="u-text-muted-sm photo-count">{{ fotoPreview.length }}/{{ maxFoto }} foto</div>
       }
     </div>
 

@@ -46,14 +46,26 @@ export class PubblicaComponent {
 
   selCond(v: string) { this.condSelezionata.set(v); }
 
+  readonly maxFoto = 4;
+
   onFotoChange(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
-    Array.from(input.files).forEach(file => {
+
+    const postiLiberi = this.maxFoto - this.fotoPreview.length;
+    const files = Array.from(input.files);
+
+    if (files.length > postiLiberi) {
+      this.toast.warn('Limite foto', `Puoi aggiungere al massimo ${this.maxFoto} foto per annuncio.`, '⚠️');
+    }
+
+    files.slice(0, postiLiberi).forEach(file => {
       const reader = new FileReader();
       reader.onload = e => this.fotoPreview.push(e.target?.result as string);
       reader.readAsDataURL(file);
     });
+
+    input.value = '';
   }
 
   rimuoviFoto(idx: number) { this.fotoPreview.splice(idx, 1); }

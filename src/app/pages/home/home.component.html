@@ -11,19 +11,33 @@
     </div>
   </div>
 
-  <div class="map-box">
-    <div class="map-grid-bg"></div>
-    <div class="map-road map-road-h1"></div>
-    <div class="map-road map-road-v1"></div>
-    <div class="map-road map-road-h2"></div>
-    <div class="map-pin pin-l map-pin-bici"     (click)="vai('/annunci')">🚲</div>
-    <div class="map-pin pin-s map-pin-manga"    (click)="vai('/annunci')">📚</div>
-    <div class="map-pin pin-m map-pin-chitarra" (click)="vai('/annunci')">🎸</div>
-    <div class="map-pin pin-t map-pin-poltrona" (click)="vai('/annunci')">🛋️</div>
-    <div class="map-pin pin-l map-pin-pentole"  (click)="vai('/annunci')">🍳</div>
-    <div class="map-chip map-chip-sanfermo">Centro Storico</div>
-    <div class="map-chip map-chip-garibaldi">Giardino</div>
-    <div class="map-lbl">📍 Ferrara</div>
+  <div class="co2-box" (click)="vai('/profilo')">
+    <div>
+      <div class="co2-label">CO₂ risparmiata dal quartiere</div>
+      <div>
+        <span class="co2-val">{{ co2Quartiere() | number:'1.1-1' }}</span>
+        <span class="co2-unit">kg</span>
+      </div>
+      <div class="co2-note">
+        calcolata su tutti gli scambi completati nel tuo quartiere
+      </div>
+    </div>
+    <div class="co2-equiv">
+      <div class="co2-eq-item">
+        <div class="co2-eq-icon">🌳</div>
+        <div>
+          <div class="co2-eq-n">Come piantare ~{{ alberiEquivalenti }} alberi</div>
+          <div class="co2-eq-l">stima EPA: 21 kg CO₂ assorbiti da un albero in un anno</div>
+        </div>
+      </div>
+      <div class="co2-eq-item">
+        <div class="co2-eq-icon">🚗</div>
+        <div>
+          <div class="co2-eq-n">Come non guidare per ~{{ kmAuto | number }} km</div>
+          <div class="co2-eq-l">stima: 0.242 kg CO₂ emessi da un'auto per km</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -78,36 +92,4 @@
       }
     </div>
   }
-</div>
-
-<!-- CO2 BOX -->
-<div class="sec u-pt0">
-  <div class="co2-box" (click)="vai('/profilo')">
-    <div>
-      <div class="co2-label">CO₂ risparmiata dal quartiere</div>
-      <div>
-        <span class="co2-val">{{ co2Quartiere() | number:'1.1-1' }}</span>
-        <span class="co2-unit">kg</span>
-      </div>
-      <div class="co2-note">
-        calcolata su tutti gli scambi completati nel tuo quartiere
-      </div>
-    </div>
-    <div class="co2-equiv">
-      <div class="co2-eq-item">
-        <div class="co2-eq-icon">🌳</div>
-        <div>
-          <div class="co2-eq-n">Come piantare ~{{ alberiEquivalenti }} alberi</div>
-          <div class="co2-eq-l">stima EPA: 21 kg CO₂ assorbiti da un albero in un anno</div>
-        </div>
-      </div>
-      <div class="co2-eq-item">
-        <div class="co2-eq-icon">🚗</div>
-        <div>
-          <div class="co2-eq-n">Come non guidare per ~{{ kmAuto | number }} km</div>
-          <div class="co2-eq-l">stima: 0.242 kg CO₂ emessi da un'auto per km</div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
