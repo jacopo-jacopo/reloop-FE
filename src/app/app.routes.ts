@@ -1,18 +1,32 @@
 import { Routes } from '@angular/router';
 import { authGuard, adminGuard, loginGuard } from './core/guards/auth.guard';
 
+
+/*
+il loadComponent carica il componente relativo a una rotta in modalità lazy (solo quando viene richiesta quella rotta,
+in modo da non appesantire i caricamenti iniziali dell'app) importando tutto il modulo del componente (infatti specifica
+solo nomeComponente.component, senza specificare il modulo (html, ts, scss)) e restituendo una Promise che risolve il 
+componente da caricare, poi dal modulo caricato viene estratta la classe specifica usata per la sua visualizzazione
+*/
+
+/*
+canActivate: array di funzioni eseguite prima di caricare il componente,
+se una di queste funzioni restituisce false, la rotta non viene caricata
+*/
+
+
 export const routes: Routes = [
   // Rotta vuota -> reindirizza al login
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'login'
+    pathMatch: 'full',   // corrisponde esattamente alla rotta vuota (altrimenti corrisponderebbe anche a qualsiasi altra rotta)
+    redirectTo: 'login'  // reindirizza alla rotta 'login'
   },
   // Pagina di login, accessibile solo se NON si è già loggati (loginGuard)
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
-    canActivate: [loginGuard]
+    canActivate: [loginGuard]  
   },
   // Home, richiede utente autenticato (authGuard)
   {
@@ -56,9 +70,9 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/admin/admin.component').then(m => m.AdminComponent),
     canActivate: [adminGuard]
   },
-  // Qualsiasi altra rotta non definita -> reindirizza al login
+  // Qualsiasi altra rotta non definita reindirizza al login
   {
     path: '**',
-    redirectTo: 'login'
+    redirectTo: 'login'  // reindirizza alla rotta 'login' per qualsiasi altra rotta non definita
   }
 ];

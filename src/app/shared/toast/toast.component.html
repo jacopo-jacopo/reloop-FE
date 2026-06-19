@@ -1,12 +1,13 @@
 <div id="toast-wrap">
+  <!-- per ogni toast nella lista dei toast attivi crea un elemento HTML tenendo traccia del suo ID -->
   @for (t of toastService.toasts(); track t.id) {
     <div class="toast t-{{ t.type }}">
-      <div class="toast-ico">{{ t.icon }}</div>
-      <div class="toast-body">
-        <div class="toast-title">{{ t.title }}</div>
-        <div class="toast-msg">{{ t.msg }}</div>
+      <div class="toast-ico">{{ t.icon }}</div>           <!-- mostra l'icona del toast -->
+      <div class="toast-body">                            
+        <div class="toast-title">{{ t.title }}</div>      <!-- mostra il titolo del toast -->
+        <div class="toast-msg">{{ t.msg }}</div>          <!-- mostra il messaggio del toast -->
       </div>
-      <div class="toast-bar"></div>
+      <div class="toast-bar"></div>                       <!-- barra del toast -->
     </div>
   }
 </div>

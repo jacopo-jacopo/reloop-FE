@@ -81,9 +81,9 @@ export class OverlayService {
   }
 
   // ── Modifica Profilo ──
-modificaProfiloAperta = signal(false);
-apriModificaProfilo() { this.modificaProfiloAperta.set(true); }
-chiudiModificaProfilo() { this.modificaProfiloAperta.set(false); }
+  modificaProfiloAperta = signal(false);
+  apriModificaProfilo() { this.modificaProfiloAperta.set(true); }
+  chiudiModificaProfilo() { this.modificaProfiloAperta.set(false); }
 
 
 
