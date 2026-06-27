@@ -7,15 +7,21 @@ import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../shared/toast/toast.service';
 import { QuartiereService } from '../../core/services/quartiere.service';
 
+// Component per la pagina di login e registrazione, gestisce sia il login che la registrazione degli utenti;
+// Contiene due form reattivi, uno per il login e uno per la registrazione, con validazioni appropriate, 
+// inoltre, carica i quartieri dal backend per il form di registrazione e mostra le statistiche pubbliche
+
+// inizia il decoratore, @Component definisce un componente Angular, con selettore 'app-login'
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,  // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
+  imports: [CommonModule, ReactiveFormsModule],  // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
+                                                 // e ReactiveFormsModule, che fornisce funzionalità per i form reattivi
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  private auth             = inject(AuthService);
+export class LoginComponent implements OnInit {  
+  private auth             = inject(AuthService);        
   private router           = inject(Router);
   private fb               = inject(FormBuilder);
   private toast            = inject(ToastService);
@@ -27,25 +33,27 @@ export class LoginComponent implements OnInit {
   tabAttiva: 'accedi' | 'reg' = 'accedi';
   loading = false;
 
-  quartieri: any[]          = [];
-  citta: string[]           = [];
+  quartieri: any[]         = [];
+  citta: string[]          = [];
   quartieriFiltrati: any[] = [];
-  stats = signal<any>(null);
+  stats = signal<any>(null);  
 
+  // form reattivo per il login, con campi email e password, entrambi obbligatori, con validazione dell'email
   formLogin: FormGroup = this.fb.group({
-    email:    ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    email:    ['', [Validators.required, Validators.email]],  // stato iniziale e validatori asincroni
+    password: ['', Validators.required]                       // stato iniziale e validatore sincrono
   });
 
-  // Almeno 8 caratteri, 1 maiuscola, 1 minuscola, 1 numero, 1 carattere speciale tra !?#-_
+  // regular expression: almeno 8 caratteri di cui almeno 1 maiuscola, 1 minuscola, 1 numero, 1 carattere speciale tra !?#-_
   static readonly PASSWORD_PATTERN = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!?#\-_]).{8,}$/;
 
-  // Il dominio @reloop.it è riservato agli amministratori
+  // controllo sul dominio @reloop.it, riservato agli amministratori
   static emailNonRiservata(control: AbstractControl): ValidationErrors | null {
     const value = (control.value || '').toLowerCase();
     return value.endsWith('@reloop.it') ? { email: true } : null;
   }
 
+  // form reattivo per la registrazione, con campi tutti obbligatori, validazione dell'email e della password
   formReg: FormGroup = this.fb.group({
     nome_completo: ['', Validators.required],
     email:         ['', [Validators.required, Validators.email, LoginComponent.emailNonRiservata]],
@@ -56,25 +64,29 @@ export class LoginComponent implements OnInit {
     id_quartiere:  ['', Validators.required]
   });
 
+  // metodo ngOnInit, viene eseguito al momento dell'inizializzazione del componente
   ngOnInit() {
-    // Carica quartieri dal backend per il form di registrazione
+    // carica quartieri dal backend per il form di registrazione
     this.quartiereService.getAll().subscribe({
       next: (q) => {
         this.quartieri = q;
-        this.citta     = [...new Set(q.map((x: any) => x.citta))];
+        this.citta     = [...new Set(q.map((x: any) => x.citta))];  // crea un nuovo array di città mappando i quaritieri, rimuove i duplicati con Set
+                                                                    // e lo ritrasforma in un array con l'operatore spread
       },
-      error: () => this.toast.err('Errore', 'Impossibile caricare i quartieri.', '❌')
+      error: () => this.toast.err('Errore', 'Impossibile caricare i quartieri.', '❌')  // in caso di errore chiama ToastService
     });
 
-    // Carica le statistiche pubbliche dal backend
+    // carica le statistiche pubbliche dal backend
     this.http.get<any>(`${this.API}/stats/pubbliche`).subscribe({
       next: (s) => this.stats.set(s),
       error: () => {}
     });
   }
 
+  // metodo per cambiare il tab attivo tra login e registrazione
   switchTab(t: 'accedi' | 'reg') { this.tabAttiva = t; }
 
+  // metodo per filtrare i quartieri in base alla città selezionata nel form di registrazione
   onCittaChange(event: Event) {
     const citta = (event.target as HTMLSelectElement).value;
     this.formReg.get('id_quartiere')?.setValue('');

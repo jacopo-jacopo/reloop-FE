@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastService, Toast } from './toast.service';
+import { ToastService} from './toast.service';
 
 // inizia il decoratore, @Component definisce un componente Angular, con selettore 'app-toast', template e stili associati
 @Component({
