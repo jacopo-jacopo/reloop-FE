@@ -1,0 +1,79 @@
+.page-container {
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  .btn-cancel2 {
+    flex: none;
+    font-size: 0.76rem;
+    padding: 5px 12px;
+  }
+}
+
+.page-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--lime);
+}
+
+.notifiche-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notifica-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: var(--card-bg, #1a1a1a);
+  cursor: pointer;
+  position: relative;
+  transition: opacity 0.2s;
+
+  &.non-letta {
+    background: rgba(184, 224, 0, 0.06);
+    border: 1px solid rgba(184, 224, 0, 0.15);
+  }
+}
+
+.notifica-icona {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notifica-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.notifica-testo {
+  font-size: 0.85rem;
+  color: var(--text, #e0e0e0);
+  margin: 0;
+}
+
+.notifica-time {
+  font-size: 0.72rem;
+}
+
+.notifica-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  flex-shrink: 0;
+  margin-top: 6px;
+}

@@ -44,4 +44,12 @@ export class UtenteService {
   aggiornaProfilo(dati: any): Observable<any> {
     return this.http.put<any>(`${this.API}/utenti/me`, dati);
   }
+
+  getAllAdmin(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API}/utenti`);
+  }
+
+  blocca(id: number, bloccato: boolean): Observable<any> {
+    return this.http.put<any>(`${this.API}/utenti/${id}/blocca`, { bloccato });
+  }
 }

@@ -1592,6 +1592,109 @@ select.fi {
 
 .btn-admin-flex:hover { background: rgba(255,255,255,0.15); }
 
+/* Stats bar */
+.admin-stats-bar {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.admin-stat-chip {
+  font-size: 0.82rem; color: var(--txt2);
+  padding-right: 20px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-stat-chip:last-child { border-right: none; padding-right: 0; }
+
+.admin-stat-chip strong { color: var(--txt); font-weight: 600; }
+
+/* Tab bar */
+.admin-tabs {
+  display: flex; gap: 8px;
+  margin-bottom: 20px;
+}
+
+.admin-tabs button {
+  flex: 1; padding: 8px; border-radius: 9px;
+  font-size: .87rem; font-weight: 500;
+  color: var(--txt2);
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  font-family: 'Instrument Sans', sans-serif;
+  transition: .15s; cursor: pointer;
+}
+
+.admin-tabs button:hover { border-color: rgba(255,255,255,0.15); color: var(--txt); }
+
+.admin-tabs button.tab-attiva {
+  background: var(--lime); color: #07090f;
+  font-weight: 700; border-color: transparent;
+}
+
+/* Full-width card (utenti / quartieri tabs) */
+.admin-full-card { padding: 18px; }
+
+/* Utenti */
+.admin-utente-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.admin-utente-row:last-of-type { border-bottom: none; }
+
+.utente-bloccato { opacity: 0.55; }
+
+.admin-utente-info {
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+.admin-utente-nome { font-size: 0.9rem; font-weight: 600; }
+
+.admin-utente-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+/* Badge "Bloccato" dentro admin-utente: riusa .badge-carico ma rosso */
+.admin-utente-actions .badge-stato {
+  background: rgba(220,38,38,0.15); color: #dc2626;
+}
+
+/* Quartieri */
+.admin-quartiere-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.admin-quartiere-row:last-of-type { border-bottom: none; }
+
+.admin-quartiere-nome { font-size: 0.9rem; font-weight: 600; flex: 1; }
+
+.admin-quartiere-input {
+  flex: 1;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 9px; padding: 8px 12px;
+  color: var(--txt); font-size: .88rem;
+  font-family: 'Instrument Sans', sans-serif;
+  outline: none; transition: .15s;
+}
+
+.admin-quartiere-input:focus { border-color: rgba(184,224,0,.35); background: rgba(184,224,0,.03); }
+
+.admin-quartiere-form { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; }
+
+/* Generic input-base (alias di .fi senza resize) */
+.input-base {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 9px; padding: 9px 12px;
+  color: var(--txt); font-size: .88rem;
+  font-family: 'Instrument Sans', sans-serif;
+  outline: none; transition: .15s; width: auto;
+}
+
+.input-base:focus { border-color: rgba(184,224,0,.35); background: rgba(184,224,0,.03); }
+
 /* ==========================================================================
    15. COMPONENTE: ann-overlay (shared/ann-overlay)
    ========================================================================== */

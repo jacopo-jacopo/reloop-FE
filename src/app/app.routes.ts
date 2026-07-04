@@ -64,6 +64,12 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/profilo/profilo.component').then(m => m.ProfiloComponent),
     canActivate: [authGuard]
   },
+  // Notifiche utente
+  {
+    path: 'notifiche',
+    loadComponent: () => import('./pages/notifiche/notifiche.component').then(m => m.NotificheComponent),
+    canActivate: [authGuard]
+  },
   // Dashboard amministrazione, riservata agli admin (adminGuard)
   {
     path: 'admin',

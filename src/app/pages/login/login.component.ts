@@ -88,14 +88,17 @@ export class LoginComponent implements OnInit {
 
   // metodo per filtrare i quartieri in base alla città selezionata nel form di registrazione
   onCittaChange(event: Event) {
-    const citta = (event.target as HTMLSelectElement).value;
-    this.formReg.get('id_quartiere')?.setValue('');
-    this.quartieriFiltrati = this.quartieri.filter((q: any) => q.citta === citta);
+    const citta = (event.target as HTMLSelectElement).value;  // ottiene il valore della città selezionata dall'evento
+    this.formReg.get('id_quartiere')?.setValue('');  // resetta il valore del campo id_quartiere nel form di registrazione;
+                                                     // ?. controlla che il valore non sia null o undefined prima di chiamare il metodo setValue
+    this.quartieriFiltrati = this.quartieri.filter((q: any) => q.citta === citta); // recupera i quariteri filtrati per città
   }
 
+  // metodo per eseguire il login, controlla la validità del form, chiama il servizio AuthService e gestisce la risposta
   doLogin() {
-    if (this.formLogin.invalid) { this.formLogin.markAllAsTouched(); return; }
-    this.loading = true;
+    if (this.formLogin.invalid) { this.formLogin.markAllAsTouched(); return; } // se il form non è valido, marca tutti i campi come toccati in modo
+                                                                               // da rendere visibili gli errori, poi termina subito l'esecuzione
+    this.loading = true;  
     const { email, password } = this.formLogin.value;
     this.auth.login(email, password).subscribe({
       next: (res) => {
@@ -103,7 +106,7 @@ export class LoginComponent implements OnInit {
         if (res.tipo === 'admin') {
           this.router.navigate(['/admin']);
         } else {
-          this.toast.ok('Benvenuto su reloop!', 'Buono scambio 👋', '🌿');
+          this.toast.ok('Benvenuto su reloop!', 'Buono scambio :)', '🌿');
           this.router.navigate(['/home']);
         }
       },
@@ -114,14 +117,16 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  // metodo per eseguire la registrazione, controlla la validità del form, chiama il servizio AuthService e gestisce la risposta
   doRegister() {
-    if (this.formReg.invalid) { this.formReg.markAllAsTouched(); return; }
-    const v = this.formReg.value;
+    if (this.formReg.invalid) { this.formReg.markAllAsTouched(); return; } // se il form non è valido, marca tutti i campi come toccati in modo 
+                                                                           // da rendere visibili gli errori, poi termina subito l'esecuzione
+    const v = this.formReg.value;  // ottiene i valori del form di registrazione
     if (v.password !== v.password2) {
       this.toast.warn('Password diversa', 'Le due password non coincidono.', '⚠️');
       return;
     }
-    const quartiere = this.quartieri.find((q: any) => q.id_quartiere === Number(v.id_quartiere));
+    const quartiere = this.quartieri.find((q: any) => q.id_quartiere === Number(v.id_quartiere)); 
     this.loading = true;
     this.auth.registra({
       nome_completo: v.nome_completo,
@@ -132,7 +137,7 @@ export class LoginComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.loading = false;
-        this.toast.ok('Account creato!', 'Benvenuto in reloop 🌿', '✅');
+        this.toast.ok('Account creato!', 'Benvenuto in reloop :)', '🌿');
         this.router.navigate(['/home']);
       },
       error: () => {
@@ -142,16 +147,19 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  // metodo per verificare se un campo del form è invalido e toccato, utile per mostrare messaggi di errore (usato nel template html)
   invalid(form: FormGroup, field: string): boolean {
-    const c = form.get(field);
+    const c = form.get(field); // controllo sul campo del form (con tutti i metodi e proprietà del controllo)
     return !!(c?.invalid && c?.touched);
   }
 
+  // metodo per formattare il numero di scambi, se maggiore di 1000 lo converte in formato "k"
   formatNum(n: number): string {
     if (n >= 1000) return (n / 1000).toFixed(1).replace('.', ',') + 'k';
     return n.toString();
   }
 
+  // metodo per formattare la quantità di CO2, se maggiore di 1000 lo converte in formato "t"
   formatCo2(kg: number): string {
     if (kg >= 1000) return (kg / 1000).toFixed(1) + ' t';
     return kg + ' kg';

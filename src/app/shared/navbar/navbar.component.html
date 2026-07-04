@@ -24,6 +24,13 @@
     </div>
 
     <div class="nav-right">
+      <a class="nav-link nav-bell" routerLink="/notifiche" routerLinkActive="act">
+        <img class="bell-default" src="bell.png"       width="24" height="24" alt="Notifiche" />
+        <img class="bell-hover"   src="bell_hover.png" width="24" height="24" alt="Notifiche" />
+        @if (notifica.notificheBadge()) {
+          <span class="nav-badge">!</span>
+        }
+      </a>
       @if (auth.utenteCorrente()) {
         <div class="nav-pill"
              style="display:flex;align-items:center;gap:8px;

@@ -11,6 +11,16 @@ export class QuartiereService {
 
   // il tipo di ritorno è Observable<any[]> perché rappresenta un flusso di dati asincrono (come Angular gestisce le risposte HTTP)
   getAll(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API}/quartieri`);  // any[] perché ci si aspetta un array di quartieri
+    return this.http.get<any[]>(`${this.API}/quartieri`);
+  }
+
+  // il tipo di ritorno è Observable<any[]> perché rappresenta un flusso di dati asincrono (come Angular gestisce le risposte HTTP)
+  crea(nomeQuartiere: string, citta: string): Observable<any> {
+    return this.http.post<any>(`${this.API}/quartieri`, { nome_quartiere: nomeQuartiere, citta });
+  }
+
+  // il tipo di ritorno è Observable<any[]> perché rappresenta un flusso di dati asincrono (come Angular gestisce le risposte HTTP)
+  aggiorna(id: number, nomeQuartiere: string, citta: string): Observable<any> {
+    return this.http.put<any>(`${this.API}/quartieri/${id}`, { nome_quartiere: nomeQuartiere, citta });
   }
 }

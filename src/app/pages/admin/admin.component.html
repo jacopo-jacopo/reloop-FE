@@ -1,174 +1,240 @@
 <div class="admin-page-container" style="display:block">
 
   <div class="admin-header">
-    <h1 class="admin-title">🛡️ Centro Moderazione Reloop</h1>
+    <h1 class="admin-title">Centro Moderazione</h1>
     <button class="btn-nav" (click)="apriConfermaLogout()">Esci</button>
   </div>
 
-  <div class="admin-main-layout">
+  <!-- STATS BAR -->
+  @if (stats()) {
+    <div class="admin-stats-bar">
+      <div class="admin-stat-chip">In attesa: <strong>{{ stats().segnalazioni_in_attesa }}</strong></div>
+      <div class="admin-stat-chip">Chiuse: <strong>{{ stats().segnalazioni_chiuse }}</strong></div>
+      <div class="admin-stat-chip">Bloccati: <strong>{{ stats().utenti_bloccati }}</strong></div>
+    </div>
+  }
 
-    <!-- LISTA SEGNALAZIONI -->
-    <div class="prof-ann-card admin-column-card">
-      <div class="prof-ann-t admin-list-title">📋 Segnalazioni Globali</div>
+  <!-- TAB BAR -->
+  <div class="admin-tabs">
+    <button [class.tab-attiva]="tabAttiva() === 'segnalazioni'" (click)="cambiaTab('segnalazioni')">Segnalazioni</button>
+    <button [class.tab-attiva]="tabAttiva() === 'utenti'"       (click)="cambiaTab('utenti')">Utenti</button>
+    <button [class.tab-attiva]="tabAttiva() === 'quartieri'"    (click)="cambiaTab('quartieri')">Quartieri</button>
+  </div>
 
-      @if (loading()) {
-        <p class="admin-login-note">Caricamento...</p>
-      }
+  <!-- TAB: SEGNALAZIONI -->
+  @if (tabAttiva() === 'segnalazioni') {
+    <div class="admin-main-layout">
 
-      @if (!loading()) {
-        @if (segnalazioni().length === 0) {
-          <p class="admin-login-note">Nessuna segnalazione presente.</p>
+      <div class="prof-ann-card admin-column-card">
+        <div class="prof-ann-t admin-list-title">Segnalazioni</div>
+
+        @if (loading()) {
+          <p class="admin-login-note">Caricamento...</p>
+        }
+
+        @if (!loading()) {
+          @if (segnalazioni().length === 0) {
+            <p class="admin-login-note">Nessuna segnalazione presente.</p>
+          } @else {
+
+            <div class="admin-section-title">In attesa</div>
+            @for (s of segnalazioniInAttesa(); track s.id_segnalazione) {
+              <div class="admin-item-card"
+                   [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
+                   (click)="ispeziona(s)">
+                <div class="admin-card-header">
+                  <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
+                  <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
+                </div>
+                <div class="admin-card-title">Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}</div>
+              </div>
+            } @empty {
+              <p class="admin-login-note">Nessuna segnalazione in attesa.</p>
+            }
+
+            <div class="admin-section-title">Gestite da me</div>
+            @for (s of segnalazioniMie(); track s.id_segnalazione) {
+              <div class="admin-item-card"
+                   [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
+                   (click)="ispeziona(s)">
+                <div class="admin-card-header">
+                  <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
+                  <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
+                </div>
+                <div class="admin-card-title">Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}</div>
+              </div>
+            } @empty {
+              <p class="admin-login-note">Nessuna segnalazione gestita da te.</p>
+            }
+
+            <div class="admin-section-title">Gestite da altri admin</div>
+            @for (s of segnalazioniAltri(); track s.id_segnalazione) {
+              <div class="admin-item-card"
+                   [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
+                   (click)="ispeziona(s)">
+                <div class="admin-card-header">
+                  <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
+                  <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
+                </div>
+                <div class="admin-card-title">Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}</div>
+                <div class="admin-card-admin">
+                  Gestita da: {{ s.amministratore?.nome_completo }} (ID #{{ s.amministratore?.id_utente_adm }})
+                </div>
+              </div>
+            } @empty {
+              <p class="admin-login-note">Nessuna segnalazione gestita da altri admin.</p>
+            }
+
+          }
+        }
+      </div>
+
+      <!-- PANNELLO ISPEZIONE -->
+      <div class="prof-ann-card admin-column-card"
+           [class.admin-inspection-panel]="!segnalazioneAttiva()"
+           id="adminPannelloIspezione">
+
+        @if (!segnalazioneAttiva()) {
+          <div class="admin-empty-state">
+            <p class="admin-empty-text">Seleziona una segnalazione per iniziare l'ispezione.</p>
+          </div>
         } @else {
+          <div class="admin-inspection-content" style="display:block">
 
-          <div class="admin-section-title">In attesa</div>
-          @for (s of segnalazioniInAttesa(); track s.id_segnalazione) {
-            <div class="admin-item-card"
-                 [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
-                 (click)="ispeziona(s)">
-              <div class="admin-card-header">
-                <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
-                <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
-              </div>
-              <div class="admin-card-title">
-                  Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
-              </div>
+            <div class="inspection-detail-header">
+              <h3 class="inspection-detail-title">Ispezione #{{ segnalazioneAttiva()!.id_segnalazione }}</h3>
+              <span [class]="badgeClass(segnalazioneAttiva()!.stato_segnalazione)">
+                {{ testoStato(segnalazioneAttiva()!.stato_segnalazione) }}
+              </span>
             </div>
-          } @empty {
-            <p class="admin-login-note">Nessuna segnalazione in attesa.</p>
-          }
 
-          <div class="admin-section-title">Gestite da me</div>
-          @for (s of segnalazioniMie(); track s.id_segnalazione) {
-            <div class="admin-item-card"
-                 [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
-                 (click)="ispeziona(s)">
-              <div class="admin-card-header">
-                <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
-                <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
+            <p class="inspection-detail-row">
+              <strong>Motivazione:</strong> "{{ segnalazioneAttiva()!.motivazione }}"
+            </p>
+
+            @if (annuncioAttivo()) {
+              <div class="preview-annuncio-box">
+                <div class="preview-box-label">Contesto Annuncio</div>
+                <div class="preview-box-title">{{ annuncioAttivo()!.titolo }}</div>
+
+                @if (fotoAnnuncio().length > 0) {
+                  <div class="admin-preview-foto-row">
+                    @for (f of fotoAnnuncio(); track $index) {
+                      <img [src]="f" class="admin-preview-foto" />
+                    }
+                  </div>
+                }
+
+                <div class="u-text-xs-muted admin-preview-row"><strong>Categoria:</strong> {{ annuncioAttivo()!.categoria }}</div>
+                <div class="u-text-xs-muted admin-preview-row"><strong>Condizioni:</strong> {{ annuncioAttivo()!.condizioni }}</div>
+                <div class="u-text-xs-muted admin-preview-row"><strong>Valore stimato:</strong> €{{ annuncioAttivo()!.prezzo_stimato }}</div>
+                <div class="u-text-xs-muted admin-preview-row-last">
+                  <strong>Pubblicato da:</strong>
+                  {{ annuncioAttivo()!.pubblicante?.nome_completo }} (ID #{{ annuncioAttivo()!.pubblicante?.id_utente_reg }})
+                </div>
+                <div class="u-text-xs-muted admin-preview-desc">
+                  <strong>Descrizione:</strong> "{{ annuncioAttivo()!.descrizione_annuncio }}"
+                </div>
               </div>
-              <div class="admin-card-title">
-                  Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
+            }
+
+            @if (segnalazioneAttiva()!.stato_segnalazione === 'chiusa') {
+              <div class="admin-archived-notice">Segnalazione archiviata e chiusa.</div>
+            } @else if (puoAgire(segnalazioneAttiva())) {
+              <div class="admin-actions-section">
+                <div class="admin-actions-label">Risoluzione del ticket:</div>
+                <div class="admin-actions-buttons">
+                  <button class="btn-confirm btn-admin-danger" (click)="risolvi(true)">Chiudi e Oscura Annuncio</button>
+                  <button class="btn-cancel2 btn-admin-flex" (click)="risolvi(false)">Lascia Annuncio Attivo</button>
+                </div>
               </div>
+            } @else {
+              <div class="admin-archived-notice">
+                Presa in carico da {{ segnalazioneAttiva()!.amministratore?.nome_completo }}
+                (ID #{{ segnalazioneAttiva()!.amministratore?.id_utente_adm }}).
+              </div>
+            }
+
+          </div>
+        }
+      </div>
+
+    </div>
+  }
+
+  <!-- TAB: UTENTI -->
+  @if (tabAttiva() === 'utenti') {
+    <div class="prof-ann-card admin-full-card">
+      <div class="prof-ann-t admin-list-title">Utenti</div>
+
+      @if (utenti().length === 0) {
+        <p class="admin-login-note">Caricamento utenti...</p>
+      } @else {
+        @for (u of utenti(); track u.id_utente_reg) {
+          <div class="admin-utente-row" [class.utente-bloccato]="u.bloccato">
+            <div class="admin-utente-info">
+              <span class="admin-utente-nome">{{ u.nome_completo }}</span>
+              <span class="u-text-xs-muted">{{ u.email }}</span>
+              <span class="u-text-xs-muted">{{ u.quartiere?.nome_quartiere }}, {{ u.quartiere?.citta }} · {{ u.punteggio }} pt</span>
             </div>
-          } @empty {
-            <p class="admin-login-note">Nessuna segnalazione gestita da te.</p>
-          }
-
-          <div class="admin-section-title">Gestite da altri admin</div>
-          @for (s of segnalazioniAltri(); track s.id_segnalazione) {
-            <div class="admin-item-card"
-                 [class.selezionata]="segnalazioneAttiva()?.id_segnalazione === s.id_segnalazione"
-                 (click)="ispeziona(s)">
-              <div class="admin-card-header">
-                <span class="admin-card-id">Segnalazione #{{ s.id_segnalazione }}</span>
-                <span [class]="badgeClass(s.stato_segnalazione)">{{ testoStato(s.stato_segnalazione) }}</span>
-              </div>
-              <div class="admin-card-title">
-                  Annuncio #{{ s.annuncio_segnalato?.id_annuncio }}
-              </div>
-              <div class="admin-card-admin">
-                Gestita da: {{ s.amministratore?.nome_completo }} (ID #{{ s.amministratore?.id_utente_adm }})
-              </div>
+            <div class="admin-utente-actions">
+              @if (u.bloccato) {
+                <span class="badge-stato badge-carico">Bloccato</span>
+              }
+              <button class="btn-cancel2" (click)="toggleBlocca(u)">
+                {{ u.bloccato ? 'Sblocca' : 'Blocca' }}
+              </button>
             </div>
-          } @empty {
-            <p class="admin-login-note">Nessuna segnalazione gestita da altri admin.</p>
-          }
-
+          </div>
         }
       }
     </div>
+  }
 
-    <!-- PANNELLO ISPEZIONE -->
-    <div class="prof-ann-card admin-column-card"
-         [class.admin-inspection-panel]="!segnalazioneAttiva()"
-         id="adminPannelloIspezione">
+  <!-- TAB: QUARTIERI -->
+  @if (tabAttiva() === 'quartieri') {
+    <div class="prof-ann-card admin-full-card">
+      <div class="prof-ann-t admin-list-title">Quartieri</div>
 
-      @if (!segnalazioneAttiva()) {
-        <div class="admin-empty-state">
-          <span class="admin-empty-icon">🔍</span>
-          <p class="admin-empty-text">
-            Seleziona una segnalazione per iniziare l'ispezione.
-          </p>
-        </div>
-      } @else {
-        <div class="admin-inspection-content" style="display:block">
-
-          <div class="inspection-detail-header">
-            <h3 class="inspection-detail-title">
-              Ispezione #{{ segnalazioneAttiva()!.id_segnalazione }}
-            </h3>
-            <span [class]="badgeClass(segnalazioneAttiva()!.stato_segnalazione)">
-              {{ testoStato(segnalazioneAttiva()!.stato_segnalazione) }}
-            </span>
-          </div>
-
-          <p class="inspection-detail-row">
-            <strong>Motivazione:</strong> "{{ segnalazioneAttiva()!.motivazione }}"
-          </p>
-
-          <!-- ANTEPRIMA ANNUNCIO -->
-          @if (annuncioAttivo()) {
-            <div class="preview-annuncio-box">
-              <div class="preview-box-label">Contesto Annuncio</div>
-              <div class="preview-box-title">{{ annuncioAttivo()!.titolo }}</div>
-
-              @if (fotoAnnuncio().length > 0) {
-                <div class="admin-preview-foto-row">
-                  @for (f of fotoAnnuncio(); track $index) {
-                    <img [src]="f" class="admin-preview-foto" />
-                  }
-                </div>
-              }
-
-              <div class="u-text-xs-muted admin-preview-row">
-                <strong>Categoria:</strong> {{ annuncioAttivo()!.categoria }}
-              </div>
-              <div class="u-text-xs-muted admin-preview-row">
-                <strong>Condizioni:</strong> {{ annuncioAttivo()!.condizioni }}
-              </div>
-              <div class="u-text-xs-muted admin-preview-row">
-                <strong>Valore stimato:</strong> €{{ annuncioAttivo()!.prezzo_stimato }}
-              </div>
-              <div class="u-text-xs-muted admin-preview-row-last">
-                <strong>Pubblicato da:</strong>
-                {{ annuncioAttivo()!.pubblicante?.nome_completo }}
-                (ID #{{ annuncioAttivo()!.pubblicante?.id_utente_reg }})
-              </div>
-              <div class="u-text-xs-muted admin-preview-desc">
-                <strong>Descrizione:</strong> "{{ annuncioAttivo()!.descrizione_annuncio }}"
-              </div>
-            </div>
-          }
-
-          <!-- AZIONI -->
-          @if (segnalazioneAttiva()!.stato_segnalazione === 'chiusa') {
-            <div class="admin-archived-notice">
-              ✓ Questa segnalazione è stata archiviata e chiusa correttamente.
-            </div>
-          } @else if (puoAgire(segnalazioneAttiva())) {
-            <div class="admin-actions-section">
-              <div class="admin-actions-label">Risoluzione del ticket:</div>
-              <div class="admin-actions-buttons">
-                <button class="btn-confirm btn-admin-danger" (click)="risolvi(true)">
-                  Chiudi e Oscura Annuncio
-                </button>
-                <button class="btn-cancel2 btn-admin-flex" (click)="risolvi(false)">
-                  Lascia Annuncio Attivo
-                </button>
-              </div>
-            </div>
+      @for (q of quartieri(); track q.id_quartiere) {
+        <div class="admin-quartiere-row">
+          @if (quartiereInModifica()?.id_quartiere === q.id_quartiere) {
+            <input class="input-base admin-quartiere-input"
+                   [value]="quartiereInModifica()!.nome_quartiere"
+                   (input)="aggiornaModifica('nome_quartiere', $any($event.target).value)"
+                   placeholder="Nome quartiere" />
+            <input class="input-base admin-quartiere-input"
+                   [value]="quartiereInModifica()!.citta"
+                   (input)="aggiornaModifica('citta', $any($event.target).value)"
+                   placeholder="Città" />
+            <button class="btn-confirm" (click)="salvaModifica()">Salva</button>
+            <button class="btn-cancel2" (click)="annullaModifica()">Annulla</button>
           } @else {
-            <div class="admin-archived-notice">
-              📂 Presa in carico da {{ segnalazioneAttiva()!.amministratore?.nome_completo }}
-              (ID #{{ segnalazioneAttiva()!.amministratore?.id_utente_adm }}).
-            </div>
+            <span class="admin-quartiere-nome">{{ q.nome_quartiere }}</span>
+            <span class="u-text-xs-muted">{{ q.citta }}</span>
+            <button class="btn-cancel2" (click)="iniziaModifica(q)">Modifica</button>
           }
-
         </div>
       }
-    </div>
 
-  </div>
+      <div class="admin-quartiere-form">
+        <div class="admin-section-title">Aggiungi quartiere</div>
+        <div class="admin-quartiere-row">
+          <input class="input-base admin-quartiere-input"
+                 [value]="formNuovo().nome_quartiere"
+                 (input)="aggiornaFormNuovo('nome_quartiere', $any($event.target).value)"
+                 placeholder="Nome quartiere" />
+          <input class="input-base admin-quartiere-input"
+                 [value]="formNuovo().citta"
+                 (input)="aggiornaFormNuovo('citta', $any($event.target).value)"
+                 placeholder="Città" />
+          <button class="btn-confirm" (click)="creaQuartiere()">Aggiungi</button>
+        </div>
+      </div>
+
+    </div>
+  }
+
 </div>
 
 @if (confermaLogoutAperta()) {

@@ -5,6 +5,7 @@ export interface UtenteRegistrato {
   indirizzo: string;
   punteggio: number;
   co2_totale: number;
+  bloccato: boolean;
   quartiere: {
     id_quartiere: number;
     nome_quartiere: string;

@@ -1,0 +1,13 @@
+.nav-bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  .bell-hover { display: none; }
+
+  &:hover,
+  &.act {
+    .bell-default { display: none; }
+    .bell-hover   { display: block; }
+  }
+}

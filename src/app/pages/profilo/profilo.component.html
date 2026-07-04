@@ -12,7 +12,8 @@
         <!-- AVATAR con foto profilo -->
         <div class="prof-av">
           @if (fotoProfilo()) {
-            <img [src]="fotoProfilo()!"
+            <!-- il punto esclamativo indica che fotoProfilo() non è null o undefined -->
+            <img [src]="fotoProfilo()!" 
                  style="width:100%;height:100%;object-fit:cover;border-radius:50%" />
           } @else {
             {{ iniziali }}
@@ -21,7 +22,7 @@
 
         <div class="prof-name">{{ profilo().nome_completo }}</div>
         <div class="prof-loc">
-          📍 {{ profilo().quartiere?.nome_quartiere }}, {{ profilo().quartiere?.citta }}
+          {{ profilo().quartiere?.nome_quartiere }}, {{ profilo().quartiere?.citta }}
         </div>
 
         <div class="prof-score-box">
@@ -40,7 +41,7 @@
           </div>
           <div class="pstat">
             <div class="pstat-n">{{ profilo().co2_totale }} kg</div>
-            <div class="pstat-l">CO₂ totale</div>
+            <div class="pstat-l">CO₂ risparmiata</div>
           </div>
           <div class="pstat">
             <div class="pstat-n">{{ posizione(profilo()) }}°</div>
@@ -62,12 +63,12 @@
     <div class="prof-ann-card">
       <div class="prof-ann-t">I tuoi annunci</div>
 
-      <!-- ATTIVI — cliccabili per gestirli -->
+      <!-- ATTIVI -->
       @if (annunciAttivi.length > 0) {
         <div class="u-section-label">● Attivi</div>
         @for (ann of annunciAttivi; track ann.id_annuncio) {
           <div class="active-ann clickable" (click)="apriModalAnnuncio(ann)">
-            <div class="active-ann-ico">{{ ann.emoji || '📦' }}</div>
+            <div class="active-ann-ico">📦</div>
             <div>
               <div class="active-ann-name">{{ ann.titolo }}</div>
               <div class="active-ann-s">● Attivo · clicca per gestirlo</div>
@@ -76,12 +77,12 @@
         }
       }
 
-      <!-- SOSPESI — in trattativa, rimandano alla chat -->
+      <!-- SOSPESI -->
       @if (annunciSospesi.length > 0) {
         <div class="u-section-label-mt">⏳ In trattativa</div>
         @for (ann of annunciSospesi; track ann.id_annuncio) {
           <div class="active-ann clickable" (click)="vaiAllaChat(ann)">
-            <div class="active-ann-ico">{{ ann.emoji || '📦' }}</div>
+            <div class="active-ann-ico">📦</div>
             <div>
               <div class="active-ann-name">{{ ann.titolo }}</div>
               <div class="active-ann-s u-clr-amber">⏳ In trattativa → vai alla chat</div>
@@ -90,12 +91,12 @@
         }
       }
 
-      <!-- CHIUSI — scambio completato o chiuso manualmente dall'utente -->
+      <!-- CHIUSI -->
       @if (annunciChiusi.length > 0) {
         <div class="u-section-label-mt">✓ Chiusi</div>
         @for (ann of annunciChiusi; track ann.id_annuncio) {
           <div class="active-ann u-opacity55">
-            <div class="active-ann-ico">{{ ann.emoji || '📦' }}</div>
+            <div class="active-ann-ico">📦</div>
             <div>
               <div class="active-ann-name">{{ ann.titolo }}</div>
               <div class="active-ann-s u-clr-txt3">✓ Chiuso</div>
@@ -104,7 +105,7 @@
         }
       }
 
-      <!-- OSCURATI — rimossi dall'amministratore per violazione -->
+      <!-- OSCURATI -->
       @if (annunciOscurati.length > 0) {
         <div class="u-section-label-mt">🚫 Rimossi</div>
         @for (ann of annunciOscurati; track ann.id_annuncio) {
@@ -127,12 +128,12 @@
            annunciOscurati.length === 0) {
         <p class="u-text-muted-sm" style="margin-top:8px">
           Nessun annuncio ancora.
-          <a routerLink="/pubblica" style="color:var(--lime)">Pubblica il tuo primo!</a>
+          <a routerLink="/pubblica" style="color:var(--lime)">Pubblicane uno!</a>
         </p>
       }
 
       <!-- SEGNALAZIONI -->
-      <div class="prof-ann-t" style="margin-top:18px">🚩 Monitoraggio Segnalazioni</div>
+      <div class="prof-ann-t" style="margin-top:18px">📢 Monitoraggio Segnalazioni</div>
       <p class="u-text-note2-mb14">
         Traccia lo stato delle segnalazioni inviate ai moderatori.
       </p>
@@ -202,7 +203,7 @@
 
           </div>
         } @empty {
-          <p class="u-text-muted-sm" style="grid-column:1/-1">
+          <p class="u-text-muted-sm" style="grid-column:1/-1"> <!-- estende lungo tutta la larghezza -->
             Nessun badge disponibile.
           </p>
         }
@@ -274,11 +275,11 @@
   </div>
 </div>
 
-<!-- MODAL GESTIONE ANNUNCIO — solo per annunci attivi -->
+<!-- MODAL GESTIONE ANNUNCIO (per annunci attivi) -->
 @if (modalAnnuncioAperto()) {
   <div class="modal-bg open" (click)="chiudiModalAnnuncio()">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <div class="modal-h">📦 Gestisci annuncio</div>
+    <div class="modal" (click)="$event.stopPropagation()"> <!-- impedisce la chiusura del modal quando si clicca al suo interno -->
+      <div class="modal-h">Gestisci annuncio</div>
       <p class="modal-p">
         <strong>{{ annuncioSelezionato()?.titolo }}</strong><br/>
         Categoria: {{ annuncioSelezionato()?.categoria }} ·

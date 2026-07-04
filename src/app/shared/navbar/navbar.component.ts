@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { NotificaService } from '../../core/services/notifica.service';
 import { ToastService } from '../toast/toast.service';
 
 @Component({
@@ -15,18 +16,17 @@ import { ToastService } from '../toast/toast.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnDestroy {
-  auth  = inject(AuthService);
-  notif = inject(NotificationService);
+  auth     = inject(AuthService);
+  notif    = inject(NotificationService);
+  notifica = inject(NotificaService);
   private toast  = inject(ToastService);
   private router = inject(Router);
   private sub: Subscription;
 
   constructor() {
-    // Ricarica i badge ad ogni navigazione (inclusa la prima al caricamento dell'app).
-    // NavigationEnd è l'evento più affidabile: lo stato auth è già stabile.
     this.sub = this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe(() => this.notif.carica());
+      .subscribe(() => { this.notif.carica(); this.notifica.caricaBadge(); });
   }
 
   ngOnDestroy() { this.sub.unsubscribe(); }
