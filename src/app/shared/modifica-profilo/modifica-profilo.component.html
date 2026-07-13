@@ -2,7 +2,7 @@
   <div class="modal-bg open" (click)="onBgClick($event)">
     <div class="modal u-mw520">
 
-      <div class="modal-h">✏️ Modifica profilo</div>
+      <div class="modal-h">Modifica profilo</div>
 
       <form [formGroup]="form">
 
@@ -13,11 +13,11 @@
               <img [src]="fotoPreview()!"
                    style="width:100%;height:100%;object-fit:cover;border-radius:50%" />
             } @else {
-              {{ auth.utenteCorrente()?.nome_completo?.substring(0,2)?.toUpperCase() }}
+              {{ auth.utenteCorrente()?.nome_completo?.split(' ')?.map((p: string) => p[0])?.join('')?.substring(0, 2)?.toUpperCase() }}
             }
           </div>
           <label style="cursor:pointer;color:var(--lime);font-size:.82rem;font-weight:600">
-            📷 Cambia foto profilo
+            Cambia foto profilo
             <input type="file" accept="image/*" style="display:none"
                    (change)="onFotoChange($event)" />
           </label>
@@ -42,7 +42,7 @@
           <label class="fl">Città</label>
           <select class="fi" formControlName="citta" (change)="onCittaChange($event)">
             <option value="">Seleziona città...</option>
-            @for (c of citta; track c) {
+            @for (c of citta; track c) { <!-- track rispetto al nome perché sono stringhe, non derivano dal db -->
               <option [value]="c">{{ c }}</option>
             }
           </select>
@@ -53,9 +53,9 @@
           <label class="fl">Quartiere</label>
           <select class="fi" formControlName="id_quartiere">
             <option value="">
-              {{ quartieriFiltrarti().length === 0 ? 'Scegli prima una città...' : 'Seleziona quartiere...' }}
+              {{ quartieriFiltrati().length === 0 ? 'Scegli prima una città...' : 'Seleziona quartiere...' }}
             </option>
-            @for (q of quartieriFiltrarti(); track q.id_quartiere) {
+            @for (q of quartieriFiltrati(); track q.id_quartiere) {
               <option [value]="q.id_quartiere">{{ q.nome_quartiere }}</option>
             }
           </select>

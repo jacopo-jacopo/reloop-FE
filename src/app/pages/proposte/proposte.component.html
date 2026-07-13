@@ -21,7 +21,7 @@
     </div>
   }
 
-  <!-- ── RICEVUTE ── -->
+  <!-- RICEVUTE -->
   @if (!loading() && tabAttiva() === 'ric') {
     @for (p of ricevute(); track p.id_proposta) {
       <div class="prop-card">
@@ -51,9 +51,7 @@
                 <div class="swap-item-n">{{ p.annuncio_interesse?.titolo }}</div>
                 <div class="swap-item-u">richiesto</div>
               </div>
-              @if (p.annuncio_interesse?.prezzo_stimato) {
-                <div class="swap-item-price">~€{{ p.annuncio_interesse.prezzo_stimato }}</div>
-              }
+              <div class="swap-item-price">~€{{ p.annuncio_interesse!.prezzo_stimato }}</div>
             </div>
           </div>
 
@@ -80,9 +78,7 @@
                   <div class="swap-item-n">{{ ao.annuncio_offerto?.titolo }}</div>
                   <div class="swap-item-u">annuncio offerto</div>
                 </div>
-                @if (ao.annuncio_offerto?.prezzo_stimato) {
-                  <div class="swap-item-price">~€{{ ao.annuncio_offerto.prezzo_stimato }}</div>
-                }
+                <div class="swap-item-price">~€{{ ao.annuncio_offerto!.prezzo_stimato }}</div>
                 @if ((p.annunci_offerti?.length ?? 0) > 1 && p.stato_proposta === 'in_attesa') {
                   <div class="swap-item-radio"
                        [class.swap-item-radio-sel]="isSelezionato(p.id_proposta, ao.annuncio_offerto?.id_annuncio)">
@@ -119,7 +115,7 @@
     }
   }
 
-  <!-- ── INVIATE ── -->
+  <!-- INVIATE -->
   @if (!loading() && tabAttiva() === 'inv') {
     @for (p of inviate(); track p.id_proposta) {
       <div class="prop-card">
@@ -148,9 +144,7 @@
                 <div class="swap-item-n">{{ p.annuncio_interesse?.titolo }}</div>
                 <div class="swap-item-u">di {{ p.annuncio_interesse?.pubblicante?.nome_completo }}</div>
               </div>
-              @if (p.annuncio_interesse?.prezzo_stimato) {
-                <div class="swap-item-price">~€{{ p.annuncio_interesse.prezzo_stimato }}</div>
-              }
+              <div class="swap-item-price">~€{{ p.annuncio_interesse!.prezzo_stimato }}</div>
             </div>
           </div>
 
@@ -173,9 +167,7 @@
                   <div class="swap-item-n">{{ ao.annuncio_offerto?.titolo }}</div>
                   <div class="swap-item-u">tuo annuncio</div>
                 </div>
-                @if (ao.annuncio_offerto?.prezzo_stimato) {
-                  <div class="swap-item-price">~€{{ ao.annuncio_offerto.prezzo_stimato }}</div>
-                }
+                <div class="swap-item-price">~€{{ ao.annuncio_offerto!.prezzo_stimato }}</div>
               </div>
             }
 

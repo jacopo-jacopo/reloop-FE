@@ -8,15 +8,20 @@ import { NotificationService } from '../../core/services/notification.service';
 import { OverlayService } from '../../core/services/overlay.service';
 import { interval, Subscription, switchMap } from 'rxjs';
 
+// Component per la pagina della chat, mostra le conversazioni dell'utente e i messaggi scambiati
+
+// inizia il decoratore, @Component definisce un componente Angular, con selettore 'app-chat'
 @Component({
   selector: 'app-chat',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: true, // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
+  imports: [CommonModule], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  @ViewChild('msgsArea') private msgsAreaRef?: ElementRef<HTMLDivElement>;
+  
+  // campo che riferisce all'area dei messaggi, per scroll automatico in fondo
+  @ViewChild('msgsArea') private msgsAreaRef?: ElementRef<HTMLDivElement>;  
 
   private chatService    = inject(ChatService);
   private toast          = inject(ToastService);
@@ -33,13 +38,18 @@ export class ChatComponent implements OnInit, OnDestroy {
   confermaAnnullaAperta = signal(false);
   confermaCompletaAperta = signal(false);
 
+  // riferimento a una subscription di una chiamata http periodica per recuperare i messaggi in una chat,
+  // bisogna mantenere il riferimento per poter annullare la subscription quando si cambia chat o quando il componente viene distrutto
+  // (altrimenti il polling continua all'infinito) 
   private _pollSub?: Subscription;
 
   get utenteCorrente() { return this.auth.utenteCorrente() as any; }
 
+  // metodi attivati al caricamento della pagina e alla distruzione del componente
   ngOnInit()    { this.caricaChat(); this.notif.visitaChat(); }
   ngOnDestroy() { this._pollSub?.unsubscribe(); }
 
+  // carica le chat dell'utente corrente dal backend (se l'URL contiene ?idAnnuncio=..., apre automaticamente la chat relativa a quell'annuncio)
   caricaChat() {
     this.loading.set(true);
     this.chatService.getMie().subscribe({
@@ -52,7 +62,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Se l'URL contiene ?idAnnuncio=..., apre automaticamente la chat relativa a quell'annuncio. */
+  // se l'URL contiene ?idAnnuncio=..., apre automaticamente la chat relativa a quell'annuncio
   private _selezionaChatDaQueryParam(chats: any[]) {
     const idAnnuncio = Number(this.route.snapshot.queryParamMap.get('idAnnuncio'));
     if (!idAnnuncio) return;
@@ -60,13 +70,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     const trovata = chats.find(c => {
       const interesse = c.proposta_generante?.annuncio_interesse;
       const offerti: any[] = c.proposta_generante?.annunci_offerti ?? [];
-      return interesse?.id_annuncio === idAnnuncio
-        || offerti.some(ao => ao.annuncio_offerto?.id_annuncio === idAnnuncio);
+      return interesse?.id_annuncio === idAnnuncio || offerti.some(ao => ao.annuncio_offerto?.id_annuncio === idAnnuncio);
     });
 
     if (trovata) this.selezionaChat(trovata);
   }
 
+  // seleziona una chat, carica i messaggi e avvia il polling per aggiornare i messaggi ogni 3 secondi
   selezionaChat(c: any) {
     this.chatAttiva.set(c);
     this.messaggi.set([]);
@@ -79,8 +89,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatService.leggi(c.id_chat).subscribe();
     this.notif.segnaLetta(c.id_chat);
 
-    this._pollSub = interval(3000).pipe(
-      switchMap(() => this.chatService.getMessaggi(c.id_chat))
+    this._pollSub = interval(3000).pipe( // interval crea un Observable che emette un valore ogni 3000ms ,
+                                         // pipe applica un operatore di trasformazione all'Observable, in questo caso switchMap
+      switchMap(() => this.chatService.getMessaggi(c.id_chat)) // switchMap ancella la chiamata HTTP precedente (se ancora in corso) e ne avvia 
+                                                               // una nuova per caricare i messaggi; è importante non usare mergeMap per non 
+                                                               // accumulare chiamate sovrapposte se la risposta del server tarda più di 3 secondi
     ).subscribe(msgs => {
       const prevLen = this.messaggi().length;
       this.messaggi.set(msgs);
@@ -91,8 +104,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
+  // invia un messaggio nella chat attiva, se il testo non è vuoto e se c'è una chat selezionata
   inviaMessaggio() {
-    const testo = this.testoMsg().trim();
+    const testo = this.testoMsg().trim(); // trim rimuove gli spazi bianchi all'inizio e alla fine della stringa
     const chat  = this.chatAttiva();
     if (!testo || !chat) return;
     this.chatService.inviaMessaggio(chat.id_chat, testo).subscribe({
@@ -105,11 +119,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
+  // intercetta l'evento keypress nella textarea del messaggio, se il tasto premuto è Enter invia il messaggio
   onEnter(event: KeyboardEvent) { if (event.key === 'Enter') this.inviaMessaggio(); }
 
+  // apre e chiude i modal di conferma completamento e annullamento dello scambio
   apriConfermaCompleta()  { this.confermaCompletaAperta.set(true); }
   chiudiConfermaCompleta() { this.confermaCompletaAperta.set(false); }
 
+  // conferma il completamento dello scambio:
+  // se l'altro utente ha già confermato lo scambio viene chiusa la chat e viene aperto il modal per lasciare una recensione
   confermaCompletaScambio() {
     const chat = this.chatAttiva();
     this.confermaCompletaAperta.set(false);
@@ -117,7 +135,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatService.completa(chat.id_chat).subscribe({
       next: (res: any) => {
         if (res.completato) {
-          this.toast.ok('Scambio completato! 🎉', 'CO₂ calcolata!', '🌱');
+          this.toast.ok('Scambio completato! 🎉', 'CO₂ calcolata :)', '🌱');
           this.chatAttiva.update(c => c ? { ...c, stato_chat: 'completata' } : c);
           if (res.id_altro_utente != null)
             setTimeout(() => this.overlayService.apriRecensione(res.id_altro_utente, chat.id_chat), 1500);
@@ -131,9 +149,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
+  // apre e chiude il modal di conferma annullamento dello scambio
   apriConfermaAnnulla()  { this.confermaAnnullaAperta.set(true); }
   chiudiConfermaAnnulla() { this.confermaAnnullaAperta.set(false); }
 
+  // conferma l'annullamento dello scambio, chiude la chat e mostra un messaggio di notifica
   confermaAnnullaScambio() {
     const chat = this.chatAttiva();
     this.confermaAnnullaAperta.set(false);
@@ -161,27 +181,30 @@ export class ChatComponent implements OnInit, OnDestroy {
     const msgs = this.messaggi();
     const curr = msgs[index]?.data_invio;
     if (!curr) return null;
-    const currDay = curr.substring(0, 10);
+    const currDay = curr.substring(0, 10); // dal formato: YYYY-MM-DDTHH:mm:ss 
     if (index === 0) return this._formatDay(currDay);
     const prevDay = msgs[index - 1]?.data_invio?.substring(0, 10);
     return currDay !== prevDay ? this._formatDay(currDay) : null;
   }
 
+  // formatta una data ISO in una stringa leggibile
   private _formatDay(iso: string): string {
     const [y, m, d] = iso.split('-').map(Number);
-    const date      = new Date(y, m - 1, d);
+    const date      = new Date(y, m - 1, d); // -1 perché i mesi in JavaScript sono 0-based
     const today     = new Date();
-    const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+    const yesterday = new Date(today); 
+    yesterday.setDate(today.getDate() - 1);
     if (date.toDateString() === today.toDateString())     return 'Oggi';
     if (date.toDateString() === yesterday.toDateString()) return 'Ieri';
-    return date.toLocaleDateString('it', { day: '2-digit', month: 'long', year: 'numeric' });
+    return date.toLocaleDateString('it', { day: '2-digit', month: 'long', year: 'numeric' }); // long per avere il nome del mese completo,
+                                                                                              // numeric per avere l'anno a 4 cifre
   }
 
   private _scrollToBottom() {
-    // Lascia che Angular aggiorni il DOM, poi scrolla in fondo
+    // attende 50 ms perché angular aggiorni il DOM, poi scrolla in fondo
     setTimeout(() => {
       const el = this.msgsAreaRef?.nativeElement;
-      if (el) el.scrollTop = el.scrollHeight;
+      if (el) el.scrollTop = el.scrollHeight; // imposta la posizione dello scroll uguale all'altezza totale del contenuto, cioè va in fondo
     }, 50);
   }
 
@@ -205,60 +228,48 @@ export class ChatComponent implements OnInit, OnDestroy {
     return (offerti.find(ao => ao.flag_selezionato) ?? offerti[0])?.annuncio_offerto ?? null;
   }
 
-  /** Annuncio messo in gioco dall'utente corrente in questa chat. */
   annuncioMio(chat: any): any {
     if (!chat) return null;
     const id  = this.utenteCorrente?.id_utente_reg;
     const pub = chat.proposta_generante?.annuncio_interesse?.pubblicante;
-    return id === pub?.id_utente_reg
-      ? chat.proposta_generante?.annuncio_interesse
-      : this.annuncioScelto(chat);
+    return id === pub?.id_utente_reg ? chat.proposta_generante?.annuncio_interesse : this.annuncioScelto(chat);
   }
 
-  /** Annuncio messo in gioco dall'altro utente in questa chat. */
   annuncioAltro(chat: any): any {
     if (!chat) return null;
     const id  = this.utenteCorrente?.id_utente_reg;
     const pub = chat.proposta_generante?.annuncio_interesse?.pubblicante;
-    return id === pub?.id_utente_reg
-      ? this.annuncioScelto(chat)
-      : chat.proposta_generante?.annuncio_interesse;
+    return id === pub?.id_utente_reg ? this.annuncioScelto(chat) : chat.proposta_generante?.annuncio_interesse;
   }
 
-  /** Riconosce il messaggio di sistema generato all'annullamento dello scambio. */
   isMsgAnnulla(msg: any): boolean {
     return typeof msg?.contenuto === 'string' && msg.contenuto.endsWith('ha annullato lo scambio');
   }
 
-  /** Riconosce il messaggio di sistema generato quando un admin oscura un annuncio coinvolto nella chat. */
   isMsgOscuramento(msg: any): boolean {
     return typeof msg?.contenuto === 'string'
       && msg.contenuto.includes('è stato rimosso da un amministratore e non è più disponibile.');
   }
 
-  /** Riconosce il messaggio di sistema generato dalla conferma di completamento. */
   isMsgConferma(msg: any): boolean {
     return typeof msg?.contenuto === 'string' && msg.contenuto.endsWith('ha confermato che lo scambio è stato completato');
   }
 
-  /** True se l'utente corrente ha già confermato il completamento di questa chat. */
   hoGiaConfermato(): boolean {
     const id = this.utenteCorrente?.id_utente_reg;
     return this.messaggi().some(m => this.isMsgConferma(m) && m.mittente?.id_utente_reg === id);
   }
 
-  /** Riconosce il messaggio di sistema generato dall'invio di una recensione. */
   isMsgRecensione(msg: any): boolean {
     return typeof msg?.contenuto === 'string' && msg.contenuto.endsWith('ha lasciato una recensione');
   }
 
-  /** True se l'utente corrente ha già lasciato una recensione in questa chat. */
   hoGiaRecensito(): boolean {
     const id = this.utenteCorrente?.id_utente_reg;
     return this.messaggi().some(m => this.isMsgRecensione(m) && m.mittente?.id_utente_reg === id);
   }
 
   initials(name: string | undefined): string {
-    return name?.substring(0, 2)?.toUpperCase() ?? '?';
+    return name?.split(' ')?.map((p: string) => p[0])?.join('')?.substring(0, 2)?.toUpperCase() ?? '?';
   }
 }

@@ -216,7 +216,11 @@ export class ProfiloComponent implements OnInit {
   }
 
   // naviga alla pagina della chat relativa all'annuncio selezionato, passando l'id dell'annuncio come parametro di query
-  vaiAllaChat(ann: any) { 
-    this.router.navigate(['/chat'], { queryParams: { idAnnuncio: ann.id_annuncio } }); 
+  vaiAllaChat(ann: any) {
+    this.router.navigate(['/chat'], { queryParams: { idAnnuncio: ann.id_annuncio } });
+  }
+
+  inizialiDa(nome: string): string {
+    return nome.split(' ').map((p: string) => p[0]).join('').substring(0, 2).toUpperCase();
   }
 }

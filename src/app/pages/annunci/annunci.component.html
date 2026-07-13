@@ -9,7 +9,7 @@
       </button>
     }
     <input class="search-i"
-           placeholder="🔍 Cerca..."
+           placeholder="Cerca..."
            (input)="cerca($any($event.target).value)" />
   </div>
 </div>
@@ -23,15 +23,9 @@
     @for (ann of annunciFiltrati(); track ann.id_annuncio) {
       <div class="ann-card ann-card-clickable" (click)="apriDettaglio(ann)">
 
-        <!-- Immagine: prima foto base64 se disponibile, altrimenti placeholder -->
-        <div class="ann-img" [class.ann-bg-bici]="!ann.foto_preview">
-          @if (ann.foto_preview) {
-            <img [src]="ann.foto_preview"
-                 style="width:100%;height:100%;object-fit:cover" />
-          } @else {
-            <div class="ann-cat-chip">{{ ann.categoria }}</div>
-            📦
-          }
+        <div class="ann-img">
+          <img [src]="ann.foto_preview"
+               style="width:100%;height:100%;object-fit:cover" />
         </div>
 
         <div class="ann-body">
@@ -45,14 +39,12 @@
                 @if (ann.pubblicante?.foto_profilo) {
                   <img [src]="ann.pubblicante.foto_profilo" class="av-img" />
                 } @else {
-                  {{ ann.pubblicante?.nome_completo?.substring(0,2)?.toUpperCase() }}
+                  {{ iniziali(ann.pubblicante?.nome_completo) }}
                 }
               </div>
               <span>{{ ann.pubblicante?.nome_completo }}</span>
             </div>
-            <div class="status-pill"
-                 [class.sp-active]="ann.stato_annuncio === 'attivo'"
-                 [class.sp-busy]="ann.stato_annuncio === 'sospeso'">
+            <div class="status-pill sp-active">
               {{ ann.stato_annuncio }}
             </div>
           </div>

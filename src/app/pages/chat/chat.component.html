@@ -3,7 +3,7 @@
   <!-- SIDEBAR CONVERSAZIONI -->
   <div class="chat-sb">
     <div class="chat-sb-hdr">
-      <div class="chat-sb-t">💬 Chat attive</div>
+      <div class="chat-sb-t">Chat attive</div>
     </div>
     <div class="conv-list">
       @if (loading()) {
@@ -81,7 +81,7 @@
       </div>
 
       <!-- MESSAGGI -->
-      <div class="msgs-area" #msgsArea>
+      <div class="msgs-area" #msgsArea> <!-- #msgsArea è una variabile di template angular, accessibile con @ViewChild -->
         <div class="sys-msg">
           💬 Chat aperta il {{ chatAttiva()!.timestamp_chat | date:'dd/MM/yyyy' }}
         </div>

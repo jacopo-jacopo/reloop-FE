@@ -832,15 +832,7 @@ select.fi {
 }
 
 .sp-active { background: rgba(184, 224, 0, .1); color: var(--lime); border: 1px solid rgba(184, 224, 0, .2); }
-.sp-busy   { background: rgba(196, 98, 45, .12); color: var(--terra); border: 1px solid rgba(196, 98, 45, .2); }
 
-/* Sfondi categorie annunci */
-.ann-bg-bici     { background: linear-gradient(135deg,#1a2a10,#0f1f0a); }
-.ann-bg-manga    { background: linear-gradient(135deg,#12101f,#0c0a1a); }
-.ann-bg-chitarra { background: linear-gradient(135deg,#10181a,#081014); }
-.ann-bg-monitor  { background: linear-gradient(135deg,#1a1030,#100820); }
-.ann-bg-scarpe   { background: linear-gradient(135deg,#1a1208,#120c05); }
-.ann-bg-pentole  { background: linear-gradient(135deg,#1a0a08,#120605); }
 
 /* ==========================================================================
    10. PAGINA: proposte (pages/proposte)
@@ -1732,10 +1724,10 @@ select.fi {
 
 .ann-ov-user-click { cursor: pointer; transition: background .15s; }
 .ann-ov-user-click:hover { background: rgba(184,224,0,.08); }
-.ann-ov-user-click:hover .ann-ov-uname-btn { color: var(--lime2); }
+.ann-ov-user-click:hover .ann-ov-uname { color: var(--lime2); }
 
 .ann-ov-av { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .82rem; flex-shrink: 0; }
-.ann-ov-uname-btn { color: var(--lime); font-family: 'Instrument Sans', sans-serif; font-size: .88rem; font-weight: 600; }
+.ann-ov-uname { color: var(--lime); font-family: 'Instrument Sans', sans-serif; font-size: .88rem; font-weight: 600; }
 .ann-ov-uloc { font-size: .74rem; color: var(--txt2); }
 .ann-ov-acts { display: flex; gap: 10px; }
 

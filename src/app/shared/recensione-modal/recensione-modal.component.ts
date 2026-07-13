@@ -6,10 +6,14 @@ import { ToastService } from '../toast/toast.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 
+// Component per la gestione del modal di invio recensione: 
+// permette di selezionare un voto e scrivere un commento per recensire un utente con cui si è completata una chat
+
+// inizia il decoratore, @Component definisce un componente Angular, con selettore 'app-recensione-modal'
 @Component({
   selector: 'app-recensione-modal',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: true, // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
+  imports: [CommonModule], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
   templateUrl: './recensione-modal.component.html',
   styleUrls: ['./recensione-modal.component.scss']
 })
@@ -32,11 +36,17 @@ export class RecensioneModalComponent {
   get aperto() { return this.overlayService.recensioneAperta(); }
 
   impostaVoto(v: number) { this.voto.set(v); }
-  hoverStella(v: number) { this.hoverVoto.set(v); }
+  hoverStella(v: number) { this.hoverVoto.set(v); } // imposta il voto temporaneo quando l'utente passa il mouse sopra una stella
   resetHoverStelle()     { this.hoverVoto.set(0); }
-  chiudi() { this.overlayService.chiudiRecensione(); this.voto.set(0); this.hoverVoto.set(0); this.testo.set(''); }
-  onBgClick(e: MouseEvent) { if (e.target === e.currentTarget) this.chiudi(); }
+  chiudi() { this.overlayService.chiudiRecensione(); 
+             this.voto.set(0); 
+             this.hoverVoto.set(0); 
+             this.testo.set(''); }
 
+  // chiude il modal di recensione se l'utente clicca sullo sfondo del modal
+  onBgClick(e: MouseEvent) { if (e.target === e.currentTarget) this.chiudi(); } 
+
+  // invia la recensione al backend, mostrando un messaggio di successo o errore a seconda del risultato
   invia() {
     if (!this.voto()) { this.toast.warn('Valutazione mancante', 'Seleziona almeno una stella.', '⚠️'); return; }
     if (!this.testo().trim()) { this.toast.warn('Testo mancante', 'Inserisci un breve commento.', '⚠️'); return; }

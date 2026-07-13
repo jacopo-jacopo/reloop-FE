@@ -1,8 +1,7 @@
 <div class="pub-wrap">
   <div class="pub-t">Pubblica un annuncio</div>
   <div class="pub-sub">
-    Il tuo annuncio sarà visibile solo agli utenti del tuo quartiere.
-    Stato iniziale: <strong class="u-clr-lime">attivo</strong>.
+    Il tuo annuncio sarà <strong class="u-clr-lime">attivo</strong> da subito e visibile solo agli utenti del tuo quartiere.
   </div>
 
   <form class="pub-form" [formGroup]="form" (ngSubmit)="pubblica()">
@@ -65,7 +64,7 @@
     <div class="fg">
       <label class="fl">Descrizione</label>
       <textarea class="fi" rows="3" formControlName="descrizione"
-                placeholder="Descrivi l'oggetto, condizioni, cosa vorresti in cambio..."></textarea>
+                placeholder="Descrivi l'oggetto, le condizioni, cosa vorresti in cambio..."></textarea>
     </div>
 
     <!-- CONDIZIONI -->

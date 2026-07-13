@@ -2,22 +2,18 @@
   <div class="ann-overlay-bg open" (click)="onBgClick($event)">
     <div class="ann-overlay-box">
 
-      <!-- FOTO con navigazione -->
-      <div class="ann-ov-img" [class.ann-bg-bici]="!fotoCorrente">
-        @if (fotoCorrente) {
-          <img [src]="fotoCorrente"
-               style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0" />
-          @if (foto().length > 1) {
-            <button class="foto-nav foto-nav-prev" (click)="fotoPrecedente()">‹</button>
-            <button class="foto-nav foto-nav-next" (click)="fotoSuccessiva()">›</button>
-            <div class="foto-dots">
-              @for (f of foto(); track $index) {
-                <span class="foto-dot" [class.active]="fotoIndice() === $index"></span>
-              }
-            </div>
-          }
-        } @else {
-          📦
+      <!-- foto annuncio con navigazione -->
+      <div class="ann-ov-img">
+        <img [src]="fotoCorrente"
+             style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0" />
+        @if (foto().length > 1) {
+          <button class="foto-nav foto-nav-prev" (click)="fotoPrecedente()">‹</button>
+          <button class="foto-nav foto-nav-next" (click)="fotoSuccessiva()">›</button>
+          <div class="foto-dots">
+            @for (f of foto(); track $index) {
+              <span class="foto-dot" [class.active]="fotoIndice() === $index"></span>
+            }
+          </div>
         }
       </div>
 
@@ -38,11 +34,11 @@
             @if (annuncio!.pubblicante?.foto_profilo) {
               <img [src]="annuncio!.pubblicante?.foto_profilo" class="av-img" />
             } @else {
-              {{ annuncio!.pubblicante?.nome_completo?.substring(0,2)?.toUpperCase() }}
+              {{ iniziali(annuncio!.pubblicante?.nome_completo) }}
             }
           </div>
           <div>
-            <div class="ann-ov-uname-btn">
+            <div class="ann-ov-uname">
               {{ annuncio!.pubblicante?.nome_completo }}
             </div>
             <div class="ann-ov-uloc">
@@ -74,7 +70,7 @@
               <textarea class="fi" rows="3"
                         placeholder="Descrivi il motivo della segnalazione..."
                         [value]="motivazione()"
-                        (input)="motivazione.set($any($event.target).value)"
+                        (input)="motivazione.set($any($event.target).value)" 
                         style="width:100%;margin-bottom:8px">
               </textarea>
               <div style="display:flex;gap:8px">

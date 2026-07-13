@@ -226,7 +226,7 @@
             @if (u.foto_profilo) {
               <img [src]="u.foto_profilo" class="av-img" />
             } @else {
-              {{ u.nome_completo.substring(0,2).toUpperCase() }}
+              {{ inizialiDa(u.nome_completo) }}
             }
           </div>
           <div class="lb-user">
@@ -255,7 +255,7 @@
               @if (r.recensore.foto_profilo) {
                 <img [src]="r.recensore.foto_profilo" class="av-img" />
               } @else {
-                {{ r.recensore.nome_completo.substring(0,2).toUpperCase() }}
+                {{ inizialiDa(r.recensore.nome_completo) }}
               }
             </div>
             <div class="rev-name">{{ r.recensore.nome_completo }}</div>
