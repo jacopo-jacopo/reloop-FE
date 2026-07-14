@@ -1,3 +1,4 @@
+// interfaccia typescript per il messaggio di una chat, corrisponde al DTO MessaggioResponse del backend
 export interface Messaggio {
   id: {
     id_messaggio: number;

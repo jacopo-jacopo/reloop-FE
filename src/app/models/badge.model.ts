@@ -1,3 +1,5 @@
+// interfaccia typescript per il badge, corrisponde all'entità Badge del backend
+
 export interface Badge {
   nome_badge: string;
   soglia_punti: number | null;
@@ -5,6 +7,8 @@ export interface Badge {
   icona_badge: string;
   colore: string;
 }
+
+// interfaccia typescript per il badge ottenuto, corrisponde all'entità BadgeOttenuto del backend
 
 export interface BadgeOttenuto {
   id?: {

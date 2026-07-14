@@ -8,12 +8,15 @@ import { QuartiereService } from '../../core/services/quartiere.service';
 import { ToastService } from '../../shared/toast/toast.service';
 import { AuthService } from '../../core/services/auth.service';
 
-type Tab = 'segnalazioni' | 'utenti' | 'quartieri';
+type Tab = 'segnalazioni' | 'utenti' | 'quartieri'; // definisce un tipo di dato Tab che può assumere uno dei tre valori indicati
 
+// Component per la pagina di amministrazione, permette di gestire le segnalazioni, gli utenti e i quartieri.
+
+// inizia il decoratore, @Component definisce un componente Angular, con selettore 'app-admin'
 @Component({
   selector: 'app-admin',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: true, // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
+  imports: [CommonModule], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
@@ -39,7 +42,8 @@ export class AdminComponent implements OnInit {
   stats     = signal<any | null>(null);
 
   // utenti
-  utenti = signal<any[]>([]);
+  utenti        = signal<any[]>([]);
+  loadingUtenti = signal(true);
 
   // quartieri
   quartieri           = signal<any[]>([]);
@@ -49,18 +53,24 @@ export class AdminComponent implements OnInit {
   // logout
   confermaLogoutAperta = signal(false);
 
+  // metodo chiamato all'inizializzazione del componente
   ngOnInit() {
     this.caricaSegnalazioni();
     this.caricaStats();
   }
 
+  // metodo per cambiare il tab attivo nella pagina di amministrazione
   cambiaTab(t: Tab) {
     this.tabAttiva.set(t);
     if (t === 'utenti'    && this.utenti().length === 0)    this.caricaUtenti();
     if (t === 'quartieri' && this.quartieri().length === 0) this.caricaQuartieri();
   }
 
+
+
   // --- STATS ---
+
+  // carica le statistiche dal backend e aggiorna lo stato del componente
   caricaStats() {
     this.http.get<any>(`${this.API}/stats/admin`).subscribe({
       next: (data) => this.stats.set(data),
@@ -76,6 +86,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  // ispezione e risoluzione segnalazione
   ispeziona(s: any) {
     this.segnalazioneAttiva.set(s);
     this.fotoAnnuncio.set([]);
@@ -104,6 +115,7 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  // risolvi la segnalazione, se oscura è true l'annuncio viene oscurato, altrimenti la segnalazione viene respinta
   risolvi(oscura: boolean) {
     const s = this.segnalazioneAttiva();
     if (!s) return;
@@ -122,14 +134,20 @@ export class AdminComponent implements OnInit {
     });
   }
 
+
+
   // --- UTENTI ---
+
+  // carica gli admin dal backend e aggiorna lo stato del componente
   caricaUtenti() {
+    this.loadingUtenti.set(true);
     this.utenteService.getAllAdmin().subscribe({
-      next: (data) => this.utenti.set(data),
-      error: () => this.toast.err('Errore', 'Impossibile caricare gli utenti.', '❌')
+      next: (data) => { this.utenti.set(data); this.loadingUtenti.set(false); },
+      error: () => { this.toast.err('Errore', 'Impossibile caricare gli utenti.', '❌'); this.loadingUtenti.set(false); }
     });
   }
 
+  // toggla lo stato di blocco di un utente, se è bloccato lo sblocca e viceversa
   toggleBlocca(u: any) {
     this.utenteService.blocca(u.id_utente_reg, !u.bloccato).subscribe({
       next: (aggiornato) => {
@@ -147,7 +165,11 @@ export class AdminComponent implements OnInit {
     });
   }
 
+
+
   // --- QUARTIERI ---
+  
+  // carica i quartieri dal backend e aggiorna lo stato del componente
   caricaQuartieri() {
     this.quartiereService.getAll().subscribe({
       next: (data) => this.quartieri.set(data),
@@ -155,6 +177,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  // metodi per gestire la modifica dei quartieri
   iniziaModifica(q: any) { this.quartiereInModifica.set({ ...q }); }
   annullaModifica()       { this.quartiereInModifica.set(null); }
 
@@ -177,6 +200,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  // formNuovo è un segnale che contiene i dati del nuovo quartiere da creare
   aggiornaFormNuovo(campo: string, valore: string) {
     this.formNuovo.update(f => ({ ...f, [campo]: valore }));
   }
@@ -194,20 +218,27 @@ export class AdminComponent implements OnInit {
     });
   }
 
+
+
   // --- LOGOUT ---
   apriConfermaLogout()   { this.confermaLogoutAperta.set(true); }
   chiudiConfermaLogout() { this.confermaLogoutAperta.set(false); }
   logout() { this.confermaLogoutAperta.set(false); this.auth.logout(); }
 
+
+
   // --- HELPERS ---
+
+  // restituisce la classe CSS da applicare al badge in base allo stato della segnalazione
   badgeClass(stato: string): string {
     if (stato === 'presa_in_carico') return 'badge-stato badge-carico';
     if (stato === 'chiusa')          return 'badge-stato badge-chiusa';
     return 'badge-stato badge-attesa';
   }
 
+  // restituisce il testo leggibile da visualizzare nel badge in base allo stato della segnalazione (rimuove lo snake_case)
   testoStato(stato: string): string {
-    return (stato || '').replace(/_/g, ' ');
+    return (stato || '').replace(/_/g, ' '); // g indica di sostituire tutte le occorrenze di "_", non solo la prima
   }
 
   idAdminCorrente(): number | null {
@@ -239,5 +270,9 @@ export class AdminComponent implements OnInit {
       return s.amministratore?.id_utente_adm === this.idAdminCorrente();
     }
     return true;
+  }
+
+  iniziali(nome?: string): string {
+    return (nome || '').split(' ').map((p: string) => p[0]).join('').substring(0, 2).toUpperCase();
   }
 }

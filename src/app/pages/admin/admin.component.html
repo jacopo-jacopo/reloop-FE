@@ -8,9 +8,9 @@
   <!-- STATS BAR -->
   @if (stats()) {
     <div class="admin-stats-bar">
-      <div class="admin-stat-chip">In attesa: <strong>{{ stats().segnalazioni_in_attesa }}</strong></div>
-      <div class="admin-stat-chip">Chiuse: <strong>{{ stats().segnalazioni_chiuse }}</strong></div>
-      <div class="admin-stat-chip">Bloccati: <strong>{{ stats().utenti_bloccati }}</strong></div>
+      <div class="admin-stat-chip">Segnalazioni in attesa: <strong>{{ stats().segnalazioni_in_attesa }}</strong></div>
+      <div class="admin-stat-chip">Segnalazioni chiuse: <strong>{{ stats().segnalazioni_chiuse }}</strong></div>
+      <div class="admin-stat-chip">Utenti bloccati: <strong>{{ stats().utenti_bloccati }}</strong></div>
     </div>
   }
 
@@ -167,15 +167,26 @@
     <div class="prof-ann-card admin-full-card">
       <div class="prof-ann-t admin-list-title">Utenti</div>
 
-      @if (utenti().length === 0) {
+      @if (loadingUtenti()) {
         <p class="admin-login-note">Caricamento utenti...</p>
+      } @else if (utenti().length === 0) {
+        <p class="admin-login-note">Nessun utente iscritto alla piattaforma.</p>
       } @else {
         @for (u of utenti(); track u.id_utente_reg) {
           <div class="admin-utente-row" [class.utente-bloccato]="u.bloccato">
-            <div class="admin-utente-info">
-              <span class="admin-utente-nome">{{ u.nome_completo }}</span>
-              <span class="u-text-xs-muted">{{ u.email }}</span>
-              <span class="u-text-xs-muted">{{ u.quartiere?.nome_quartiere }}, {{ u.quartiere?.citta }} · {{ u.punteggio }} pt</span>
+            <div style="display:flex;align-items:center;gap:16px">
+              <div class="prof-av av-sage" style="width:36px;height:36px;font-size:.85rem;flex-shrink:0">
+                @if (u.foto_profilo_utente) {
+                  <img [src]="u.foto_profilo_utente" class="av-img" />
+                } @else {
+                  {{ iniziali(u.nome_completo) }}
+                }
+              </div>
+              <div class="admin-utente-info">
+                <span class="admin-utente-nome">{{ u.nome_completo }}</span>
+                <span class="u-text-xs-muted">{{ u.email }}</span>
+                <span class="u-text-xs-muted">{{ u.quartiere?.nome_quartiere }}, {{ u.quartiere?.citta }} · {{ u.punteggio }} pt</span>
+              </div>
             </div>
             <div class="admin-utente-actions">
               @if (u.bloccato) {

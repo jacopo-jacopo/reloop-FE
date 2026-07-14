@@ -1,11 +1,9 @@
+// interfaccia typescript per l'utente registrato, corrisponde al DTO UtenteSessioneResponse del backend
 export interface UtenteRegistrato {
   id_utente_reg: number;
   nome_completo: string;
-  email: string;
+  foto_profilo?: string;
   indirizzo: string;
-  punteggio: number;
-  co2_totale: number;
-  bloccato: boolean;
   quartiere: {
     id_quartiere: number;
     nome_quartiere: string;
@@ -13,8 +11,8 @@ export interface UtenteRegistrato {
   };
 }
 
+// interfaccia typescript per l'amministratore, corrisponde al DTO AdminSessioneResponse del backend
 export interface Amministratore {
   id_utente_adm: number;
   nome_completo: string;
-  email: string;
 }

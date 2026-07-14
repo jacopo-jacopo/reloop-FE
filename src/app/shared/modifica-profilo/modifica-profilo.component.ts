@@ -128,4 +128,8 @@ export class ModificaProfiloComponent {
       }
     });
   }
+
+  iniziali(nome?: string): string {
+    return (nome || '').split(' ').map((p: string) => p[0]).join('').substring(0, 2).toUpperCase();
+  }
 }

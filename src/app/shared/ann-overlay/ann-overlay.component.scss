@@ -1,5 +1,5 @@
-// Pulsante invia segnalazione — rosso/terra con hover scurito
-// Non usa btn-confirm per evitare il verde al hover
+// pulsante invia segnalazione: rosso/terra con hover scuro;
+// non usa btn-confirm per evitare il verde dell'hover
 .btn-segnala-invia {
   flex: 1;
   background: var(--terra);
@@ -15,7 +15,8 @@
   &:hover  { opacity: 0.82; }
   &:active { opacity: 0.65; }
 }
-// Navigazione foto nell'overlay
+
+// navigazione foto nell'overlay
 .foto-nav {
   position: absolute;
   top: 50%;

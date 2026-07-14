@@ -1,13 +1,11 @@
-.nav-bell {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-
-  .bell-hover { display: none; }
-
-  &:hover,
-  &.act {
-    .bell-default { display: none; }
-    .bell-hover   { display: block; }
-  }
+.nav-bell { 
+  position: relative; display: inline-flex; align-items: center; 
 }
+
+.nav-bell .bell-hover { display: none; }
+
+.nav-bell:hover .bell-default, 
+.nav-bell.act .bell-default { display: none; }
+
+.nav-bell:hover .bell-hover,   
+.nav-bell.act .bell-hover { display: block; }
