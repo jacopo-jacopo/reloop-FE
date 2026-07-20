@@ -6,6 +6,7 @@ interface UtenteBase {
   id_utente_reg: number;
   nome_completo: string;
   foto_profilo?: string;
+  indirizzo?: string;
 }
 
 // corrisponde a una combinazione di AnnuncioInteresseSummary e AnnuncioOffertoSummary nel BE

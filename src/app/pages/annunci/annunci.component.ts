@@ -96,6 +96,8 @@ export class AnnunciComponent implements OnInit {
   // apre il dettaglio dell'annuncio selezionato, passando l'annuncio al servizio OverlayService
   apriDettaglio(ann: any) { this.overlayService.apriAnnuncio(ann); }
 
+  apriModalProposta(ann: any) { this.overlayService.apriProposta(ann); }
+
   iniziali(nome?: string): string {
     return (nome || '').split(' ').map((p: string) => p[0]).join('').substring(0, 2).toUpperCase();
   }

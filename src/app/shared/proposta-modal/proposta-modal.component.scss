@@ -1,0 +1,9 @@
+.u-col-gap8-mb18 { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.u-text-sm-bold  { font-size: .87rem; font-weight: 600; }
+.u-text-lg       { font-size: 1.5rem; }
+
+.ricevi-item-base  { display: flex; align-items: center; gap: 11px; background: var(--ink3); border: 2px solid rgba(255,255,255,.07); border-radius: 10px; padding: 12px 14px; transition: .15s; cursor: pointer; }
+.ricevi-check-base { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.2); flex-shrink: 0; transition: .15s; }
+.ricevi-check-flex { display: flex; align-items: center; justify-content: center; }
+
+.proponi-note-box { font-size: .76rem; color: var(--txt3); background: rgba(255,255,255,.03); border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; }

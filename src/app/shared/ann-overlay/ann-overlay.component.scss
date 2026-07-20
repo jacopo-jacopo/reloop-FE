@@ -57,3 +57,81 @@
 
   &.active { background: #fff; }
 }
+
+.ann-overlay-bg {
+  position: fixed; inset: 0; z-index: 850;
+  background: rgba(0,0,0,.78);
+  backdrop-filter: blur(14px);
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+
+.ann-overlay-bg.open { display: flex; }
+
+.ann-overlay-box {
+  background: var(--ink2);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  max-width: 720px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  animation: mIn .25s ease;
+}
+
+.ann-ov-img   { height: 420px; display: flex; align-items: center; justify-content: center; font-size: 5rem; border-radius: 20px 20px 0 0; position: relative; }
+.ann-ov-body  { padding: 24px 28px 28px; }
+.ann-ov-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.4rem; margin-bottom: 10px; }
+.ann-ov-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.ann-ov-chip  { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 4px 11px; font-size: .74rem; color: var(--txt2); }
+.ann-ov-desc  { font-size: .88rem; color: var(--txt2); line-height: 1.65; margin-bottom: 22px; }
+
+.ann-ov-user {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px; background: var(--ink3);
+  border-radius: 12px; margin-bottom: 20px;
+}
+
+.ann-ov-user-click { cursor: pointer; transition: background .15s; }
+.ann-ov-user-click:hover { background: rgba(184,224,0,.08); }
+.ann-ov-user-click:hover .ann-ov-uname { color: var(--lime2); }
+
+.ann-ov-av    { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .82rem; flex-shrink: 0; }
+.ann-ov-uname { color: var(--lime); font-family: 'Instrument Sans', sans-serif; font-size: .88rem; font-weight: 600; }
+.ann-ov-uloc  { font-size: .74rem; color: var(--txt2); }
+.ann-ov-acts  { display: flex; gap: 10px; }
+.ann-ov-acts.hidden  { display: none; }
+
+.btn-ov-close {
+  flex: 1; background: rgba(255,255,255,.06); color: var(--txt);
+  font-weight: 500; font-size: .88rem; padding: 12px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.1); font-family: 'Instrument Sans', sans-serif; cursor: pointer;
+}
+
+.btn-ov-prop {
+  flex: 2; background: var(--lime); color: #07090f;
+  font-weight: 700; font-size: .88rem; padding: 12px; border-radius: 10px;
+  border: none; font-family: 'Instrument Sans', sans-serif; transition: .15s; cursor: pointer;
+}
+
+.btn-ov-prop:hover { background: var(--lime2); }
+
+.btn-ov-prop:disabled {
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .35);
+  cursor: not-allowed;
+}
+
+.btn-ov-prop:disabled:hover { background: rgba(255, 255, 255, .08); }
+
+.ann-ov-segnala-wrapper { display: block; text-align: center; width: 100%; margin-top: 15px; margin-bottom: 10px; }
+
+.btn-ov-segnala-mini {
+  display: inline-block; background: transparent;
+  border: 1px solid rgba(196,98,45,0.25); color: var(--terra);
+  font-size: 0.76rem; font-weight: 500; padding: 5px 12px;
+  border-radius: 8px; cursor: pointer;
+  font-family: 'Instrument Sans', sans-serif; transition: all 0.15s ease;
+}
+
+.btn-ov-segnala-mini:hover:not(:disabled) { background: rgba(196,98,45,0.06); border-color: var(--terra); }
+.btn-ov-segnala-mini:disabled { border-color: rgba(255,255,255,0.05); background: rgba(255,255,255,0.02); color: var(--txt3); cursor: not-allowed; opacity: 0.5; }
+.btn-ov-segnala-mini.btn-admin-danger { color: #ffffff; font-weight: 600; }

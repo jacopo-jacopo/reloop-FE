@@ -1,0 +1,13 @@
+.rating-stars-container { display: flex; justify-content: center; padding: 10px 0; }
+.rating-stars           { display: flex; gap: 8px; }
+
+.star-btn {
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: #334155;
+  transition: color 0.15s ease;
+}
+
+.star-btn.active { color: var(--amber); }
+
+.u-mb16-w100 { margin-bottom: 16px; width: 100%; }

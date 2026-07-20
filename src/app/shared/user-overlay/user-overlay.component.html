@@ -45,6 +45,22 @@
             </div>
           </div>
 
+          @if (overlayService.recensioniUtente().length > 0) {
+            <div class="uov-recensioni">
+              @for (r of overlayService.recensioniUtente(); track r.recensore.id_utente_reg) {
+                <div class="uov-rec-card">
+                  <div class="uov-rec-header">
+                    <span class="uov-rec-nome">{{ r.recensore.nome_completo }}</span>
+                    <span class="uov-rec-voto">{{ '⭐'.repeat(r.voto) }}</span>
+                  </div>
+                  @if (r.descrizione_recensione) {
+                    <div class="uov-rec-testo">{{ r.descrizione_recensione }}</div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
           <button class="btn-uov-close" (click)="chiudi()">Chiudi</button>
         </div>
       }

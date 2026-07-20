@@ -1,0 +1,88 @@
+.home-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding: 64px 44px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.hero-h {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  line-height: 1.08;
+  margin-bottom: 16px;
+}
+
+.hero-h em { color: var(--lime); font-style: italic; }
+
+.hero-sub {
+  color: var(--txt2);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin-bottom: 28px;
+  max-width: 440px;
+}
+
+.hero-btns { display: flex; gap: 11px; flex-wrap: wrap; }
+
+.btn-primary {
+  background: var(--lime);
+  color: #07090f;
+  font-weight: 700;
+  font-size: .88rem;
+  padding: 12px 24px;
+  border-radius: 9px;
+  border: none;
+  font-family: 'Instrument Sans', sans-serif;
+  transition: .15s;
+  cursor: pointer;
+}
+
+.btn-primary:hover { background: var(--lime2); transform: translateY(-1px); }
+
+.sec {
+  padding: 0 44px 52px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sec-hdr {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.sec-t    { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.35rem; }
+.sec-link { color: var(--lime); font-size: .83rem; font-weight: 600; background: none; border: none; font-family: 'Instrument Sans', sans-serif; cursor: pointer; }
+
+.co2-box {
+  background: linear-gradient(135deg, rgba(45, 90, 39, .2), rgba(122, 170, 110, .08));
+  border: 1px solid rgba(122, 170, 110, .2);
+  border-radius: var(--r);
+  padding: 28px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.co2-label { font-size: .72rem; color: var(--txt3); font-weight: 600; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 5px; }
+.co2-val   { font-family: 'Fraunces', serif; font-weight: 700; font-size: 2.8rem; color: var(--sage); }
+.co2-unit  { font-size: .95rem; color: var(--txt2); margin-left: 4px; }
+.co2-note  { font-size: .8rem; color: var(--txt2); margin-top: 4px; }
+.co2-equiv { display: flex; flex-direction: column; gap: 9px; width: 100%; }
+
+.co2-eq-item {
+  display: flex; align-items: center; gap: 9px;
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid rgba(255, 255, 255, .06);
+  border-radius: 8px; padding: 9px 13px;
+}
+
+.co2-eq-icon { font-size: 1.1rem; }
+.co2-eq-n    { font-size: .9rem; font-weight: 600; }
+.co2-eq-l    { font-size: .7rem; color: var(--txt3); }

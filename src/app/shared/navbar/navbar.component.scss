@@ -1,11 +1,87 @@
-.nav-bell { 
-  position: relative; display: inline-flex; align-items: center; 
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 800;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 13px;
+  background: rgba(8, 10, 5, .82);
+  backdrop-filter: blur(28px) saturate(1.2);
+  border-bottom: 1px solid rgba(255, 255, 255, .04);
+}
+
+.nav-logo { display: flex; flex-shrink: 0; }
+.nav-logo img { height: 30px; width: auto; object-fit: contain; filter: brightness(1.1); }
+
+.nav-links { display: flex; gap: 2px; flex: 1; }
+
+.nav-link {
+  background: none;
+  border: none;
+  color: var(--txt2);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: 5px 13px;
+  border-radius: 6px;
+  transition: .15s;
+  position: relative;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.nav-link:hover,
+.nav-link.act,
+.nav-link.active { color: var(--lime); }
+
+.nav-badge {
+  position: absolute; top: 1px; right: 3px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #d32f2f; color: #fff;
+  font-size: .55rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+
+.nav-link.act::after,
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 13px; right: 13px;
+  height: 2px;
+  background: var(--lime);
+}
+
+.nav-bell {
+  position: relative; display: inline-flex; align-items: center;
 }
 
 .nav-bell .bell-hover { display: none; }
 
-.nav-bell:hover .bell-default, 
+.nav-bell:hover .bell-default,
 .nav-bell.act .bell-default { display: none; }
 
-.nav-bell:hover .bell-hover,   
+.nav-bell:hover .bell-hover,
 .nav-bell.act .bell-hover { display: block; }
+
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-pill {
+  background: rgba(184, 224, 0, .08);
+  border: 1px solid var(--bord);
+  color: var(--lime);
+  font-size: .72rem;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 20px;
+  letter-spacing: .3px;
+}
+
+.logo-nav { height: 26px; object-fit: contain; }

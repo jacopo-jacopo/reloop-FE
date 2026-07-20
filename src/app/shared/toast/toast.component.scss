@@ -1,0 +1,49 @@
+#toast-wrap {
+  position: fixed;
+  top: 72px; right: 20px;
+  z-index: 9500;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--ink3);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 280px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, .6);
+  animation: tIn .3s ease forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes tIn {
+  from { transform: translateX(110%); opacity: 0 }
+  to   { transform: none; opacity: 1 }
+}
+
+.toast-bar {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  animation: tBar 4.2s linear forwards;
+}
+
+@keyframes tBar {
+  from { width: 100% }
+  to   { width: 0 }
+}
+
+.t-ok   .toast-bar { background: var(--lime); }
+.t-err  .toast-bar { background: var(--terra); }
+.t-info .toast-bar { background: var(--sage); }
+.t-warn .toast-bar { background: var(--amber); }
+
+.toast-ico   { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.toast-title { font-weight: 600; font-size: .84rem; margin-bottom: 2px; }
+.toast-msg   { font-size: .76rem; color: var(--txt2); }

@@ -45,7 +45,7 @@
 
       <!-- HEADER -->
       <div class="chat-top">
-        <div class="chat-top-av av-sage">
+        <div class="chat-top-av av-sage" (click)="apriProfiloAltroUtente()">
           @if (altroUtente(chatAttiva())?.foto_profilo) {
             <img [src]="altroUtente(chatAttiva()).foto_profilo" class="av-img" />
           } @else {
@@ -53,8 +53,13 @@
           }
         </div>
         <div class="chat-top-info">
-          <div class="chat-top-n">
-            {{ altroUtente(chatAttiva())?.nome_completo ?? 'Chat #' + chatAttiva()!.id_chat }}
+          <div style="display: flex; align-items: baseline; gap: 8px;">
+            <div class="chat-top-n">
+              {{ altroUtente(chatAttiva())?.nome_completo ?? 'Chat #' + chatAttiva()!.id_chat }}
+            </div>
+            <div class="u-text-xs-muted">
+              {{ altroUtente(chatAttiva())?.indirizzo ?? '' }}
+            </div>
           </div>
           <div class="chat-top-swap">
             <span class="chat-top-swap-item" title="Quello che offri tu">
@@ -83,7 +88,7 @@
       <!-- MESSAGGI -->
       <div class="msgs-area" #msgsArea> <!-- #msgsArea è una variabile di template angular, accessibile con @ViewChild -->
         <div class="sys-msg">
-          💬 Chat aperta il {{ chatAttiva()!.timestamp_chat | date:'dd/MM/yyyy' }}
+          Chat aperta il {{ chatAttiva()!.timestamp_chat | date:'dd/MM/yyyy' }}
         </div>
         @for (msg of messaggi(); track msg.id.id_messaggio; let i = $index) {
           @if (dataLabel(i)) {
@@ -165,7 +170,7 @@
       </p>
       <div class="modal-acts">
         <button class="btn-cancel2" (click)="chiudiConfermaAnnulla()">No, torna indietro</button>
-        <button class="btn-confirm" (click)="confermaAnnullaScambio()">Sì, annulla scambio</button>
+        <button class="btn-confirm btn-admin-danger" (click)="confermaAnnullaScambio()">Sì, annulla scambio</button>
       </div>
     </div>
   </div>

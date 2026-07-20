@@ -1,0 +1,66 @@
+.ann-page-hdr {
+  padding: 48px 44px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ann-page-t {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 1.9rem;
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex; gap: 7px; flex-wrap: wrap;
+  margin-bottom: 14px; align-items: center;
+}
+
+.fchip {
+  background: var(--ink2);
+  color: var(--txt2);
+  font-size: .78rem; font-weight: 600;
+  padding: 6px 15px; border-radius: 20px;
+  transition: .15s; border: none;
+  font-family: 'Instrument Sans', sans-serif;
+  cursor: pointer;
+}
+
+.fchip.act,
+.fchip:hover { background: var(--lime); color: #07090f; }
+
+.search-i {
+  background: var(--ink2);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 11px;
+  padding: 8px 14px;
+  color: var(--txt);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: .88rem;
+  outline: none; width: 260px; transition: .15s;
+  margin-left: auto;
+}
+
+.search-i:focus { border-color: rgba(184, 224, 0, .28); }
+
+.ann-grid-full {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 44px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ann-card-prop {
+  display: block; width: 100%; margin-top: 10px;
+  background: rgba(198, 241, 53, .1);
+  border: 1px solid rgba(198, 241, 53, .2);
+  color: var(--lime);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: .78rem; font-weight: 600;
+  padding: 7px; border-radius: 7px;
+  transition: .15s; text-align: center; cursor: pointer;
+}
+
+.ann-card-prop:hover { background: rgba(198, 241, 53, .18); }

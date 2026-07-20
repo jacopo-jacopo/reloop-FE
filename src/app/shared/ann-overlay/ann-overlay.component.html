@@ -48,7 +48,7 @@
           </div>
         </div>
 
-        <div class="ann-ov-acts">
+        <div class="ann-ov-acts" [class.hidden]="mostraSegnalaForm()">
           <button class="btn-ov-close" (click)="chiudi()">Chiudi</button>
           @if (!isMio()) {
             <button class="btn-ov-prop"

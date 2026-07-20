@@ -223,6 +223,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     return id === pub?.id_utente_reg ? pro : pub;
   }
 
+  apriProfiloAltroUtente() {
+    const chat  = this.chatAttiva();
+    const altro = this.altroUtente(chat);
+    if (!altro) return;
+    this.overlayService.apriUtente(altro.id_utente_reg);
+  }
+
   annuncioScelto(chat: any): any {
     const offerti: any[] = chat?.proposta_generante?.annunci_offerti ?? [];
     return (offerti.find(ao => ao.flag_selezionato) ?? offerti[0])?.annuncio_offerto ?? null;

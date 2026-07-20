@@ -290,10 +290,11 @@
         <button class="btn-cancel2" (click)="chiudiModalAnnuncio()">
           Annulla
         </button>
-        <button class="btn-confirm"
+        <button class="btn-confirm btn-rimuovi"
                 style="background:var(--terra);color:#fff"
                 (click)="chiudiAnnuncio()">
-          Chiudi annuncio
+          Rimuovi annuncio
+          <span class="btn-rimuovi-overlay" (click)="$event.stopPropagation()"></span>
         </button>
       </div>
     </div>
