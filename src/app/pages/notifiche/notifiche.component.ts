@@ -1,5 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { NotificaService } from '../../core/services/notifica.service';
 import { Notifica } from '../../models/notifica.model';
 import { ToastService } from '../../shared/toast/toast.service';
@@ -17,6 +18,7 @@ import { ToastService } from '../../shared/toast/toast.service';
 export class NotificheComponent implements OnInit {
   private notificaService = inject(NotificaService);
   private toast           = inject(ToastService);
+  private router          = inject(Router);
 
   notifiche = signal<Notifica[]>([]);
   loading   = signal(true);
@@ -58,6 +60,23 @@ export class NotificheComponent implements OnInit {
   // restituisce il numero di notifiche non lette
   nonLette() { return this.notifiche().filter(n => !n.letta).length; }
 
+  // segna la notifica come letta e naviga alla sezione relativa
+  apri(n: Notifica) {
+    this.segnaLetta(n);
+    const destinazioni: Record<string, [string, Record<string, string>?]> = {
+      NUOVA_PROPOSTA:     ['/proposte'],
+      PROPOSTA_ACCETTATA: ['/proposte', { tab: 'inv' }],
+      PROPOSTA_RIFIUTATA: ['/proposte', { tab: 'inv' }],
+      NUOVO_MESSAGGIO:    ['/chat'],
+      NUOVA_RECENSIONE:   ['/profilo'],
+      ANNUNCIO_ELIMINATO: ['/profilo'],
+      SCAMBIO_ANNULLATO:  ['/chat'],
+      BADGE_SBLOCCATO:    ['/profilo'],
+    };
+    const dest = destinazioni[n.tipo];
+    if (dest) this.router.navigate([dest[0]], { queryParams: dest[1] });
+  }
+
   // restituisce l'icona corrispondente al tipo di notifica
   icona(tipo: string): string {
     const map: Record<string, string> = {
@@ -67,7 +86,8 @@ export class NotificheComponent implements OnInit {
       NUOVO_MESSAGGIO:    '💬',
       NUOVA_RECENSIONE:   '⭐',
       ANNUNCIO_ELIMINATO: '🗑️',
-      ACCOUNT_BLOCCATO:   '🔒'
+      ACCOUNT_BLOCCATO:   '🔒',
+      SCAMBIO_ANNULLATO:  '❌'
     };
     return map[tipo] ?? '🔔';
   }

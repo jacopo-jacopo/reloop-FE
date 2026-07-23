@@ -32,7 +32,7 @@ export class PropostaService {
   // accetta una proposta scegliendo quale annuncio offerto prendere
   accetta(idProposta: number, idAnnuncioScelto: number): Observable<any> {
     return this.http.put<any>(`${this.API}/proposte/${idProposta}/accetta`, {
-      id_annuncio_scelto: idAnnuncioScelto
+      id_annuncio_scelto: idAnnuncioScelto 
     });
   }
 

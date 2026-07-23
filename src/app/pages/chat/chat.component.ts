@@ -263,8 +263,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   hoGiaConfermato(): boolean {
+    const chat = this.chatAttiva();
+    if (!chat) return false;
     const id = this.utenteCorrente?.id_utente_reg;
-    return this.messaggi().some(m => this.isMsgConferma(m) && m.mittente?.id_utente_reg === id);
+    const idPubblicante = chat.proposta_generante?.annuncio_interesse?.pubblicante?.id_utente_reg;
+    return id === idPubblicante ? chat.confermato_pubblicante : chat.confermato_proponente;
   }
 
   isMsgRecensione(msg: any): boolean {

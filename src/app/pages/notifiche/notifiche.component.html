@@ -14,7 +14,7 @@
   } @else {
     <div class="notifiche-list">
       @for (n of notifiche(); track n.id_notifica) {
-        <div class="notifica-card" [class.non-letta]="!n.letta" (click)="segnaLetta(n)">
+        <div class="notifica-card" [class.non-letta]="!n.letta" (click)="apri(n)">
           <span class="notifica-icona">{{ icona(n.tipo) }}</span>
           <div class="notifica-body">
             <p class="notifica-testo">{{ n.testo }}</p>

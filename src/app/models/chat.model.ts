@@ -31,6 +31,8 @@ export interface Chat {
   stato_chat: StatoChat;
   data_completamento?: string;
   timestamp_chat: string;
+  confermato_pubblicante: boolean;
+  confermato_proponente: boolean;
   proposta_generante?: {
     id_proposta: number;
     proponente?: UtenteBase;
