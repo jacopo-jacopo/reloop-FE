@@ -144,7 +144,7 @@
 .rev-item    { padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
 .rev-item:last-child { border-bottom: none; }
 .rev-hdr     { display: flex; align-items: center; gap: 9px; margin-bottom: 6px; }
-.rev-av      { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .67rem; font-weight: 700; flex-shrink: 0; }
+.rev-av      { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: .67rem; font-weight: 700; flex-shrink: 0; }
 .rev-name    { font-weight: 600; font-size: .83rem; }
 .rev-stars   { color: var(--amber); font-size: .78rem; margin-left: auto; }
 .rev-txt     { font-size: .8rem; color: var(--txt2); line-height: 1.5; }
@@ -165,4 +165,4 @@
 .u-clr-amber        { color: #d97706 !important; }
 .u-clr-attesa       { color: #d97706; font-weight: bold; }
 .u-clr-carico       { color: #2563eb; font-weight: bold; }
-.u-clr-chiusa       { color: #16a34a; font-weight: bold; }
+.u-clr-chiusa       { color: var(--txt2); font-weight: bold; }

@@ -49,8 +49,9 @@
             </div>
           </div>
           <button class="ann-card-prop"
+                  [disabled]="giaSegnalato(ann.id_annuncio)"
                   (click)="$event.stopPropagation(); apriModalProposta(ann)">
-            Proponi scambio
+            {{ giaSegnalato(ann.id_annuncio) ? 'Annuncio segnalato' : 'Proponi scambio' }}
           </button>
         </div>
 

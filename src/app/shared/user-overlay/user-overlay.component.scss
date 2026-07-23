@@ -53,7 +53,7 @@
 }
 
 .uov-header { padding: 28px 28px 20px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
-.uov-av     { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; }
+.uov-av     { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; }
 .uov-name   { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 3px; }
 .uov-loc    { font-size: .78rem; color: var(--txt2); }
 .uov-body   { padding: 20px 28px 28px; }

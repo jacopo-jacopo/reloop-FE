@@ -82,9 +82,12 @@ export class PropostaModalComponent {
           queryParams: { tab: 'inv' } // queryParams per aprire la tab "inviate" della pagina delle proposte
         }), 900);
       },
-      error: () => {
+      error: (err: any) => {
         this.loading.set(false);
-        this.toast.err('Errore', 'Impossibile inviare la proposta.', '❌');
+        if (err.status === 409)
+          this.toast.warn('Proposta già inviata', 'Hai già una proposta in attesa per questo annuncio.', '⚠️');
+        else
+          this.toast.err('Errore', 'Impossibile inviare la proposta.', '❌');
       }
     });
   }

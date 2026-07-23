@@ -134,9 +134,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (!chat) return;
     this.chatService.completa(chat.id_chat).subscribe({
       next: (res: any) => {
+        const isPubblicante = this.chatAttiva()?.proposta_generante
+            ?.annuncio_interesse?.pubblicante?.id_utente_reg === this.utenteCorrente?.id_utente_reg;
+        this.chatAttiva.update(c => c ? {
+          ...c,
+          stato_chat: res.completato ? 'completata' : c.stato_chat,
+          confermato_pubblicante: isPubblicante ? true : c.confermato_pubblicante,
+          confermato_proponente: !isPubblicante ? true : c.confermato_proponente
+        } : c);
         if (res.completato) {
           this.toast.ok('Scambio completato! 🎉', 'CO₂ calcolata :)', '🌱');
-          this.chatAttiva.update(c => c ? { ...c, stato_chat: 'completata' } : c);
           if (res.id_altro_utente != null)
             setTimeout(() => this.overlayService.apriRecensione(res.id_altro_utente, chat.id_chat), 1500);
         } else {

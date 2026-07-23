@@ -15,12 +15,13 @@ export class NotificationService {
   proposteBadge = signal(false);
 
   // carica le notifiche di chat e proposte per l'utente loggato
-  carica() {
+  // se url inizia con /proposte, salta il badge proposte perché visitaProposte() lo gestisce
+  carica(url?: string) {
     if (!this.auth.isLoggedIn()) return;
     const userId = this._userId();
     if (!userId) return;
     this._caricaChat(userId);
-    this._caricaProposte(userId);
+    if (!url?.startsWith('/proposte')) this._caricaProposte(userId);
   }
 
   // aggiorna ultima_visita_proposte nel db e azzera il badge delle proposte non lette

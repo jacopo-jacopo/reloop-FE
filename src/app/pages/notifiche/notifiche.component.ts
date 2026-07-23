@@ -62,7 +62,6 @@ export class NotificheComponent implements OnInit {
 
   // segna la notifica come letta e naviga alla sezione relativa
   apri(n: Notifica) {
-    this.segnaLetta(n);
     const destinazioni: Record<string, [string, Record<string, string>?]> = {
       NUOVA_PROPOSTA:     ['/proposte'],
       PROPOSTA_ACCETTATA: ['/proposte', { tab: 'inv' }],
@@ -74,7 +73,20 @@ export class NotificheComponent implements OnInit {
       BADGE_SBLOCCATO:    ['/profilo'],
     };
     const dest = destinazioni[n.tipo];
-    if (dest) this.router.navigate([dest[0]], { queryParams: dest[1] });
+    if (n.letta) {
+      if (dest) this.router.navigate([dest[0]], { queryParams: dest[1] });
+      return;
+    }
+    this.notificaService.segnaLetta(n.id_notifica).subscribe({
+      next: () => {
+        this.notifiche.update(list => list.map(x => x.id_notifica === n.id_notifica ? { ...x, letta: true } : x));
+        this.notificaService.caricaBadge();
+        if (dest) this.router.navigate([dest[0]], { queryParams: dest[1] });
+      },
+      error: () => {
+        if (dest) this.router.navigate([dest[0]], { queryParams: dest[1] });
+      }
+    });
   }
 
   // restituisce l'icona corrispondente al tipo di notifica

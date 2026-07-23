@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnnuncioService } from '../../core/services/annuncio.service';
+import { SegnalazioneService } from '../../core/services/segnalazione.service';
 import { OverlayService } from '../../core/services/overlay.service';
 import { ToastService } from '../../shared/toast/toast.service';
 
@@ -16,15 +17,17 @@ import { ToastService } from '../../shared/toast/toast.service';
   styleUrls: ['./annunci.component.scss']
 })
 export class AnnunciComponent implements OnInit {
-  private annuncioService = inject(AnnuncioService);
-  private overlayService  = inject(OverlayService);
-  private toast           = inject(ToastService);
+  private annuncioService    = inject(AnnuncioService);
+  private segnalazioneService = inject(SegnalazioneService);
+  private overlayService     = inject(OverlayService);
+  private toast              = inject(ToastService);
 
-  annunci         = signal<any[]>([]);
-  annunciFiltrati = signal<any[]>([]);
-  loading         = signal(true);
-  categoriaAttiva = signal('tutti');
-  searchQuery     = signal('');
+  annunci              = signal<any[]>([]);
+  annunciFiltrati      = signal<any[]>([]);
+  loading              = signal(true);
+  categoriaAttiva      = signal('tutti');
+  searchQuery          = signal('');
+  idAnnunciSegnalati   = signal<Set<number>>(new Set());
 
   readonly categorie = [
     { label: 'Tutti',          value: 'tutti'       },
@@ -38,6 +41,19 @@ export class AnnunciComponent implements OnInit {
 
   // ngOnInit viene chiamato quando il componente viene inizializzato, caricando gli annunci dal backend
   ngOnInit() {
+    this.segnalazioneService.getMie().subscribe({
+      next: (segnalazioni) => {
+        const ids = new Set<number>(
+          segnalazioni
+            .filter(s => s.stato_segnalazione !== 'chiusa')
+            .map(s => s.annuncio_segnalato?.id_annuncio)
+            .filter((id: number) => id != null)
+        );
+        this.idAnnunciSegnalati.set(ids);
+      },
+      error: () => {}
+    });
+
     this.annuncioService.getAnnunciQuartiere().subscribe({
       next: (data) => {
         // per ogni annuncio carica la prima foto
@@ -96,9 +112,17 @@ export class AnnunciComponent implements OnInit {
   // apre il dettaglio dell'annuncio selezionato, passando l'annuncio al servizio OverlayService
   apriDettaglio(ann: any) { this.overlayService.apriAnnuncio(ann); }
 
-  apriModalProposta(ann: any) { this.overlayService.apriProposta(ann); }
+  giaSegnalato(idAnnuncio: number): boolean { return this.idAnnunciSegnalati().has(idAnnuncio); }
+
+  apriModalProposta(ann: any) {
+    if (this.giaSegnalato(ann.id_annuncio)) return;
+    this.overlayService.apriProposta(ann);
+  }
 
   iniziali(nome?: string): string {
     return (nome || '').split(' ').map((p: string) => p[0]).join('').substring(0, 2).toUpperCase();
   }
+
+
+  
 }

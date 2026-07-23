@@ -33,7 +33,7 @@ export class NavbarComponent implements OnDestroy { // OnDestroy è un'interfacc
   constructor() {
     this.sub = this.router.events
       .pipe(filter(e => e instanceof NavigationEnd)) // filtra solo gli eventi di fine navigazione
-      .subscribe(() => { this.notif.carica(); this.notifica.caricaBadge(); }); // quando li riceve, aggiorna le notifiche e i badge di notifica
+      .subscribe((e: any) => { this.notif.carica(e.url); this.notifica.caricaBadge(); }); // quando li riceve, aggiorna le notifiche e i badge di notifica
   }
 
   // metodo che chiude le iscrizioni quando il componente viene distrutto
