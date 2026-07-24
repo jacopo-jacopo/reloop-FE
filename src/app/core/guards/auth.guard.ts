@@ -2,12 +2,12 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-// se l'utente è loggato, consente l'accesso alla rotta, altrimenti reindirizza a /login
-export const authGuard: CanActivateFn = () => {
+// se l'utente è loggato e NON è admin, consente l'accesso alla rotta, altrimenti reindirizza
+export const userGuard: CanActivateFn = () => {
   const auth   = inject(AuthService);
   const router = inject(Router);
-  if (auth.isLoggedIn()) return true;
-  router.navigate(['/login']);
+  if (auth.isLoggedIn() && !auth.isAdmin()) return true;
+  router.navigate([auth.isAdmin() ? '/admin' : '/login']);
   return false;
 };
 
@@ -25,8 +25,7 @@ export const loginGuard: CanActivateFn = () => {
   const auth   = inject(AuthService);
   const router = inject(Router);
   if (auth.isLoggedIn()) {
-    router.navigate([auth.isAdmin() ? '/admin' : '/home']); // operatore ternario condizionale, se auth.isAdmin()
-                                                            // è true naviga a /admin, altrimenti a /home
+    router.navigate([auth.isAdmin() ? '/admin' : '/home']);
     return false;
   }
   return true;

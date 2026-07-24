@@ -21,9 +21,9 @@ export class UtenteService {
     return this.http.get<any>(`${this.API}/utenti/${id}`);
   }
 
-  // classifica degli utenti in base al punteggio
-  getLeaderboard(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API}/utenti/leaderboard`);
+  // classifica degli utenti del quartiere in base al punteggio
+  getLeaderboard(idQuartiere: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API}/utenti/leaderboard?idQuartiere=${idQuartiere}`);
   }
 
   // badge già sbloccati dall'utente loggato

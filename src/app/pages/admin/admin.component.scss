@@ -164,6 +164,7 @@
 .admin-utente-row:last-of-type { border-bottom: none; }
 
 .utente-bloccato { opacity: 0.55; }
+.utente-bloccato button { opacity: 1; }
 
 .admin-utente-info    { display: flex; flex-direction: column; gap: 2px; }
 .admin-utente-nome    { font-size: 0.9rem; font-weight: 600; }
@@ -196,6 +197,57 @@
 .admin-quartiere-input:focus { border-color: rgba(184,224,0,.35); background: rgba(184,224,0,.03); }
 
 .admin-quartiere-form { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; }
+
+// --- STATISTICHE TAB ---
+
+.stats-tab-layout {
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 24px; align-items: start;
+}
+
+.stats-left-panel { display: flex; flex-direction: column; gap: 12px; }
+
+.stat-box {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 16px; text-align: center;
+}
+
+.stat-box-value {
+  font-size: 2rem; font-weight: 700;
+  font-family: 'Fraunces', serif;
+  color: var(--lime); line-height: 1;
+}
+
+.stat-box-label { font-size: 0.75rem; color: var(--txt2); margin-top: 6px; }
+
+.stats-right-panel { flex: 1; }
+
+.cat-chart { display: flex; flex-direction: column; gap: 10px; }
+
+.cat-chart-row { display: flex; align-items: center; gap: 10px; }
+
+.cat-chart-label {
+  width: 130px; font-size: 0.82rem; flex-shrink: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.cat-chart-bar-track {
+  flex: 1; height: 18px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px; overflow: hidden;
+}
+
+.cat-chart-bar {
+  height: 100%; background: var(--lime);
+  border-radius: 4px; transition: width 0.4s ease;
+  min-width: 2px;
+}
+
+.cat-chart-count {
+  width: 28px; text-align: right;
+  font-size: 0.8rem; color: var(--txt2); flex-shrink: 0;
+}
 
 .input-base {
   background: rgba(255,255,255,.04);

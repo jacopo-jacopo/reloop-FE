@@ -5,20 +5,12 @@
     <button class="btn-nav" (click)="apriConfermaLogout()">Esci</button>
   </div>
 
-  <!-- STATS BAR -->
-  @if (stats()) {
-    <div class="admin-stats-bar">
-      <div class="admin-stat-chip">Segnalazioni in attesa: <strong>{{ stats().segnalazioni_in_attesa }}</strong></div>
-      <div class="admin-stat-chip">Segnalazioni chiuse: <strong>{{ stats().segnalazioni_chiuse }}</strong></div>
-      <div class="admin-stat-chip">Utenti bloccati: <strong>{{ stats().utenti_bloccati }}</strong></div>
-    </div>
-  }
-
   <!-- TAB BAR -->
   <div class="admin-tabs">
-    <button [class.tab-attiva]="tabAttiva() === 'segnalazioni'" (click)="cambiaTab('segnalazioni')">Segnalazioni</button>
-    <button [class.tab-attiva]="tabAttiva() === 'utenti'"       (click)="cambiaTab('utenti')">Utenti</button>
-    <button [class.tab-attiva]="tabAttiva() === 'quartieri'"    (click)="cambiaTab('quartieri')">Quartieri</button>
+    <button [class.tab-attiva]="tabAttiva() === 'segnalazioni'"  (click)="cambiaTab('segnalazioni')">Segnalazioni</button>
+    <button [class.tab-attiva]="tabAttiva() === 'utenti'"        (click)="cambiaTab('utenti')">Utenti</button>
+    <button [class.tab-attiva]="tabAttiva() === 'quartieri'"     (click)="cambiaTab('quartieri')">Quartieri</button>
+    <button [class.tab-attiva]="tabAttiva() === 'statistiche'"   (click)="cambiaTab('statistiche')">Statistiche</button>
   </div>
 
   <!-- TAB: SEGNALAZIONI -->
@@ -243,6 +235,46 @@
         </div>
       </div>
 
+    </div>
+  }
+
+  <!-- TAB: STATISTICHE -->
+  @if (tabAttiva() === 'statistiche') {
+    <div class="prof-ann-card admin-full-card">
+      <div class="prof-ann-t admin-list-title">Statistiche</div>
+      <div class="stats-tab-layout">
+
+        <div class="stats-left-panel">
+          <div class="stat-box">
+            <div class="stat-box-value">{{ stats()?.segnalazioni_in_attesa ?? '–' }}</div>
+            <div class="stat-box-label">Segnalazioni in attesa</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-value">{{ stats()?.segnalazioni_chiuse ?? '–' }}</div>
+            <div class="stat-box-label">Segnalazioni chiuse</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-value">{{ stats()?.utenti_bloccati ?? '–' }}</div>
+            <div class="stat-box-label">Utenti bloccati</div>
+          </div>
+        </div>
+
+        <div class="stats-right-panel">
+          <div class="admin-section-title" style="margin-top:0">Distribuzione annunci per categoria</div>
+          <div class="cat-chart">
+            @for (item of distribuzioneCompleta(); track item.categoria) {
+              <div class="cat-chart-row">
+                <div class="cat-chart-label">{{ item.categoria }}</div>
+                <div class="cat-chart-bar-track">
+                  <div class="cat-chart-bar" [style.width.%]="barWidth(item.count)"></div>
+                </div>
+                <div class="cat-chart-count">{{ item.count }}</div>
+              </div>
+            }
+          </div>
+        </div>
+
+      </div>
     </div>
   }
 

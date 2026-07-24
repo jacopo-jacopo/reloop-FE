@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AnnuncioService } from '../../core/services/annuncio.service';
 import { OverlayService } from '../../core/services/overlay.service';
 import { ToastService } from '../../shared/toast/toast.service';
+import { BloccoOverlayComponent } from '../../shared/blocco-overlay/blocco-overlay.component';
 
 // Component per la home page dell'applicazione, mostra gli annunci recenti e le statistiche di CO2 del quartiere
 
@@ -11,7 +12,7 @@ import { ToastService } from '../../shared/toast/toast.service';
 @Component({
   selector: 'app-home',
   standalone: true, // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
-  imports: [CommonModule, RouterModule], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
+  imports: [CommonModule, RouterModule, BloccoOverlayComponent], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
                                           // e RouterModule, che fornisce funzionalità per la navigazione tra le pagine dell'app
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

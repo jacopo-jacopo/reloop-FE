@@ -8,7 +8,7 @@ import { QuartiereService } from '../../core/services/quartiere.service';
 import { ToastService } from '../../shared/toast/toast.service';
 import { AuthService } from '../../core/services/auth.service';
 
-type Tab = 'segnalazioni' | 'utenti' | 'quartieri'; // definisce un tipo di dato Tab che può assumere uno dei tre valori indicati
+type Tab = 'segnalazioni' | 'utenti' | 'quartieri' | 'statistiche'; // definisce un tipo di dato Tab che può assumere uno dei quattro valori indicati
 
 // Component per la pagina di amministrazione, permette di gestire le segnalazioni, gli utenti e i quartieri.
 
@@ -274,5 +274,24 @@ export class AdminComponent implements OnInit {
 
   iniziali(nome?: string): string {
     return (nome || '').split(' ').map((p: string) => p[0]).join('').substring(0, 2).toUpperCase();
+  }
+
+  private readonly CATEGORIE = [
+    'Arredamento', 'Abbigliamento', 'Libri & Cultura',
+    'Sport & Tempo libero', 'Elettronica', 'Cucina', 'Musica'
+  ];
+
+  distribuzioneCompleta(): { categoria: string; count: number }[] {
+    const dist: any[] = this.stats()?.distribuzione_categorie ?? [];
+    return this.CATEGORIE.map(cat => {
+      const found = dist.find(d => d.categoria === cat);
+      return { categoria: cat, count: found?.count ?? 0 };
+    });
+  }
+
+  barWidth(count: number): number {
+    const items = this.distribuzioneCompleta();
+    const max = items.length > 0 ? Math.max(...items.map(d => d.count)) : 1;
+    return max > 0 ? Math.round((count / max) * 100) : 0;
   }
 }

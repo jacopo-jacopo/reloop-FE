@@ -7,6 +7,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { OverlayService } from '../../core/services/overlay.service';
 import { interval, Subscription, switchMap } from 'rxjs';
+import { BloccoOverlayComponent } from '../../shared/blocco-overlay/blocco-overlay.component';
 
 // Component per la pagina della chat, mostra le conversazioni dell'utente e i messaggi scambiati
 
@@ -14,7 +15,7 @@ import { interval, Subscription, switchMap } from 'rxjs';
 @Component({
   selector: 'app-chat',
   standalone: true, // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
-  imports: [CommonModule], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
+  imports: [CommonModule, BloccoOverlayComponent], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })

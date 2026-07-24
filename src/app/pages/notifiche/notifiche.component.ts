@@ -99,6 +99,7 @@ export class NotificheComponent implements OnInit {
       NUOVA_RECENSIONE:   '⭐',
       ANNUNCIO_ELIMINATO: '🗑️',
       ACCOUNT_BLOCCATO:   '🔒',
+      BADGE_SBLOCCATO:    '💪',
       SCAMBIO_ANNULLATO:  '❌'
     };
     return map[tipo] ?? '🔔';

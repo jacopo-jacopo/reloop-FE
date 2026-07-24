@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PropostaService } from '../../core/services/proposta.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { ToastService } from '../../shared/toast/toast.service';
+import { BloccoOverlayComponent } from '../../shared/blocco-overlay/blocco-overlay.component';
 
 // Component per la pagina delle proposte, mostra le proposte ricevute e inviate dall'utente.
 
@@ -11,7 +12,7 @@ import { ToastService } from '../../shared/toast/toast.service';
 @Component({
   selector: 'app-proposte',
   standalone: true, // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
-  imports: [CommonModule], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
+  imports: [CommonModule, BloccoOverlayComponent], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
   templateUrl: './proposte.component.html',
   styleUrls: ['./proposte.component.scss']
 })

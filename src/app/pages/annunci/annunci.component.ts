@@ -4,15 +4,16 @@ import { AnnuncioService } from '../../core/services/annuncio.service';
 import { SegnalazioneService } from '../../core/services/segnalazione.service';
 import { OverlayService } from '../../core/services/overlay.service';
 import { ToastService } from '../../shared/toast/toast.service';
+import { BloccoOverlayComponent } from '../../shared/blocco-overlay/blocco-overlay.component';
 
-// Component per la visualizzazione degli annunci, mostra una lista di annunci filtrabili per categoria e query di ricerca 
+// Component per la visualizzazione degli annunci, mostra una lista di annunci filtrabili per categoria e query di ricerca
 // e gestisce l'apertura del dettaglio dell'annuncio
 
 // inizia il decoratore, @Component definisce un componente Angular, con selettore 'app-annunci'
 @Component({
-  selector: 'app-annunci', 
+  selector: 'app-annunci',
   standalone: true, // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
-  imports: [CommonModule], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
+  imports: [CommonModule, BloccoOverlayComponent], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
   templateUrl: './annunci.component.html',
   styleUrls: ['./annunci.component.scss']
 })

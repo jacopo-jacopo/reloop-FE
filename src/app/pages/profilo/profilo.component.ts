@@ -120,7 +120,7 @@ export class ProfiloComponent implements OnInit {
     });
 
     // invia la chiamata http (preparata in getLeaderboard()) per ricevere la classifica degli utenti, e aggiorna il segnale leaderboard con i dati ricevuti
-    this.utenteService.getLeaderboard().subscribe({
+    this.utenteService.getLeaderboard(this.auth.utenteCorrente()?.quartiere?.id_quartiere).subscribe({
       next: (l) => this.leaderboard.set(l),
       error: () => {}
     });

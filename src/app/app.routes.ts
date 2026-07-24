@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, adminGuard, loginGuard } from './core/guards/auth.guard';
+import { userGuard, adminGuard, loginGuard } from './core/guards/auth.guard';
 
 
 /*
@@ -32,43 +32,43 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
-    canActivate: [authGuard]
+    canActivate: [userGuard]
   },
   // Elenco/ricerca annunci
   {
     path: 'annunci',
     loadComponent: () => import('./pages/annunci/annunci.component').then(m => m.AnnunciComponent),
-    canActivate: [authGuard]
+    canActivate: [userGuard]
   },
   // Proposte di scambio inviate/ricevute
   {
     path: 'proposte',
     loadComponent: () => import('./pages/proposte/proposte.component').then(m => m.ProposteComponent),
-    canActivate: [authGuard]
+    canActivate: [userGuard]
   },
   // Chat tra utenti
   {
     path: 'chat',
     loadComponent: () => import('./pages/chat/chat.component').then(m => m.ChatComponent),
-    canActivate: [authGuard]
+    canActivate: [userGuard]
   },
   // Pubblicazione di un nuovo annuncio
   {
     path: 'pubblica',
     loadComponent: () => import('./pages/pubblica/pubblica.component').then(m => m.PubblicaComponent),
-    canActivate: [authGuard]
+    canActivate: [userGuard]
   },
   // Profilo utente
   {
     path: 'profilo',
     loadComponent: () => import('./pages/profilo/profilo.component').then(m => m.ProfiloComponent),
-    canActivate: [authGuard]
+    canActivate: [userGuard]
   },
   // Notifiche utente
   {
     path: 'notifiche',
     loadComponent: () => import('./pages/notifiche/notifiche.component').then(m => m.NotificheComponent),
-    canActivate: [authGuard]
+    canActivate: [userGuard]
   },
   // Dashboard amministrazione, riservata agli admin (adminGuard)
   {

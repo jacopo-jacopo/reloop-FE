@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { AnnuncioService } from '../../core/services/annuncio.service';
 import { ToastService } from '../../shared/toast/toast.service';
+import { BloccoOverlayComponent } from '../../shared/blocco-overlay/blocco-overlay.component';
 
 // Componente per la pubblicazione di un annuncio, mostra un form con i campi necessari e gestisce l'invio dei dati al backend
 
@@ -11,7 +12,7 @@ import { ToastService } from '../../shared/toast/toast.service';
 @Component({
   selector: 'app-pubblica',
   standalone: true, // stabilisce che il componente è standalone, cioè non fa parte di un modulo Angular e usa le dipendenze dichiarate in imports
-  imports: [CommonModule, ReactiveFormsModule], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
+  imports: [CommonModule, ReactiveFormsModule, BloccoOverlayComponent], // importa il modulo CommonModule, che fornisce direttive comuni come @if e @for
                                                 // e ReactiveFormsModule, che fornisce funzionalità per la gestione dei form reattivi
   templateUrl: './pubblica.component.html',
   styleUrls: ['./pubblica.component.scss']

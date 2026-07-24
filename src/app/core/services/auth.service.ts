@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
@@ -16,6 +16,7 @@ export class AuthService {
   utenteCorrente = signal<any>(null);  // signal che contiene l'utente loggato, inizialmente null (nessun utente loggato)
   tipoUtente     = signal<'utente' | 'admin' | null>(null); // signal che contiene il tipo dell'utente loggato,
                                                             // inizialmente null (nessun utente loggato)
+  isBloccato     = computed(() => this.utenteCorrente()?.bloccato === true);
 
   // il costruttore riceve HttpClient e Router tramite dependency injection per fare richieste HTTP e navigare tra le pagine
   constructor(private http: HttpClient, private router: Router) {}
