@@ -70,7 +70,7 @@ export class AnnOverlayComponent {
         // carica le foto dal BE
         this.annuncioService.getFoto(ann.id_annuncio).subscribe({
           next: (f) => this.foto.set(f),
-          error: () => {}
+          error: (err) => console.error(err)
         });
       }
     });
@@ -132,6 +132,7 @@ export class AnnOverlayComponent {
         setTimeout(() => this.chiudi(), 1200); 
       },
       error: (err) => {
+        console.error(err);
         if (err.status === 409) { // 409 = conflitto, l'utente ha già una segnalazione aperta per questo annuncio
           this.giaSegnalato.set(true);
           this.mostraSegnalaForm.set(false);
@@ -153,7 +154,7 @@ export class AnnOverlayComponent {
         );
         this.giaSegnalato.set(giaSegnalato);
       },
-      error: () => {}
+      error: (err) => console.error(err)
     });
   }
 }

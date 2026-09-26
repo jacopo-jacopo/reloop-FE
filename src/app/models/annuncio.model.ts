@@ -18,7 +18,7 @@ export interface Annuncio {
     id_utente_reg: number;
     nome_completo: string;
     foto_profilo?: string;
-    quartiere?: {
+    quartiere?: { //
       id_quartiere: number;
       nome_quartiere: string;
       citta: string;

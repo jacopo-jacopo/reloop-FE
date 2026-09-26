@@ -59,7 +59,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.loading.set(false);
         this._selezionaChatDaQueryParam(data);
       },
-      error: () => { this.toast.err('Errore', 'Impossibile caricare le chat.', '❌'); this.loading.set(false); }
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare le chat.', '❌'); this.loading.set(false); }
     });
   }
 
@@ -85,7 +85,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.chatService.getMessaggi(c.id_chat).subscribe({
       next: (msgs) => { this.messaggi.set(msgs); this._scrollToBottom(); },
-      error: () => {}
+      error: (err) => console.error(err)
     });
     this.chatService.leggi(c.id_chat).subscribe();
     this.notif.segnaLetta(c.id_chat);
@@ -95,13 +95,16 @@ export class ChatComponent implements OnInit, OnDestroy {
       switchMap(() => this.chatService.getMessaggi(c.id_chat)) // switchMap ancella la chiamata HTTP precedente (se ancora in corso) e ne avvia 
                                                                // una nuova per caricare i messaggi; è importante non usare mergeMap per non 
                                                                // accumulare chiamate sovrapposte se la risposta del server tarda più di 3 secondi
-    ).subscribe(msgs => {
-      const prevLen = this.messaggi().length;
-      this.messaggi.set(msgs);
-      if (msgs.length > prevLen) this._scrollToBottom();
-      if (msgs.some((m: any) => !m.flag_lettura && !this.isMio(m))) {
-        this.chatService.leggi(c.id_chat).subscribe();
-      }
+    ).subscribe({
+      next: msgs => {
+        const prevLen = this.messaggi().length;
+        this.messaggi.set(msgs);
+        if (msgs.length > prevLen) this._scrollToBottom();
+        if (msgs.some((m: any) => !m.flag_lettura && !this.isMio(m))) {
+          this.chatService.leggi(c.id_chat).subscribe();
+        }
+      },
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile aggiornare i messaggi.', '❌'); }
     });
   }
 
@@ -116,7 +119,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.testoMsg.set('');
         this._scrollToBottom();
       },
-      error: () => this.toast.err('Errore', 'Messaggio non inviato.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Messaggio non inviato.', '❌'); }
     });
   }
 
@@ -153,7 +156,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.caricaChat();
         this.selezionaChat(this.chatAttiva());
       },
-      error: () => this.toast.err('Errore', 'Impossibile completare lo scambio.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile completare lo scambio.', '❌'); }
     });
   }
 
@@ -173,7 +176,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.caricaChat();
         this.selezionaChat(this.chatAttiva());
       },
-      error: () => this.toast.err('Errore', 'Impossibile annullare.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile annullare.', '❌'); }
     });
   }
 

@@ -18,29 +18,19 @@ export class NotificationService {
   // se url inizia con /proposte, salta il badge proposte perché visitaProposte() lo gestisce
   carica(url?: string) {
     if (!this.auth.isLoggedIn()) return;
-    const userId = this._userId();
-    if (!userId) return;
-    this._caricaChat(userId);
-    if (!url?.startsWith('/proposte')) this._caricaProposte(userId);
+    this._caricaChat();
+    if (!url?.startsWith('/proposte')) this._caricaProposte();
   }
 
   // aggiorna ultima_visita_proposte nel db e azzera il badge delle proposte non lette
   visitaProposte() {
-    const userId = this._userId();
-    if (!userId) return;
-    this.http.put(`${this.API}/utenti/visita-proposte`, {}, {
-      headers: { 'X-User-Id': userId }
-    }).subscribe();
+    this.http.put(`${this.API}/utenti/visita-proposte`, {}).subscribe();
     this.proposteBadge.set(false);
   }
 
-  // aggiorna ultima_visita_chat nel db 
+  // aggiorna ultima_visita_chat nel db
   visitaChat() {
-    const userId = this._userId();
-    if (!userId) return;
-    this.http.put(`${this.API}/utenti/visita-chat`, {}, {
-      headers: { 'X-User-Id': userId }
-    }).subscribe();
+    this.http.put(`${this.API}/utenti/visita-chat`, {}).subscribe();
   }
 
   // segnala che una chat è stata letta, rimuovendola dall'insieme delle chat con messaggi non letti
@@ -57,11 +47,10 @@ export class NotificationService {
   }
 
   // carica il badge in caso di chat con messaggi non letti o nuove chat
-  private _caricaChat(userId: string) {
+  private _caricaChat() {
     this.http
       .get<{ messaggi_non_letti: number[]; chat_vuote: number[] }>( // gli array contengono gli id delle nuove chat o delle chat con nuovi messaggi
-        `${this.API}/chat/non-letti`,
-        { headers: { 'X-User-Id': userId } }
+        `${this.API}/chat/non-letti`
       )
       .subscribe({
         next: ({ messaggi_non_letti, chat_vuote }) => {
@@ -74,19 +63,12 @@ export class NotificationService {
   }
 
   // carica il badge in caso di proposte non lette
-  private _caricaProposte(userId: string) {
+  private _caricaProposte() {
     this.http
-      .get<number>(`${this.API}/proposte/badge`, { headers: { 'X-User-Id': userId } })
+      .get<number>(`${this.API}/proposte/badge`)
       .subscribe({
         next: (count) => this.proposteBadge.set(count > 0),
         error: (err) => console.error('[NotificationService] proposte/badge:', err)
       });
-  }
-
-  // restituisce l'id dell'utente loggato (admin o registrato)
-  private _userId(): string | null {
-    const u  = this.auth.utenteCorrente() as any;
-    const id = u?.id_utente_reg ?? u?.id_utente_adm;
-    return id ? String(id) : null;
   }
 }

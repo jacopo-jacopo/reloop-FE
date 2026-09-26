@@ -66,7 +66,7 @@ export class RecensioneModalComponent {
         this.chiudi();
         this.router.navigate(['/profilo']);
       },
-      error: () => { this.loading.set(false); this.toast.err('Errore', 'Impossibile inviare la recensione.', '❌'); }
+      error: (err) => { console.error(err); this.loading.set(false); this.toast.err('Errore', 'Impossibile inviare la recensione.', '❌'); }
     });
   }
 }

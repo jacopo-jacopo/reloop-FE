@@ -1,12 +1,14 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Annuncio } from '../../models/annuncio.model';
 import { UtenteService } from './utente.service';
+import { ToastService } from '../../shared/toast/toast.service';
 
 // @Injectable({ providedIn: 'root' }) crea un singleton di OverlayService, cioè solo un'istanza in tutta l'app 
 // in modo che i signal leggano e scrivano sempre sugli stessi valori (globalmente)
 @Injectable({ providedIn: 'root' })
 export class OverlayService {
   private utenteService = inject(UtenteService);
+  private toast         = inject(ToastService);
 
   // ANNUNCIO OVERLAY
   annOverlayAperto = signal(false);
@@ -40,11 +42,11 @@ export class OverlayService {
 
     this.utenteService.getById(idUtente).subscribe({
       next: (u) => this.utenteSelezionato.set(u),
-      error: () => {}
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare il profilo utente.', '❌'); }
     });
     this.utenteService.getRecensioni(idUtente).subscribe({
       next: (r) => this.recensioniUtente.set(r),
-      error: () => {}
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare le recensioni.', '❌'); }
     });
   }
 

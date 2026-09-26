@@ -44,7 +44,7 @@ export class PropostaModalComponent {
             this.mieiAnnunci.set(data.filter((a: any) => a.stato_annuncio === 'attivo'));
             this.loadingAnnunci.set(false);
           },
-          error: () => this.loadingAnnunci.set(false)
+          error: (err) => { console.error(err); this.loadingAnnunci.set(false); }
         });
         this.selezionati.set(new Set());
       }
@@ -83,6 +83,7 @@ export class PropostaModalComponent {
         }), 900);
       },
       error: (err: any) => {
+        console.error(err);
         this.loading.set(false);
         if (err.status === 409)
           this.toast.warn('Proposta già inviata', 'Hai già una proposta in attesa per questo annuncio.', '⚠️');

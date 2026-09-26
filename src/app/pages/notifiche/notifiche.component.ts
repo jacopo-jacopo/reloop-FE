@@ -29,7 +29,7 @@ export class NotificheComponent implements OnInit {
   carica() {
     this.notificaService.getMie().subscribe({
       next: (data) => { this.notifiche.set(data.sort((a, b) => b.id_notifica - a.id_notifica)); this.loading.set(false); },
-      error: () => { this.toast.err('Errore', 'Impossibile caricare le notifiche.', '❌'); this.loading.set(false); }
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare le notifiche.', '❌'); this.loading.set(false); }
     });
   }
 
@@ -41,7 +41,7 @@ export class NotificheComponent implements OnInit {
         this.notifiche.update(list => list.map(x => x.id_notifica === n.id_notifica ? { ...x, letta: true } : x));
         this.notificaService.caricaBadge();
       },
-      error: () => {}
+      error: (err) => console.error(err)
     });
   }
 
@@ -53,7 +53,7 @@ export class NotificheComponent implements OnInit {
         this.notificaService.azzera();
         this.toast.ok('Fatto!', 'Tutte le notifiche sono state lette.', '✅');
       },
-      error: () => this.toast.err('Errore', 'Impossibile aggiornare le notifiche.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile aggiornare le notifiche.', '❌'); }
     });
   }
 
@@ -83,7 +83,8 @@ export class NotificheComponent implements OnInit {
         this.notificaService.caricaBadge();
         if (dest) this.router.navigate([dest[0]], { queryParams: dest[1] });
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         if (dest) this.router.navigate([dest[0]], { queryParams: dest[1] });
       }
     });

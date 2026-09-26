@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UtenteService } from '../../core/services/utente.service';
 import { QuartiereService } from '../../core/services/quartiere.service';
+import { Quartiere } from '../../models/quartiere.model';
 import { ToastService } from '../toast/toast.service';
 import { AuthService } from '../../core/services/auth.service';
 import { OverlayService } from '../../core/services/overlay.service';
@@ -27,9 +28,9 @@ export class ModificaProfiloComponent {
   auth                     = inject(AuthService);
 
   fotoPreview        = signal<string | null>(null);
-  quartieriList:any[]= [];
-  citta:string[]     = [];
-  quartieriFiltrati = signal<any[]>([]);
+  quartieriList: Quartiere[] = [];
+  citta: string[]            = [];
+  quartieriFiltrati          = signal<Quartiere[]>([]);
   loading            = signal(false);
 
   // getter per sapere se il modal di modifica profilo è aperto, leggendo il signal dal servizio OverlayService
@@ -48,8 +49,9 @@ export class ModificaProfiloComponent {
     this.quartiereService.getAll().subscribe({
       next: (q) => {
         this.quartieriList = q;
-        this.citta         = [...new Set(q.map((x: any) => x.citta))]; // estrae le città uniche dai quartieri
-      }
+        this.citta         = [...new Set(q.map(x => x.citta))]; // estrae le città uniche dai quartieri
+      },
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare i quartieri.', '❌'); }
     });
 
     // effetto che si attiva quando il modal di modifica profilo viene aperto, per popolare il form con i dati correnti dell'utente
@@ -62,7 +64,7 @@ export class ModificaProfiloComponent {
           id_quartiere: utente?.quartiere?.id_quartiere || ''
         });
         this.quartieriFiltrati.set(
-          this.quartieriList.filter((q: any) => q.citta === utente?.quartiere?.citta)
+          this.quartieriList.filter(q => q.citta === utente?.quartiere?.citta)
         );
         this.fotoPreview.set(utente?.foto_profilo || null);
       }
@@ -78,7 +80,7 @@ export class ModificaProfiloComponent {
     const citta = (event.target as HTMLSelectElement).value;
     this.form.get('id_quartiere')?.setValue('');
     this.quartieriFiltrati.set(
-      this.quartieriList.filter((q: any) => q.citta === citta)
+      this.quartieriList.filter(q => q.citta === citta)
     );
   }
 
@@ -103,7 +105,7 @@ export class ModificaProfiloComponent {
     }
 
     const quartiere = this.quartieriList.find(
-      (q: any) => q.id_quartiere === Number(v.id_quartiere)
+      q => q.id_quartiere === Number(v.id_quartiere)
     );
 
     // costruisce il body con solo i campi modificati
@@ -122,7 +124,8 @@ export class ModificaProfiloComponent {
         this.toast.ok('Profilo aggiornato!', 'Le modifiche sono state salvate.', '✅');
         this.chiudi();
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.loading.set(false);
         this.toast.err('Errore', 'Impossibile aggiornare il profilo.', '❌');
       }

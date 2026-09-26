@@ -43,11 +43,12 @@ export class HomeComponent implements OnInit {
                 this.annunciRecenti.update(list => list.map(a => a.id_annuncio === ann.id_annuncio ? { ...a, foto_preview: foto[0] } : a ));
               }
             },
-            error: () => {}
+            error: (err) => console.error(err)
           });
         });
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.toast.err('Errore', 'Impossibile caricare gli annunci.', '❌');
         this.loading.set(false);
       }
@@ -55,7 +56,7 @@ export class HomeComponent implements OnInit {
 
     this.annuncioService.getCo2Quartiere().subscribe({
       next: (co2) => this.co2Quartiere.set(co2),
-      error: () => {}
+      error: (err) => console.error(err)
     });
   }
 

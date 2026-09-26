@@ -6,7 +6,7 @@ export interface Segnalazione {
   id_segnalazione: number;
   motivazione: string;
   stato_segnalazione: StatoSegnalazione;
-  annuncio_segnalato?: {
+  annuncio_segnalato?: { //
     id_annuncio: number;
     titolo: string;
   };

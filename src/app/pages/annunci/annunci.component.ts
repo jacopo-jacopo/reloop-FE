@@ -52,7 +52,7 @@ export class AnnunciComponent implements OnInit {
         );
         this.idAnnunciSegnalati.set(ids);
       },
-      error: () => {}
+      error: (err) => console.error(err)
     });
 
     this.annuncioService.getAnnunciQuartiere().subscribe({
@@ -75,11 +75,12 @@ export class AnnunciComponent implements OnInit {
                   list.map(a => a.id_annuncio === ann.id_annuncio ? { ...a, foto_preview: foto[0] } : a));
               }
             },
-            error: () => {}
+            error: (err) => console.error(err)
           });
         });
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.toast.err('Errore', 'Impossibile caricare gli annunci.', '❌');
         this.loading.set(false);
       }

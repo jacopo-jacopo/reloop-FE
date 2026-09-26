@@ -11,10 +11,10 @@ export interface Badge {
 // interfaccia typescript per il badge ottenuto, corrisponde all'entità BadgeOttenuto del backend
 
 export interface BadgeOttenuto {
-  id?: {
+  id?: { //
     id_utente_reg: number;
     nome_badge: string;
   };
-  badge?: Badge;
+  badge?: Badge; //
   data_ottenimento: string;
 }

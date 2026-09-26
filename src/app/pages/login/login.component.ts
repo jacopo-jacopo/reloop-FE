@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../shared/toast/toast.service';
 import { QuartiereService } from '../../core/services/quartiere.service';
+import { Quartiere } from '../../models/quartiere.model';
 
 // Component per la pagina di login e registrazione, gestisce sia il login che la registrazione degli utenti;
 // Contiene due form reattivi, uno per il login e uno per la registrazione, con validazioni appropriate, 
@@ -33,9 +34,9 @@ export class LoginComponent implements OnInit {
   tabAttiva: 'accedi' | 'reg' = 'accedi';
   loading = false;
 
-  quartieri: any[]         = [];
-  citta: string[]          = [];
-  quartieriFiltrati: any[] = [];
+  quartieri: Quartiere[]         = [];
+  citta: string[]                = [];
+  quartieriFiltrati: Quartiere[] = [];
   stats = signal<any>(null);  
 
   // form reattivo per il login, con campi email e password, entrambi obbligatori, con validazione dell'email
@@ -70,16 +71,16 @@ export class LoginComponent implements OnInit {
     this.quartiereService.getAll().subscribe({
       next: (q) => {
         this.quartieri = q;
-        this.citta     = [...new Set(q.map((x: any) => x.citta))];  // crea un nuovo array di città mappando i quaritieri, rimuove i duplicati con Set
+        this.citta     = [...new Set(q.map(x => x.citta))];  // crea un nuovo array di città mappando i quaritieri, rimuove i duplicati con Set
                                                                     // e lo ritrasforma in un array con l'operatore spread
       },
-      error: () => this.toast.err('Errore', 'Impossibile caricare i quartieri.', '❌')  // in caso di errore chiama ToastService
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare i quartieri.', '❌'); }  // in caso di errore chiama ToastService
     });
 
     // carica le statistiche pubbliche dal backend
     this.http.get<any>(`${this.API}/stats/pubbliche`).subscribe({
       next: (s) => this.stats.set(s),
-      error: () => {}
+      error: (err) => console.error(err)
     });
   }
 
@@ -91,7 +92,7 @@ export class LoginComponent implements OnInit {
     const citta = (event.target as HTMLSelectElement).value;  // ottiene il valore della città selezionata dall'evento
     this.formReg.get('id_quartiere')?.setValue('');  // resetta il valore del campo id_quartiere nel form di registrazione;
                                                      // ?. controlla che il valore non sia null o undefined prima di chiamare il metodo setValue
-    this.quartieriFiltrati = this.quartieri.filter((q: any) => q.citta === citta); // recupera i quariteri filtrati per città
+    this.quartieriFiltrati = this.quartieri.filter(q => q.citta === citta); // recupera i quariteri filtrati per città
   }
 
   // metodo per eseguire il login, controlla la validità del form, chiama il servizio AuthService e gestisce la risposta
@@ -110,7 +111,8 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/home']);
         }
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.loading = false;
         this.toast.err('Errore login', 'Credenziali non valide.', '❌');
       }
@@ -126,7 +128,7 @@ export class LoginComponent implements OnInit {
       this.toast.warn('Password diversa', 'Le due password non coincidono.', '⚠️');
       return;
     }
-    const quartiere = this.quartieri.find((q: any) => q.id_quartiere === Number(v.id_quartiere)); 
+    const quartiere = this.quartieri.find(q => q.id_quartiere === Number(v.id_quartiere));
     this.loading = true;
     this.auth.registra({
       nome_completo: v.nome_completo,
@@ -140,7 +142,8 @@ export class LoginComponent implements OnInit {
         this.toast.ok('Account creato!', 'Benvenuto in reloop :)', '🌿');
         this.router.navigate(['/home']);
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.loading = false;
         this.toast.err('Errore', 'Email già in uso o dati non validi.', '❌');
       }
@@ -162,6 +165,6 @@ export class LoginComponent implements OnInit {
   // metodo per formattare la quantità di CO2, se maggiore di 1000 lo converte in formato "t"
   formatCo2(kg: number): string {
     if (kg >= 1000) return (kg / 1000).toFixed(1) + ' t';
-    return kg + ' kg';
+    return kg.toFixed(2) + ' kg';
   }
 }

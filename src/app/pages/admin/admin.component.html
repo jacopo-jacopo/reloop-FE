@@ -175,7 +175,7 @@
                 }
               </div>
               <div class="admin-utente-info">
-                <span class="admin-utente-nome">{{ u.nome_completo }}</span>
+                <span class="admin-utente-nome">{{ u.nome_completo }} <span class="u-text-xs-muted">#{{ u.id_utente_reg }}</span></span>
                 <span class="u-text-xs-muted">{{ u.email }}</span>
                 <span class="u-text-xs-muted">{{ u.quartiere?.nome_quartiere }}, {{ u.quartiere?.citta }} · {{ u.punteggio }} pt</span>
               </div>

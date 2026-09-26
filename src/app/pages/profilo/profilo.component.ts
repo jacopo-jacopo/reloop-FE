@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Badge, BadgeOttenuto } from '../../models/badge.model';
 import { UtenteService } from '../../core/services/utente.service';
 import { AnnuncioService } from '../../core/services/annuncio.service';
 import { SegnalazioneService } from '../../core/services/segnalazione.service';
@@ -32,8 +33,8 @@ export class ProfiloComponent implements OnInit {
 
   profilo      = signal<any>(null);
   annunci      = signal<any[]>([]);
-  badge        = signal<any[]>([]);
-  tuttiBadge   = signal<any[]>([]);
+  badge        = signal<BadgeOttenuto[]>([]);
+  tuttiBadge   = signal<Badge[]>([]);
   segnalazioni = signal<any[]>([]);
   leaderboard  = signal<any[]>([]);
   recensioni   = signal<any[]>([]);
@@ -66,8 +67,8 @@ export class ProfiloComponent implements OnInit {
   // getter per ottenere i badge ordinati secondo l'ordine definito in ORDINE_BADGE
   get tuttiBadgeOrdinati() {
     return [...this.tuttiBadge()].sort((a, b) => {
-      const ia = this.ORDINE_BADGE.findIndex(n => n.toLowerCase() === a.nome_badge?.toLowerCase());
-      const ib = this.ORDINE_BADGE.findIndex(n => n.toLowerCase() === b.nome_badge?.toLowerCase());
+      const ia = this.ORDINE_BADGE.findIndex(n => n.toLowerCase() === a.nome_badge.toLowerCase());
+      const ib = this.ORDINE_BADGE.findIndex(n => n.toLowerCase() === b.nome_badge.toLowerCase());
       return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
     });
   }
@@ -88,7 +89,7 @@ export class ProfiloComponent implements OnInit {
     // invia la chiamata http (preparata in getProfilo()) per ricevere il profilo dell'utente, e aggiorna il segnale profilo con i dati ricevuti
     this.utenteService.getProfilo().subscribe({
       next: (p) => this.profilo.set(p),
-      error: () => this.toast.err('Errore', 'Impossibile caricare il profilo.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare il profilo.', '❌'); }
     });
 
     // invia la chiamata http (preparata in getMieiAnnunci()) per ricevere gli annunci dell'utente, e aggiorna il segnale annunci con i dati ricevuti
@@ -98,38 +99,38 @@ export class ProfiloComponent implements OnInit {
         // controlla se ci sono annunci oscurati non ancora notificati
         this._notificaAnnunciOscurati(a);
       },
-      error: () => {}
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare i tuoi annunci.', '❌'); }
     });
 
     // invia la chiamata http (preparata in getBadgeOttenuti()) per ricevere i badge ottenuti dall'utente, e aggiorna il segnale badge con i dati ricevuti
     this.utenteService.getBadgeOttenuti().subscribe({
       next: (b) => this.badge.set(b),
-      error: () => {}
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare i badge.', '❌'); }
     });
 
     // invia la chiamata http (preparata in getTuttiBadge()) per ricevere tutti i badge disponibili, e aggiorna il segnale tuttiBadge con i dati ricevuti
     this.utenteService.getTuttiBadge().subscribe({
       next: (b) => this.tuttiBadge.set(b),
-      error: () => {}
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare i badge.', '❌'); }
     });
 
     // invia la chiamata http (preparata in getMie()) per ricevere le segnalazioni dell'utente, e aggiorna il segnale segnalazioni con i dati ricevuti
     this.segnalazioneService.getMie().subscribe({
       next: (s) => this.segnalazioni.set(s),
-      error: () => {}
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare le segnalazioni.', '❌'); }
     });
 
     // invia la chiamata http (preparata in getLeaderboard()) per ricevere la classifica degli utenti, e aggiorna il segnale leaderboard con i dati ricevuti
     this.utenteService.getLeaderboard(this.auth.utenteCorrente()?.quartiere?.id_quartiere).subscribe({
       next: (l) => this.leaderboard.set(l),
-      error: () => {}
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare la classifica.', '❌'); }
     });
 
     // invia la chiamata http (preparata in getRecensioni()) per ricevere le recensioni dell'utente, e aggiorna il segnale recensioni con i dati ricevuti
     if (utente?.id_utente_reg) {
       this.utenteService.getRecensioni(utente.id_utente_reg).subscribe({
         next: (r) => { this.recensioni.set(r); this.loading.set(false); },
-        error: () => this.loading.set(false)
+        error: (err) => { console.error(err); this.loading.set(false); }
       });
     } else {
       this.loading.set(false);
@@ -152,7 +153,7 @@ export class ProfiloComponent implements OnInit {
         '🚫'
       );
       this.annuncioService.segnaNotificaOscuramentoLetta(ann.id_annuncio).subscribe({
-        error: () => {}
+        error: (err) => console.error(err)
       });
     });
   }
@@ -183,13 +184,13 @@ export class ProfiloComponent implements OnInit {
         this.chiudiModalAnnuncio();
         this.caricaTutto();
       },
-      error: () => this.toast.err('Errore', 'Impossibile chiudere l\'annuncio.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile chiudere l\'annuncio.', '❌'); }
     });
   }
 
   // controlla se l'utente ha sbloccato un determinato badge
   isSbloccato(nomeBadge: string): boolean {
-    return this.badge().some((b: any) => b.badge?.nome_badge === nomeBadge); 
+    return this.badge().some((b: BadgeOttenuto) => b.badge?.nome_badge === nomeBadge); 
   }
 
   // calcola la percentuale di completamento del badge in base al punteggio dell'utente e alla soglia del badge

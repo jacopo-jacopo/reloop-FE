@@ -47,14 +47,15 @@ export class ProposteComponent implements OnInit {
     this.scelte.set(new Map());
     this.propostaService.getRicevute().subscribe({
       next: (data) => this.ricevute.set(data),
-      error: () => this.toast.err('Errore', 'Impossibile caricare le proposte ricevute.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare le proposte ricevute.', '❌'); }
     });
     this.propostaService.getInviate().subscribe({
       next: (data) => {
         this.inviate.set(data);
         this.loading.set(false);
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.toast.err('Errore', 'Impossibile caricare le proposte inviate.', '❌');
         this.loading.set(false);
       }
@@ -83,7 +84,7 @@ export class ProposteComponent implements OnInit {
   }
 
   accetta(proposta: any) {
-    const offerti: any[] = proposta.annunci_offerti ?? [];
+    const offerti: any[] = proposta.annunci_offerti ?? []; // ?? null coalescence, se proposta.annunci_offerti è null/undefined, assegna un array vuoto
     const idScelto: number | undefined = offerti.length === 1 ? offerti[0].annuncio_offerto?.id_annuncio : this.scelte().get(proposta.id_proposta);
     if (!idScelto) return;
 
@@ -95,7 +96,8 @@ export class ProposteComponent implements OnInit {
         this.caricaTutto();
         setTimeout(() => this.router.navigate(['/chat']), 1200);
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.accettando.set(null);
         this.toast.err('Errore', 'Impossibile accettare la proposta.', '❌');
       }
@@ -108,7 +110,7 @@ export class ProposteComponent implements OnInit {
         this.toast.info('Proposta rifiutata', "L'utente è stato notificato.", '✗');
         this.caricaTutto();
       },
-      error: () => this.toast.err('Errore', 'Impossibile rifiutare la proposta.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile rifiutare la proposta.', '❌'); }
     });
   }
 

@@ -21,7 +21,7 @@ interface AnnuncioBase {
 interface AnnuncioIncluso {
   id: { id_proposta: number; id_annuncio_offerto: number };
   flag_selezionato: boolean;
-  annuncio_offerto?: AnnuncioBase;
+  annuncio_offerto?: AnnuncioBase; //
 }
 
 // interfaccia typescript per la chat, corrisponde al DTO ChatResponse del backend
@@ -33,10 +33,10 @@ export interface Chat {
   timestamp_chat: string;
   confermato_pubblicante: boolean;
   confermato_proponente: boolean;
-  proposta_generante?: {
+  proposta_generante?: { //
     id_proposta: number;
-    proponente?: UtenteBase;
-    annuncio_interesse?: AnnuncioBase;
-    annunci_offerti?: AnnuncioIncluso[];
+    proponente?: UtenteBase; //
+    annuncio_interesse?: AnnuncioBase; //
+    annunci_offerti?: AnnuncioIncluso[]; //
   };
 }

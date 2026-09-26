@@ -103,7 +103,8 @@ export class PubblicaComponent {
         this.toast.ok('Annuncio pubblicato!', 'Visibile nel tuo quartiere.', '📋');
         this.router.navigate(['/profilo']);
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.loading.set(false);
         this.toast.err('Errore', 'Impossibile pubblicare l\'annuncio.', '❌');
       }

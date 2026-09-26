@@ -5,6 +5,7 @@ import { SegnalazioneService } from '../../core/services/segnalazione.service';
 import { AnnuncioService } from '../../core/services/annuncio.service';
 import { UtenteService } from '../../core/services/utente.service';
 import { QuartiereService } from '../../core/services/quartiere.service';
+import { Quartiere } from '../../models/quartiere.model';
 import { ToastService } from '../../shared/toast/toast.service';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -46,8 +47,8 @@ export class AdminComponent implements OnInit {
   loadingUtenti = signal(true);
 
   // quartieri
-  quartieri           = signal<any[]>([]);
-  quartiereInModifica = signal<any | null>(null);
+  quartieri           = signal<Quartiere[]>([]);
+  quartiereInModifica = signal<Quartiere | null>(null);
   formNuovo           = signal({ nome_quartiere: '', citta: '' });
 
   // logout
@@ -74,7 +75,7 @@ export class AdminComponent implements OnInit {
   caricaStats() {
     this.http.get<any>(`${this.API}/stats/admin`).subscribe({
       next: (data) => this.stats.set(data),
-      error: () => {}
+      error: (err) => console.error(err)
     });
   }
 
@@ -82,7 +83,7 @@ export class AdminComponent implements OnInit {
   caricaSegnalazioni() {
     this.segnalazioneService.getTutte().subscribe({
       next: (data) => { this.segnalazioni.set(data); this.loading.set(false); },
-      error: () => { this.toast.err('Errore', 'Impossibile caricare le segnalazioni.', '❌'); this.loading.set(false); }
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare le segnalazioni.', '❌'); this.loading.set(false); }
     });
   }
 
@@ -94,11 +95,11 @@ export class AdminComponent implements OnInit {
     if (idAnnuncio) {
       this.annuncioService.getById(idAnnuncio).subscribe({
         next: (ann) => this.annuncioAttivo.set(ann),
-        error: () => {}
+        error: (err) => console.error(err)
       });
       this.annuncioService.getFoto(idAnnuncio).subscribe({
         next: (f) => this.fotoAnnuncio.set(f),
-        error: () => {}
+        error: (err) => console.error(err)
       });
     }
     if (s.stato_segnalazione === 'in_attesa') {
@@ -110,7 +111,7 @@ export class AdminComponent implements OnInit {
           this.segnalazioneAttiva.set(aggiornata);
           this.toast.ok('Presa in carico', `Segnalazione #${s.id_segnalazione} assegnata a te.`, '📂');
         },
-        error: () => {}
+        error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile prendere in carico la segnalazione.', '❌'); }
       });
     }
   }
@@ -130,7 +131,7 @@ export class AdminComponent implements OnInit {
         if (oscura) this.toast.err('Annuncio rimosso', 'L\'annuncio è stato oscurato.', '🗑️');
         else        this.toast.ok('Segnalazione respinta', 'Annuncio conforme.', '🟢');
       },
-      error: () => this.toast.err('Errore', 'Impossibile risolvere.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile risolvere.', '❌'); }
     });
   }
 
@@ -143,7 +144,7 @@ export class AdminComponent implements OnInit {
     this.loadingUtenti.set(true);
     this.utenteService.getAllAdmin().subscribe({
       next: (data) => { this.utenti.set(data); this.loadingUtenti.set(false); },
-      error: () => { this.toast.err('Errore', 'Impossibile caricare gli utenti.', '❌'); this.loadingUtenti.set(false); }
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare gli utenti.', '❌'); this.loadingUtenti.set(false); }
     });
   }
 
@@ -161,7 +162,7 @@ export class AdminComponent implements OnInit {
           aggiornato.bloccato ? '🔒' : '🔓'
         );
       },
-      error: () => this.toast.err('Errore', 'Impossibile modificare lo stato.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile modificare lo stato.', '❌'); }
     });
   }
 
@@ -173,16 +174,16 @@ export class AdminComponent implements OnInit {
   caricaQuartieri() {
     this.quartiereService.getAll().subscribe({
       next: (data) => this.quartieri.set(data),
-      error: () => this.toast.err('Errore', 'Impossibile caricare i quartieri.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile caricare i quartieri.', '❌'); }
     });
   }
 
   // metodi per gestire la modifica dei quartieri
-  iniziaModifica(q: any) { this.quartiereInModifica.set({ ...q }); }
+  iniziaModifica(q: Quartiere) { this.quartiereInModifica.set({ ...q }); }
   annullaModifica()       { this.quartiereInModifica.set(null); }
 
   aggiornaModifica(campo: string, valore: string) {
-    this.quartiereInModifica.update(q => q ? { ...q, [campo]: valore } : q);
+    this.quartiereInModifica.update(q => q ? { ...q, [campo]: valore } as Quartiere : q);
   }
 
   salvaModifica() {
@@ -196,7 +197,7 @@ export class AdminComponent implements OnInit {
         this.quartiereInModifica.set(null);
         this.toast.ok('Salvato', 'Quartiere aggiornato.', '✅');
       },
-      error: () => this.toast.err('Errore', 'Impossibile aggiornare il quartiere.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile aggiornare il quartiere.', '❌'); }
     });
   }
 
@@ -214,7 +215,7 @@ export class AdminComponent implements OnInit {
         this.formNuovo.set({ nome_quartiere: '', citta: '' });
         this.toast.ok('Creato', 'Nuovo quartiere aggiunto.', '✅');
       },
-      error: () => this.toast.err('Errore', 'Impossibile creare il quartiere.', '❌')
+      error: (err) => { console.error(err); this.toast.err('Errore', 'Impossibile creare il quartiere.', '❌'); }
     });
   }
 

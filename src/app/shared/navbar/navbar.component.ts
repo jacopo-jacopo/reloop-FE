@@ -26,7 +26,7 @@ export class NavbarComponent implements OnDestroy { // OnDestroy è un'interfacc
   notifica = inject(NotificaService);
   private toast  = inject(ToastService);
   private router = inject(Router);
-  private sub: Subscription;
+  private sub: Subscription; // sottoscrizione agli eventi del router, per aggiornare le notifiche e i badge quando l'utente cambia pagina
 
   // il costruttore crea un'iscrizione agli eventi di navigazione del router, 
   // in modo da ricaricare le notifiche e il badge quando l'utente cambia pagina

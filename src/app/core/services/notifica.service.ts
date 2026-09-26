@@ -16,16 +16,13 @@ export class NotificaService {
   // carica il badge in caso di notifiche non lette
   caricaBadge() {
     if (!this.auth.isLoggedIn()) return;
-    const userId = this._userId();
-    if (!userId) return;
-    this.http.get<number>(`${this.API}/notifiche/badge`, { headers: { 'X-User-Id': userId } })
-      .subscribe({ next: (n) => this.notificheBadge.set(n > 0), error: () => {} });
+    this.http.get<number>(`${this.API}/notifiche/badge`)
+      .subscribe({ next: (n) => this.notificheBadge.set(n > 0), error: (err) => console.error(err) });
   }
 
   // restituisce le notifiche dell'utente loggato
   getMie() {
-    const userId = this._userId();
-    return this.http.get<Notifica[]>(`${this.API}/notifiche`, { headers: { 'X-User-Id': userId! } });
+    return this.http.get<Notifica[]>(`${this.API}/notifiche`);
   }
 
   // segna una notifica come letta
@@ -35,17 +32,9 @@ export class NotificaService {
 
   // segna tutte le notifiche come lette
   segnaTutteLette() {
-    const userId = this._userId();
-    return this.http.put<void>(`${this.API}/notifiche/leggi-tutte`, {}, { headers: { 'X-User-Id': userId! } });
+    return this.http.put<void>(`${this.API}/notifiche/leggi-tutte`, {});
   }
 
   // azzera il badge delle notifiche non lette
   azzera() { this.notificheBadge.set(false); }
-
-  // restituisce l'id dell'utente loggato
-  private _userId(): string | null {
-    const u  = this.auth.utenteCorrente() as any;
-    const id = u?.id_utente_reg ?? u?.id_utente_adm;
-    return id ? String(id) : null;
-  }
 }

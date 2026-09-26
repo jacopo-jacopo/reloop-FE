@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Badge, BadgeOttenuto } from '../../models/badge.model';
 
 // @Injectable({ providedIn: 'root' }) crea un singleton di UtenteService, cioè solo un'istanza in tutta l'app
 // in modo che i signal leggano e scrivano sempre sugli stessi valori (globalmente)
@@ -27,13 +28,13 @@ export class UtenteService {
   }
 
   // badge già sbloccati dall'utente loggato
-  getBadgeOttenuti(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API}/utenti/me/badge`);
+  getBadgeOttenuti(): Observable<BadgeOttenuto[]> {
+    return this.http.get<BadgeOttenuto[]>(`${this.API}/utenti/me/badge`);
   }
 
   // tutti i badge disponibili nella piattaforma
-  getTuttiBadge(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API}/utenti/badge/tutti`);
+  getTuttiBadge(): Observable<Badge[]> {
+    return this.http.get<Badge[]>(`${this.API}/utenti/badge/tutti`);
   }
 
   // recensioni ricevute da un utente
